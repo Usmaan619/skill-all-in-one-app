@@ -1,4 +1,6 @@
 export const ICONS = {
+  homeBg: require("../../assets/png/home-bg.png"),
+
   eyeImg: require("../../assets/png/eye.png"),
 
   intelligenceMainImg: require("../../assets/png/intelligenceMainLogo.png"),
@@ -13,5 +15,12 @@ export const ICONS = {
   eyeGreyImg: require("../../assets/png/eyeGrey.png"),
   eyeCrossGreyImg: require("../../assets/png/eyeCrossGrey.png"),
 
-  networkDisconnectImg: require('../../assets/png/networkDisconnect.png'),
+  networkDisconnectImg: require("../../assets/png/networkDisconnect.png"),
+
+  superMainLogo: require("../../assets/png/logo.png"),
+};
+
+export const COLOURs = {
+  pink: "#ffe5e5",
+  light: "#d0a6a6",
 };

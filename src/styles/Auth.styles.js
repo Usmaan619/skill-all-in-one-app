@@ -73,7 +73,7 @@ export const authStyles = {
   inputLabel: {
     fontSize: hp("1.6%"), // size 14
     fontWeight: "600",
-    color: "#fff",
+    color: "#000",
     marginBottom: hp("1.5%"),
   },
 
@@ -126,7 +126,8 @@ export const authStyles = {
     height: 56,
     overflow: "hidden",
     position: "relative",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f1f1f1",
+    // borderColor: "#000",
   },
 
   countryDropdown: {

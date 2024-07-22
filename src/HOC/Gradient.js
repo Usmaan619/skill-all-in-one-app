@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export const GradientHOC = (Component) => {
   const gradientProps = {
-    colors: ["#1f1c2c", "#928DAB"],
+    colors: ["#FFFFFF", "#FFF"],
   };
 
   return (props) => {
@@ -26,12 +26,13 @@ export const GradientHOC = (Component) => {
 
 const styles = StyleSheet.create({
   gradient: {
+    flex: 1,
     position: "absolute",
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    height: "100%",
+    height: "auto",
     width: "100%",
   },
 });

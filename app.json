@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "AttendanceApp",
+    "name": "SuperChicks",
     "slug": "AttendanceApp",
+    "displayName": "Super Chicks",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,7 +20,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.usmanhasan.AttendanceApp"
+      "package": "com.usmanhasan.SuperChicks"
     },
     "web": {
       "favicon": "./assets/favicon.png"

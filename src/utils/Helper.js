@@ -78,10 +78,13 @@ export const signUpValidationSchema = yup.object().shape({
 });
 
 export const loginValidationSchema = yup.object().shape({
-  email: yup
+  phoneNumber: yup
     .string()
-    .email("Please enter valid email")
-    .required("Email Address is Required"),
+    .matches(
+      /^(?:(?:\+|0{0,2})91(?:(?:\s*[\-]\s*)?(?:\d{3})(?:\s*[\-]\s*)?(?:\d{3})(?:\s*[\-]\s*)?(?:\d{4}))|(?:(?:\d{2})(?:\s*[\-]\s*)?(?:\d{4})(?:\s*[\-]\s*)?(?:\d{4})))$/,
+      "Enter a valid phone number"
+    )
+    .required("Phone number is required"),
   /**
    * this code is required for future
    * */

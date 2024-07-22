@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,12 +8,13 @@ import {
   SafeAreaView,
   TextInput,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { Formik } from "formik";
 import B from "../components/B.component";
 import { authStyles } from "../styles/Auth.styles";
-import { ICONS } from "../constants/Constant";
+import { COLOURs, ICONS } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
 import { loginValidationSchema } from "../utils/Helper";
 import { GradientHOC } from "../HOC/Gradient";
@@ -23,13 +24,41 @@ import { setData } from "../services/Storage.service";
 import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
 import { SetLoader } from "../redux/actions/loader.action";
 
+import { LinearGradient } from "expo-linear-gradient";
+
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [isShowPassword, setIsShowPassword] = useState(true);
+  const [isShowOtpInput, setIsShowOtpInput] = useState(true);
+  const [isShowResendBtn, setIsShowResendBtn] = useState(true);
 
-  const togglePassword = () => {
-    setIsShowPassword(!isShowPassword);
+  const [seconds, setSeconds] = useState(60);
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (isActive && seconds > 0) {
+      timer = setTimeout(() => setSeconds(seconds - 1), 1000);
+    } else if (seconds === 0) {
+      setIsActive(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isActive, seconds]);
+
+  const startTimer = () => {
+    setSeconds(60);
+    setIsActive(true);
   };
+
+  const resetTimer = () => {
+    setSeconds(60);
+    setIsActive(false);
+  };
+  console.log("seconds: ", seconds);
 
   const onSubmit = async (val) => {
     try {
@@ -62,13 +91,17 @@ const Login = ({ navigation }) => {
     }
   };
 
+  /**
+   * get phone height
+   * */
+  const height = Dimensions.get("window")?.height;
+
   return (
     <ScrollView>
       <Formik
         validationSchema={loginValidationSchema}
         initialValues={{
-          email: "",
-          password: "",
+          phoneNumber: "",
         }}
         onSubmit={onSubmit}
       >
@@ -84,81 +117,118 @@ const Login = ({ navigation }) => {
           } = formikProps;
           formikFn = formikProps;
           return (
-            <View style={styles.signUpcontainer}>
-              <View className="flex justify-center mt-2">
-                <View className="flex-row justify-center items-center">
-                  <Image
-                    source={ICONS?.intelligenceMainWhiteImg}
-                    resizeMode="cover"
-                    className="h-[90px] w-[170px] overflow-hidden"
-                  />
-                </View>
-                <Text className="text-center my-5 text-lg font-semibold text-white">
-                  Welcome Back, Please Sign In To your Account.{" "}
-                </Text>
-                <View style={styles.signUpInputMainContainer}>
-                  <SafeAreaView style={styles.signUpInputSubContainer}>
-                    <Text style={styles.inputLabel}>Email</Text>
-                    <BlurView intensity={100} style={styles.input}>
-                      <TextInput
-                        placeholder="you@example.com"
-                        style={{ padding: 10 }}
-                        onChangeText={handleChange("email")}
-                        onBlur={handleBlur("email")}
-                        value={values.email}
-                      />
-                    </BlurView>
+            <View style={{ flex: 1, backgroundColor: "#fff", height }}>
+              <View style={styles.signUpcontainer}>
+                {/* <Image source={ICONS?.homeBg} className="absolute " /> */}
 
-                    {errors.email && touched.email && (
-                      <Text style={{ fontSize: 10, color: "red" }}>
-                        {errors.email}
-                      </Text>
+                <View className="flex justify-center mt-2 ">
+                  <View className="flex-row justify-center items-center">
+                    <Image
+                      source={ICONS?.superMainLogo}
+                      resizeMode="cover"
+                      className="h-[160px] w-[160px] overflow-hidden"
+                    />
+                  </View>
+                  <Text className="text-center my-5 text-lg font-semibold text-black">
+                    Welcome Back, Please Login To your Account.
+                  </Text>
+                  <View style={styles.signUpInputMainContainer}>
+                    {isShowOtpInput && (
+                      <SafeAreaView style={styles.signUpInputSubContainer}>
+                        <Text style={styles.inputLabel}>Phone Number</Text>
+                        <BlurView intensity={100} style={styles.input}>
+                          <TextInput
+                            placeholder="999888***90"
+                            style={{ padding: 10 }}
+                            onChangeText={handleChange("phoneNumber")}
+                            onBlur={handleBlur("phoneNumber")}
+                            value={values.phoneNumber}
+                            keyboardType="number-pad"
+                          />
+                        </BlurView>
+
+                        {errors.phoneNumber && touched.phoneNumber && (
+                          <Text
+                            style={{
+                              fontSize: 10,
+                              color: "red",
+                              marginTop: "2%",
+                              marginLeft: "1%",
+                            }}
+                          >
+                            {errors.phoneNumber}
+                          </Text>
+                        )}
+                      </SafeAreaView>
                     )}
-
-                    <Text style={styles.signUpinputLabel2}>Password</Text>
-                    <BlurView intensity={100} style={styles.input}>
-                      <TextInput
-                        style={{ padding: 10 }}
-                        secureTextEntry={isShowPassword}
-                        placeholder="******"
-                        onChangeText={handleChange("password")}
-                        onBlur={handleBlur("password")}
-                        value={values.password}
-                      />
-                      <TouchableOpacity onPress={togglePassword}>
-                        <Image
-                          style={styles.passwordEye}
-                          source={
-                            isShowPassword ? ICONS.crossEyeImg : ICONS.eyeImg
-                          }
-                          fadeDuration={0}
-                        />
-                      </TouchableOpacity>
-                    </BlurView>
-                    {errors.password && touched.password && (
-                      <Text style={{ fontSize: 10, color: "red" }}>
-                        {errors.password}
-                      </Text>
+                    {!isShowOtpInput && (
+                      <SafeAreaView style={styles.signUpInputSubContainer}>
+                        <Text style={styles.inputLabel}>
+                          OTP{" "}
+                          {!isShowResendBtn && (
+                            <Text className="text-red-600">{`(${seconds})`}</Text>
+                          )}
+                        </Text>
+                        <BlurView intensity={100} style={styles.input}>
+                          <TextInput
+                            placeholder="9998"
+                            style={{ padding: 10 }}
+                            onChangeText={handleChange("opt")}
+                            onBlur={handleBlur("opt")}
+                            value={values.opt}
+                            keyboardType="number-pad"
+                          />
+                        </BlurView>
+                      </SafeAreaView>
                     )}
-                  </SafeAreaView>
+                  </View>
+
+                  <View style={{ marginTop: "10%" }}>
+                    <CommonButton
+                      onPress={() => {
+                        handleSubmit();
+                      }}
+                      title={"Submit"}
+                    />
+                  </View>
+                  {!isShowResendBtn && (
+                    <View style={{ marginTop: "7%" }}>
+                      <CommonButton
+                        onPress={() => {
+                          handleSubmit();
+                        }}
+                        title={"Resend"}
+                      />
+                    </View>
+                  )}
                 </View>
 
-                <View style={{ marginTop: "10%" }}>
-                  <CommonButton
-                    onPress={() => {
-                      handleSubmit();
+                {/* About */}
+                <View className="flex justify-center items-center">
+                  <LinearGradient
+                    start={{ x: 1, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    colors={[COLOURs?.light, COLOURs?.pink]}
+                    style={{
+                      width: wp("90%"),
+                      height: hp("21%"),
                     }}
-                    title={"Login"}
-                  />
+                    className="mt-8 rounded-lg"
+                  >
+                    <Text className="text-center my-3 font-medium">
+                      About SuperChicks
+                    </Text>
+                    <Text
+                      style={{ lineHeight: 20 }}
+                      className="text-center px-3 flex justify-center"
+                    >
+                      SuperChicks supplies provides you fresh and hygienic meat
+                      products at very reasonable price. Forget the old days of
+                      purchasing meat from stinky and unhygienic shops. Now just
+                      order it online and get it delivered to your door steps.
+                    </Text>
+                  </LinearGradient>
                 </View>
-                <Text
-                  style={styles.dontHaveAccount}
-                  onPress={() => {
-                    navigation.navigate("SignUp");
-                  }}
-                >
-                  don't have account? <B>Sign up</B>
-                </Text>
               </View>
             </View>
           );
@@ -170,4 +240,4 @@ const Login = ({ navigation }) => {
 
 const styles = StyleSheet.create(authStyles);
 
-export default GradientHOC(Login);
+export default Login;
