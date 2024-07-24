@@ -23,6 +23,13 @@ export const ICONS = {
   headerLogo: require("../../assets/logo/logo.png"),
 };
 
+export const ABOUTHOMEIMG = [
+  require("../../assets/about-home/Home-page-about-section-.jpeg"),
+  require("../../assets/about-home/Home-page-about-section-2.jpg"),
+  require("../../assets/about-home/Home-page-about-section-3.jpeg"),
+  require("../../assets/about-home/Home-page-about-section-4.jpeg"),
+];
+
 export const COLOURs = {
   pink: "#ffe5e5",
   light: "#d0a6a6",
