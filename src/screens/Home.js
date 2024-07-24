@@ -1,95 +1,75 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Alert } from "react-native";
-import { Calendar } from "react-native-calendars";
-import moment from "moment";
+import React from "react";
+import { Image, StyleSheet, Text, View, ScrollView } from "react-native";
 import { GradientHOC } from "../HOC/Gradient";
-import {
-  addAttendanceAPI,
-  getAttendanceAPI,
-} from "../services/Attendace.service";
+import { ICONS } from "../constants/Constant";
+import CommonButton from "../components/Button.component";
+import HeaderModal from "../components/Header.component";
+import CollapsibleView from "../components/CollapsibleView.component";
 
 const Home = () => {
-  const [markedDates, setMarkedDates] = useState({});
-
-  useEffect(() => {
-    fetchAttendance();
-  }, []);
-
-  const fetchAttendance = async () => {
-    try {
-      const response = await getAttendanceAPI();
-      console.log("response:getAttendanceAPI ", response);
-
-      const dates = response?.reduce((acc, attendance) => {
-        const date = moment(attendance.date).format("YYYY-MM-DD");
-        acc[date] = {
-          marked: true,
-          dotColor: attendance.status === "CheckIn" ? "green" : "red",
-        };
-        return acc;
-      }, {});
-      console.log("dates: ", dates);
-
-      setMarkedDates(dates);
-    } catch (error) {
-      Alert.alert("Error", error.message);
-    }
+  const handleSubmit = () => {
+    toggleModal();
   };
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
 
-  const markAttendance = async (day) => {
-    const status = "CheckIn"; // or 'CheckOut'
-    const type = "Present"; // or 'Absent', 'Leave'
-
-    try {
-      const response = await addAttendanceAPI({
-        status,
-        type,
-        date: day.dateString,
-      });
-
-      setMarkedDates({
-        ...markedDates,
-        [day.dateString]: { marked: true, dotColor: "green" },
-      });
-    } catch (error) {
-      Alert.alert("Error", error.message);
-    }
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
   };
-  const currentDateString = moment().format("YYYY-MM-DD");
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Mark Attendance</Text>
-      <Calendar
-        markedDates={markedDates}
-        onDayPress={markAttendance}
-        minDate={currentDateString}
-        maxDate={currentDateString}
-        disableAllTouchEventsForDisabledDays={true}
-        theme={{
-          todayTextColor: "blue",
-          dayTextColor: "black",
-          arrowColor: "blue",
-          monthTextColor: "black",
-          textDayFontWeight: "500",
-          textMonthFontWeight: "bold",
-          textDayHeaderFontWeight: "500",
-          textDayFontSize: 16,
-          textMonthFontSize: 20,
-          textDayHeaderFontSize: 14,
-        }}
-        hideExtraDays={true}
-      />
-    </View>
+    <React.Fragment>
+      {/* <HeaderModal visible={isModalVisible} onClose={toggleModal} /> */}
+
+      <Image source={ICONS?.homeBg} className="absolute top-0 h-full " />
+
+      <CollapsibleView title="Expandable View" className="absolute">
+        <Text className="text-rose-600">
+          This is the content of the expandable view
+        </Text>
+      </CollapsibleView>
+      <ScrollView
+        className="relative"
+        style={{ flexGrow: 1, overflow: "scroll" }}
+      >
+        <View className="px-5 h-screen">
+          <View className="flex justify-center  mt-6">
+            <Text className="mt-2 text-2xl text-left font-bold text-[#DB1516]">
+              We Deliver
+            </Text>
+            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+              Fresh & Premium
+            </Text>
+            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+              Meats Everyday.
+            </Text>
+
+            <Text className="text-base mt-4 text-left">
+              Why leave the house? Chicken delivery coming through.
+            </Text>
+
+            {/* Categories btn */}
+            <View className="w-1/3 h-7 mt-5">
+              <CommonButton
+                onPress={() => {
+                  handleSubmit();
+                }}
+                title={"Categories"}
+              />
+            </View>
+          </View>
+          <Image
+            source={ICONS?.superSubLogo}
+            className="h-1/4 w-full mt-12
+          "
+          />
+        </View>
+      </ScrollView>
+    </React.Fragment>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 24,

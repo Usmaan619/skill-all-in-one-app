@@ -18,9 +18,14 @@ export const ICONS = {
   networkDisconnectImg: require("../../assets/png/networkDisconnect.png"),
 
   superMainLogo: require("../../assets/png/logo.png"),
+  superSubLogo: require("../../assets/png/order-img.png"),
+
+  headerLogo: require("../../assets/logo/logo.png"),
 };
 
 export const COLOURs = {
   pink: "#ffe5e5",
   light: "#d0a6a6",
+
+  headerLightColor: "#fff2f2",
 };

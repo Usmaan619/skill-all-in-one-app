@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import { getData } from "../services/Storage.service";
-import TabNavigation from "./Tabs.route";
 import Login from "../screens/Login";
-import SignUp from "../screens/SignUp";
 import { createStackNavigator } from "@react-navigation/stack";
 import NetworkComponent from "../components/Network.component";
 import { SetNetInfo, SetToken } from "../redux/actions/action";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { AxiosInterceptors } from "../axios/interceptor";
+import Home from "../screens/Home";
 
 const Stack = createStackNavigator();
 
@@ -55,15 +54,11 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                 }}
               >
                 {token ? (
-                  <Stack.Screen
-                    name="Main"
-                    component={TabNavigation}
-                    options={{ headerShown: false }}
-                  />
+                  <Stack.Screen name="DashboardLayout" component={DashboardL} />
                 ) : (
                   <React.Fragment>
+                    <Stack.Screen name="Home" component={Home} />
                     <Stack.Screen name="Login" component={Login} />
-                    <Stack.Screen name="SignUp" component={SignUp} />
                   </React.Fragment>
                 )}
               </Stack.Navigator>
