@@ -6,9 +6,11 @@ import {
   Animated,
   Image,
 } from "react-native";
-import { ICONS } from "../constants/Constant";
+import { COLOURs, ICONS } from "../constants/Constant";
 import { Octicons } from "@expo/vector-icons";
-
+import { AntDesign } from "@expo/vector-icons";
+import { Foundation } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 const CollapsibleView = ({ title, children }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [animation] = useState(new Animated.Value(0));
@@ -18,13 +20,13 @@ const CollapsibleView = ({ title, children }) => {
     if (collapsed) {
       Animated.timing(animation, {
         toValue: 1,
-        duration: 300,
+        duration: 380,
         useNativeDriver: false, // Change this to false
       }).start();
     } else {
       Animated.timing(animation, {
         toValue: 0,
-        duration: 300,
+        duration: 340,
         useNativeDriver: false, // Change this to false
       }).start();
     }
@@ -33,7 +35,7 @@ const CollapsibleView = ({ title, children }) => {
 
   const heightInterpolate = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 200],
+    outputRange: [0, 270],
   });
 
   return (
@@ -46,12 +48,14 @@ const CollapsibleView = ({ title, children }) => {
             } relative`}
           >
             <Image source={ICONS?.headerLogo} className="h-[55px] w-[55px]" />
-            <Octicons
-              onPress={toggleCollapse}
-              name="three-bars"
-              size={24}
-              color="black"
-            />
+            <View className="border py-2 px-3 rounded-lg border-[#e8dfdf]">
+              <Foundation
+                onPress={toggleCollapse}
+                name="align-right"
+                size={22}
+                color="black"
+              />
+            </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -59,7 +63,20 @@ const CollapsibleView = ({ title, children }) => {
         style={{ height: heightInterpolate, alignSelf: "center" }}
         className=" h-20 w-80 bg-[#fff2f2] rounded-b-3xl absolute top-28 z-40"
       >
-        {children}
+        {/* {children} */}
+
+        <View
+          className={` justify-center items-center mt-2 gap-5 ${
+            !collapsed ? "grid" : "hidden"
+          }`}
+        >
+          <Text className="text-base font-medium">Home</Text>
+          <Text className="text-base font-medium">Contact Us</Text>
+          <Text className="text-base font-medium">About</Text>
+          <AntDesign name="shoppingcart" size={26} color="black" />
+          <Text className="text-base font-medium">Sign</Text>
+          <FontAwesome5 name="angle-right" size={24} color={COLOURs.red} />
+        </View>
       </Animated.View>
     </View>
   );

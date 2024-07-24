@@ -26,6 +26,7 @@ export const ICONS = {
 export const COLOURs = {
   pink: "#ffe5e5",
   light: "#d0a6a6",
+  red: "#db1516",
 
   headerLightColor: "#fff2f2",
 };

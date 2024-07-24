@@ -21,11 +21,7 @@ const Home = () => {
 
       <Image source={ICONS?.homeBg} className="absolute top-0 h-full " />
 
-      <CollapsibleView title="Expandable View" className="absolute">
-        <Text className="text-rose-600">
-          This is the content of the expandable view
-        </Text>
-      </CollapsibleView>
+      <CollapsibleView title="Expandable View" className="absolute" />
       <ScrollView
         className="relative"
         style={{ flexGrow: 1, overflow: "scroll" }}
