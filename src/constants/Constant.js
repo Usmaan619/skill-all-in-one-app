@@ -30,6 +30,30 @@ export const ABOUTHOMEIMG = [
   require("../../assets/about-home/Home-page-about-section-4.jpeg"),
 ];
 
+export const EXPLOREHOMEIMG = [
+  {
+    name: "Fresh Chicken",
+    subTitle: "",
+    img: require("../../assets/logo/logo-1.png"),
+  },
+
+  {
+    name: "Alive Desi Chicken",
+    subTitle: "Coming Soon",
+    img: require("../../assets/logo/logo-2.png"),
+  },
+  {
+    name: "Mutton Meat",
+    subTitle: "Coming Soon",
+    img: require("../../assets/logo/logo-3.png"),
+  },
+  {
+    name: "Fish",
+    subTitle: "Coming Soon",
+    img: require("../../assets/logo/Fish Icon.png"),
+  },
+];
+
 export const COLOURs = {
   pink: "#ffe5e5",
   light: "#d0a6a6",

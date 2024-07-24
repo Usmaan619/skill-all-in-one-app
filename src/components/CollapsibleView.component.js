@@ -19,7 +19,7 @@ const CollapsibleView = ({ title, children }) => {
   const toggleCollapse = () => {
     Animated.timing(animation, {
       toValue: collapsed ? 1 : 0,
-      duration: 340,
+      duration: 280,
       useNativeDriver: false, // Change this to true
     }).start();
     setCollapsed(!collapsed);
@@ -32,7 +32,7 @@ const CollapsibleView = ({ title, children }) => {
 
   return (
     // className={`bg-[#ffe5e5]`}
-    <View>
+    <View className="z-50" style={{ elevation: 10 }}>
       <TouchableWithoutFeedback>
         <View className="flex-row justify-center items-center mt-10 z-40">
           <View
@@ -54,7 +54,7 @@ const CollapsibleView = ({ title, children }) => {
       </TouchableWithoutFeedback>
       <Animated.View
         style={{ height: heightInterpolate, alignSelf: "center" }}
-        className=" h-20 w-80 bg-[#fff2f2] rounded-b-3xl absolute top-28 z-40"
+        className=" h-20 w-80 bg-[#fff2f2] rounded-b-3xl absolute top-28 z-50"
       >
         {/* {children} */}
 
