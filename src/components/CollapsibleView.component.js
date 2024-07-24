@@ -17,19 +17,11 @@ const CollapsibleView = ({ title, children }) => {
 
   console.log("collapsed: ", collapsed);
   const toggleCollapse = () => {
-    if (collapsed) {
-      Animated.timing(animation, {
-        toValue: 1,
-        duration: 380,
-        useNativeDriver: false, // Change this to false
-      }).start();
-    } else {
-      Animated.timing(animation, {
-        toValue: 0,
-        duration: 340,
-        useNativeDriver: false, // Change this to false
-      }).start();
-    }
+    Animated.timing(animation, {
+      toValue: collapsed ? 1 : 0,
+      duration: 340,
+      useNativeDriver: false, // Change this to true
+    }).start();
     setCollapsed(!collapsed);
   };
 
@@ -39,6 +31,7 @@ const CollapsibleView = ({ title, children }) => {
   });
 
   return (
+    // className={`bg-[#ffe5e5]`}
     <View>
       <TouchableWithoutFeedback>
         <View className="flex-row justify-center items-center mt-10 z-40">
