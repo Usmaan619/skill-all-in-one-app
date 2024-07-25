@@ -54,6 +54,45 @@ export const EXPLOREHOMEIMG = [
   },
 ];
 
+export const MOSTPOPULARPRODUCTS = [
+  {
+    name: "Fresh Chicken",
+    subTitle: "Order Now",
+    productImg: require("../../assets/most-popular-products/home-Products.jpg"),
+    btn: "Order",
+  },
+  {
+    name: "Alive Desi Chicken",
+    subTitle: "Coming Soon",
+    productImg: require("../../assets/most-popular-products/products-2.png"),
+  },
+  {
+    name: "Fresh Mutton",
+    subTitle: "Coming Soon",
+    productImg: require("../../assets/most-popular-products/Order-Mutton-1.jpg"),
+  },
+];
+
+export const WHYORDERFORMSUPERCHICKS = [
+  {
+    name: `FREE OF ${"\n"} PRESERVATIVES`,
+    img: require("../../assets/HalalVerified/Halal-Verified-2.png"),
+  },
+  {
+    name: `DELIVERED ${"\n"} FRESH `,
+    img: require("../../assets/HalalVerified/Halal-Verified-3.png"),
+  },
+  {
+    name: `FSSAI OF ${"\n"} REGISTERED`,
+    img: require("../../assets/HalalVerified/Halal-Verified-4.png"),
+  },
+
+  {
+    name: `FAIR ${"\n"} PRICING`,
+    img: require("../../assets/HalalVerified/Halal-Verified-5.png"),
+  },
+];
+
 export const COLOURs = {
   pink: "#ffe5e5",
   light: "#d0a6a6",

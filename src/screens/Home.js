@@ -6,11 +6,13 @@ import {
   COLOURs,
   EXPLOREHOMEIMG,
   ICONS,
+  MOSTPOPULARPRODUCTS,
+  WHYORDERFORMSUPERCHICKS,
 } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
 import HeaderModal from "../components/Header.component";
 import CollapsibleView from "../components/CollapsibleView.component";
-
+import { Avatar, Button, Card } from "react-native-paper";
 const Home = () => {
   const handleSubmit = () => {
     toggleModal();
@@ -67,6 +69,11 @@ const Home = () => {
 
         {/* Explor */}
         <ExploreCategories />
+        {/* Most Popular Products */}
+        <MostPopularProducts />
+
+        {/* Why Order From SuperChicks */}
+        <WhyOrderFromSuperChicks />
       </ScrollView>
     </React.Fragment>
   );
@@ -96,7 +103,7 @@ const AboutHome = () => {
 
           <View className="flex justify-center items-center my-5">
             {ABOUTHOMEIMG?.map((d, i) => (
-              <Image idx={i} source={d} className="h-44 w-72 my-2 " />
+              <Image key={i} source={d} className="h-44 w-72 my-2 " />
             ))}
           </View>
         </View>
@@ -117,22 +124,95 @@ const ExploreCategories = () => {
 
       <View className="grid justify-center items-center gap-7 my-5">
         {EXPLOREHOMEIMG?.map((d, idx) => (
-          <View className="grid justify-center items-center">
+          <View className="grid justify-center items-center" key={idx}>
             <View
               style={{ elevation: 10 }}
               className=" bg-slate-100 h-32 w-32  justify-center items-center rounded-full"
             >
-              <Image
-                key={idx}
-                source={d?.img}
-                className="h-20 w-20 object-cover"
-              />
+              <Image source={d?.img} className="h-20 w-20 object-cover" />
             </View>
             <Text className="text-center mt-3 text-xl font-medium">
               {d?.name}
             </Text>
             <Text className="text-center mt-3 text-sm font-medium text-[#DB1516]">
               {d?.subTitle}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+};
+
+const MostPopularProducts = () => {
+  const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
+  return (
+    <View className="my-10">
+      <Text className="text-center text-2xl font-semibold">
+        Most Popular {"\n"}
+        <Text className="text-[#DB1516] text-center text-xl font-semibold ">
+          Products
+        </Text>
+      </Text>
+      <View className="px-6 pt-14">
+        {MOSTPOPULARPRODUCTS?.map((d, idx) => (
+          <Card key={idx} style={{ marginBottom: "10%", elevation: 10 }}>
+            <Card.Cover source={d?.productImg} className="bg-white" />
+            <Card.Title
+              title={d?.name}
+              subtitle={d?.subTitle}
+              titleStyle={{ fontSize: 18, fontWeight: "700" }}
+              subtitleStyle={{
+                fontSize: 14,
+                fontWeight: "700",
+                color: COLOURs?.red,
+              }}
+            />
+
+            <Card.Actions>
+              <View className="w-1/3 mb-3">
+                {d?.btn && (
+                  <CommonButton
+                    onPress={() => {
+                      handleSubmit();
+                    }}
+                    title={d?.btn}
+                  />
+                )}
+              </View>
+            </Card.Actions>
+          </Card>
+        ))}
+      </View>
+    </View>
+  );
+};
+const WhyOrderFromSuperChicks = () => {
+  return (
+    <View className="my-10 ">
+      <Text className="text-center text-2xl font-semibold">
+        Why order from{"\n "}
+        <Text className="text-[#DB1516] text-center text-2xl font-semibold">
+          SuperChicks?
+        </Text>
+      </Text>
+
+      <Text className="text-slate-600 my-2 text-center text-sm font-normal px-4">
+        We deliver free of preservative , fssai registered, always fresh with
+        fair pricing
+      </Text>
+
+      <View className="grid justify-center items-center gap-7 my-5">
+        {WHYORDERFORMSUPERCHICKS?.map((d, idx) => (
+          <View className="grid justify-center items-center" key={idx}>
+            <View
+              style={{ elevation: 10 }}
+              className=" bg-white h-32 w-32  justify-center items-center rounded-full"
+            >
+              <Image source={d?.img} className="h-20 w-20 object-cover" />
+            </View>
+            <Text className="text-center mt-3 text-xl font-medium">
+              {d?.name}
             </Text>
           </View>
         ))}
