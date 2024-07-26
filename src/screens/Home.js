@@ -5,14 +5,18 @@ import {
   ABOUTHOMEIMG,
   COLOURs,
   EXPLOREHOMEIMG,
+  HAPPYCUSTOMERS1,
+  HAPPYCUSTOMERS2,
   ICONS,
   MOSTPOPULARPRODUCTS,
   WHYORDERFORMSUPERCHICKS,
 } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
-import HeaderModal from "../components/Header.component";
 import CollapsibleView from "../components/CollapsibleView.component";
-import { Avatar, Button, Card } from "react-native-paper";
+import { Avatar, Card } from "react-native-paper";
+import Carousel, { PaginationLight } from "react-native-x-carousel";
+import { AirbnbRating, Rating } from "react-native-ratings";
+
 const Home = () => {
   const handleSubmit = () => {
     toggleModal();
@@ -27,7 +31,7 @@ const Home = () => {
       <ScrollView style={{ flexGrow: 1 }}>
         {/* bg img */}
         <CollapsibleView className="absolute" />
-        <Image source={ICONS?.homeBg} className="absolute top-0 h-2/6 " />
+        <Image source={ICONS?.homeBg} className="absolute top-0 h-[870px] " />
         {/* home */}
         <View className="px-10 relative h-screen ">
           <View className="flex justify-center mt-6">
@@ -74,6 +78,8 @@ const Home = () => {
 
         {/* Why Order From SuperChicks */}
         <WhyOrderFromSuperChicks />
+        {/* Hear From Our Happy Customers */}
+        <HearFromOurHappyCustomers />
       </ScrollView>
     </React.Fragment>
   );
@@ -221,15 +227,85 @@ const WhyOrderFromSuperChicks = () => {
   );
 };
 
+const HearFromOurHappyCustomers = () => {
+  const renderCarousel = (data) => (
+    <View
+      key={data?.id}
+      style={styles.carousel}
+      className="bg-white rounded-lg"
+    >
+      <View className="flex-row gap-3 items-center">
+        <Image
+          source={data?.img}
+          style={{ elevation: 12 }}
+          className="h-20 w-20 rounded-full"
+        />
+        <View className="grid items-start ">
+          <Text className="text-lg font-medium">{data?.name}</Text>
+          <Rating
+            imageSize={20}
+            style={{ paddingVertical: 10 }}
+            readonly={true}
+            startingValue={4}
+          />
+        </View>
+      </View>
+      <Text className="text-slate-600 mt-5 text-center text-sm">
+        {data?.review}
+      </Text>
+    </View>
+  );
+  return (
+    <View className="my-10 w-full">
+      <Text className="text-center text-2xl font-semibold">
+        Hear From Our {"\n "}
+        <Text className="text-[#DB1516] text-center text-2xl font-semibold">
+          Happy Customers
+        </Text>
+      </Text>
+      <View style={styles.container} className="my-9">
+        <Carousel
+          renderItem={renderCarousel}
+          autoplay={true}
+          loop={true}
+          data={HAPPYCUSTOMERS1}
+        />
+        <Carousel
+          renderItem={renderCarousel}
+          autoplay={true}
+          loop={true}
+          data={HAPPYCUSTOMERS2}
+        />
+      </View>
+      <View className="flex justify-center items-center gap-7 my-5 "></View>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
     marginVertical: 20,
     color: "#fff",
+  },
+
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  carousel: {
+    width: 340,
+    height: 200,
+    padding: 19,
+    elevation: 3,
+    margin: 12,
+    overflow: "hidden",
   },
 });
 

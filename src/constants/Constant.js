@@ -21,6 +21,10 @@ export const ICONS = {
   superSubLogo: require("../../assets/png/order-img.png"),
 
   headerLogo: require("../../assets/logo/logo.png"),
+  costumer1: require("../../assets/costumer/costumer-1.png"),
+  costumer2: require("../../assets/costumer/costumer-2.png"),
+  costumer3: require("../../assets/costumer/costumer-3.png"),
+  costumer4: require("../../assets/costumer/costumer-4.png"),
 };
 
 export const ABOUTHOMEIMG = [
@@ -75,21 +79,54 @@ export const MOSTPOPULARPRODUCTS = [
 
 export const WHYORDERFORMSUPERCHICKS = [
   {
-    name: `FREE OF ${"\n"} PRESERVATIVES`,
+    name: `FREE OF${"\n"}PRESERVATIVES`,
     img: require("../../assets/HalalVerified/Halal-Verified-2.png"),
   },
   {
-    name: `DELIVERED ${"\n"} FRESH `,
+    name: `DELIVERED${"\n"}FRESH `,
     img: require("../../assets/HalalVerified/Halal-Verified-3.png"),
   },
   {
-    name: `FSSAI OF ${"\n"} REGISTERED`,
+    name: `FSSAI OF${"\n"}REGISTERED`,
     img: require("../../assets/HalalVerified/Halal-Verified-4.png"),
   },
 
   {
-    name: `FAIR ${"\n"} PRICING`,
+    name: `FAIR${"\n"}PRICING`,
     img: require("../../assets/HalalVerified/Halal-Verified-5.png"),
+  },
+];
+
+export const HAPPYCUSTOMERS1 = [
+  {
+    id: "#1",
+    name: "Basily",
+    review:
+      "Great service, always get helpful and quick responses & I m impressed with the quality of the Chicken & Mutton.",
+    img: ICONS?.costumer1,
+  },
+  {
+    id: "#2",
+    name: "Abhishek",
+    review:
+      "As a conscientious consumer, I appreciate Super Chicks commitment to ethical sourcing practices. ",
+    img: ICONS?.costumer2,
+  },
+];
+export const HAPPYCUSTOMERS2 = [
+  {
+    id: "#3",
+    name: "Dr. Akansha",
+    review:
+      "Great service, always get helpful and quick responses & I m impressed with the quality of the Chicken & Mutton.",
+    img: ICONS.costumer3,
+  },
+  {
+    id: "#4",
+    name: "Ankit",
+    review:
+      "As a conscientious consumer, I appreciate Super Chicks commitment to ethical sourcing practices.",
+    img: ICONS.costumer4,
   },
 ];
 
