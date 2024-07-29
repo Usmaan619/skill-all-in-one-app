@@ -23,7 +23,7 @@ const Footer = () => {
             hygienic meat poducts at very reasonable price
           </Text>
 
-          <View className="grid gap-4 justify-center items-center my-2">
+          <View className="grid gap-3 justify-center items-center my-2">
             <Text className="text-base font-medium text-[#db1516]">
               Address
             </Text>
@@ -42,7 +42,7 @@ const Footer = () => {
           </View>
         </View>
 
-        <View className="grid gap-4 justify-center items-center my-1">
+        <View className="grid gap-3 justify-center items-center my-1">
           <Text className="text-base font-medium text-[#db1516]">
             Important Links
           </Text>
@@ -51,7 +51,7 @@ const Footer = () => {
           <Text className="flex-row items-baseline">About</Text>
         </View>
 
-        <View className="grid gap-4 justify-center items-center my-1">
+        <View className="grid gap-3 justify-center items-center my-1">
           <Text className="text-base font-medium text-[#db1516]">
             Important Links
           </Text>
@@ -60,7 +60,7 @@ const Footer = () => {
           <Text className="flex-row items-baseline">About</Text>
         </View>
 
-        <View className="grid gap-4 justify-center items-center my-1">
+        <View className="grid gap-3 justify-center items-center my-1">
           <Text className="text-base font-medium text-[#db1516]">
             Social Media
           </Text>
