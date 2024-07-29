@@ -25,6 +25,9 @@ export const ICONS = {
   costumer2: require("../../assets/costumer/costumer-2.png"),
   costumer3: require("../../assets/costumer/costumer-3.png"),
   costumer4: require("../../assets/costumer/costumer-4.png"),
+
+  footerBgImg: require("../../assets/Footer/footer-img.png"),
+  bgImg: require("../../assets/bgImage/background-img.png"),
 };
 
 export const ABOUTHOMEIMG = [

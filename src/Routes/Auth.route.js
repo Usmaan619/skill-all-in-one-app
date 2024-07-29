@@ -9,6 +9,9 @@ import { SetNetInfo, SetToken } from "../redux/actions/action";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { AxiosInterceptors } from "../axios/interceptor";
 import Home from "../screens/Home";
+import ContactUs from "../screens/ContactUs";
+import AboutSuperChicks from "../screens/AboutUs";
+import CollapsibleView from "../components/CollapsibleView.component";
 
 const Stack = createStackNavigator();
 
@@ -58,6 +61,10 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                 ) : (
                   <React.Fragment>
                     <Stack.Screen name="Home" component={Home} />
+                    <Stack.Screen name="ContactUs" component={ContactUs} />
+                    <Stack.Screen name="About" component={AboutSuperChicks} />
+                    <Stack.Screen name="Co" component={CollapsibleView} />
+
                     <Stack.Screen name="Login" component={Login} />
                   </React.Fragment>
                 )}

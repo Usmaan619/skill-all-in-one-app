@@ -5,13 +5,13 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import { COLOURs, ICONS } from "../constants/Constant";
-import { Octicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-const CollapsibleView = ({ title, children }) => {
+const CollapsibleView = ({ navi }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [animation] = useState(new Animated.Value(0));
 
@@ -31,7 +31,6 @@ const CollapsibleView = ({ title, children }) => {
   });
 
   return (
-    // className={`bg-[#ffe5e5]`}
     <View className="z-50" style={{ elevation: 10 }}>
       <TouchableWithoutFeedback>
         <View className="flex-row justify-center items-center mt-10 z-40">
@@ -41,14 +40,12 @@ const CollapsibleView = ({ title, children }) => {
             } relative`}
           >
             <Image source={ICONS?.headerLogo} className="h-[55px] w-[55px]" />
-            <View className="border py-2 px-3 rounded-lg border-[#e8dfdf]">
-              <Foundation
-                onPress={toggleCollapse}
-                name="align-right"
-                size={22}
-                color="black"
-              />
-            </View>
+            <TouchableOpacity
+              onPress={toggleCollapse}
+              className="border py-2 px-3 rounded-lg border-[#e8dfdf]"
+            >
+              <Foundation name="align-right" size={22} color="black" />
+            </TouchableOpacity>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -64,7 +61,13 @@ const CollapsibleView = ({ title, children }) => {
           }`}
         >
           <Text className="text-base font-medium">Home</Text>
-          <Text className="text-base font-medium">Contact Us</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navi.navigate("ContactUs");
+            }}
+          >
+            <Text className="text-base font-medium">Contact Us</Text>
+          </TouchableOpacity>
           <Text className="text-base font-medium">About</Text>
           <AntDesign name="shoppingcart" size={26} color="black" />
           <Text className="text-base font-medium">Sign</Text>
