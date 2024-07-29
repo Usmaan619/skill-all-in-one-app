@@ -14,7 +14,7 @@ const Footer = () => {
         <Image
           resizeMode="cover"
           source={ICONS?.headerLogo}
-          className="h-32 w-32"
+          className="h-28 w-32"
         />
         <View className="mt-3">
           <Text className="text-center text-gray-500 ">
@@ -23,7 +23,7 @@ const Footer = () => {
             hygienic meat poducts at very reasonable price
           </Text>
 
-          <View className="grid gap-4 justify-center items-center my-4">
+          <View className="grid gap-4 justify-center items-center my-2">
             <Text className="text-base font-medium text-[#db1516]">
               Address
             </Text>

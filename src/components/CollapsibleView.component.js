@@ -60,7 +60,13 @@ const CollapsibleView = ({ navi }) => {
             !collapsed ? "grid" : "hidden"
           }`}
         >
-          <Text className="text-base font-medium">Home</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navi.navigate("Home");
+            }}
+          >
+            <Text className="text-base font-medium">Home</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               navi.navigate("ContactUs");
@@ -68,10 +74,34 @@ const CollapsibleView = ({ navi }) => {
           >
             <Text className="text-base font-medium">Contact Us</Text>
           </TouchableOpacity>
-          <Text className="text-base font-medium">About</Text>
-          <AntDesign name="shoppingcart" size={26} color="black" />
-          <Text className="text-base font-medium">Sign</Text>
-          <FontAwesome5 name="angle-right" size={24} color={COLOURs.red} />
+          <TouchableOpacity
+            onPress={() => {
+              navi.navigate("About");
+            }}
+          >
+            <Text className="text-base font-medium">About</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navi.navigate("Cart");
+            }}
+          >
+            <AntDesign name="shoppingcart" size={26} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navi.navigate("Login");
+            }}
+          >
+            <Text className="text-base font-medium">Sign</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navi.navigate("Login");
+            }}
+          >
+            <FontAwesome5 name="angle-right" size={24} color={COLOURs.red} />
+          </TouchableOpacity>
         </View>
       </Animated.View>
     </View>
