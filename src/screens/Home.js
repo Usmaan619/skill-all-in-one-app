@@ -20,6 +20,7 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Home = ({ navigation }) => {
   const handleSubmit = () => {
@@ -79,7 +80,7 @@ const Home = ({ navigation }) => {
         <AboutHome />
 
         {/* Explor */}
-        <ExploreCategories />
+        <ExploreCategories navi={navigation} />
         {/* Most Popular Products */}
         <MostPopularProducts />
 
@@ -127,7 +128,7 @@ const AboutHome = () => {
   );
 };
 
-const ExploreCategories = () => {
+const ExploreCategories = ({ navi }) => {
   return (
     <View className="my-10 ">
       <Text className="text-[#DB1516] text-center text-2xl font-semibold">
@@ -139,7 +140,13 @@ const ExploreCategories = () => {
 
       <View className="grid justify-center items-center gap-7 my-5">
         {EXPLOREHOMEIMG?.map((d, idx) => (
-          <View className="grid justify-center items-center" key={idx}>
+          <TouchableOpacity
+            className="grid justify-center items-center"
+            key={idx}
+            onPress={() => {
+              navi.navigate("Products");
+            }}
+          >
             <View
               style={{ elevation: 10 }}
               className=" bg-slate-100 h-32 w-32  justify-center items-center rounded-full"
@@ -152,7 +159,7 @@ const ExploreCategories = () => {
             <Text className="text-center mt-3 text-sm font-medium text-[#DB1516]">
               {d?.subTitle}
             </Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </View>

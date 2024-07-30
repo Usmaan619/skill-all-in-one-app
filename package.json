@@ -30,7 +30,7 @@
     "@react-navigation/stack": "^6.4.0",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.7.2",
-    "expo": "~51.0.22",
+    "expo": "~51.0.23",
     "expo-blur": "~13.0.2",
     "expo-linear-gradient": "~13.0.2",
     "expo-status-bar": "~1.12.1",

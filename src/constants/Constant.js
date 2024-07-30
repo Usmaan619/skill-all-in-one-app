@@ -28,6 +28,7 @@ export const ICONS = {
 
   footerBgImg: require("../../assets/Footer/footer-img.png"),
   bgImg: require("../../assets/bgImage/background-img.png"),
+  productTopImg: require("../../assets/png/product-top.png"),
 };
 
 export const ABOUTHOMEIMG = [
@@ -130,6 +131,103 @@ export const HAPPYCUSTOMERS2 = [
     review:
       "As a conscientious consumer, I appreciate Super Chicks commitment to ethical sourcing practices.",
     img: ICONS.costumer4,
+  },
+];
+
+export const CHICKENPRODUCTS = [
+  {
+    id: "#1",
+    name: "Chicken mixed with bone",
+    gms: "500gms | Serve 4",
+    currentPrice: "148 Rs",
+    prePrice: "185 Rs",
+    img: require("../../assets/Chicken Product image/Chiken Mixed With Bones.jpeg"),
+  },
+  {
+    id: "#2",
+    name: "Chicken (Boneless)",
+    gms: "500gms | Serve 4",
+    currentPrice: "319 Rs",
+    prePrice: "399 Rs",
+    img: require("../../assets/Chicken Product image/Chiken Boneless.jpeg"),
+  },
+
+  {
+    id: "#3",
+    name: "Chicken Drumstick of 6 Piece",
+    gms: "500gms | Serve 2 - 3",
+    currentPrice: "311 Rs",
+    prePrice: "389 Rs",
+    img: require("../../assets/Chicken Product image/Chiken drumstik pack of 6.jpg"),
+  },
+  {
+    id: "#4",
+    name: "Chicken Drumstick of 2 Piece",
+    gms: "500gms | Serve 1 - 2",
+    currentPrice: "119 Rs",
+    prePrice: "149 Rs",
+    img: require("../../assets/Chicken Product image/Chiken drumstik pack of 2.jpg"),
+  },
+
+  {
+    id: "#5",
+    name: "Chicken Wings",
+    gms: "500gms | Serve 4",
+    currentPrice: "175 Rs",
+    prePrice: "219 Rs",
+    img: require("../../assets/Chicken Product image/Chiken-WIngs.png"),
+  },
+  {
+    id: "#6",
+    name: "Chicken Mince (Keema)",
+    gms: "500gms | Serve 5 - 6",
+    currentPrice: "311 Rs",
+    prePrice: "389 Rs",
+    img: require("../../assets/Chicken Product image/chicken Mince [keema].jpeg"),
+  },
+  {
+    id: "#7",
+    name: "Chicken Breast",
+    gms: "500gms | Serve 4",
+    currentPrice: "311 Rs",
+    prePrice: "389 Rs",
+    img: require("../../assets/Chicken Product image/Chicken Breast.jpg"),
+  },
+];
+
+export const ALIVEDESICHICKEN = [
+  {
+    id: "#1",
+    name: "Alive Desi Chicken",
+    gms: "Comming soon",
+    img: require("../../assets/most-popular-products/products-2.png"),
+  },
+  {
+    id: "#2",
+    name: "Alive Kadaknath Chicken",
+    gms: "Comming soon",
+    img: require("../../assets/most-popular-products/Order-Chicken-6.png"),
+  },
+];
+
+export const MUTTON = [
+  {
+    id: "#1",
+    name: "Mutton mixed with bone",
+    gms: "Comming soon",
+    img: require("../../assets/Mutton/Order-Mutton-2.jpg"),
+  },
+  {
+    id: "#2",
+    name: "Mutton (Boneless)",
+    gms: "Comming soon",
+    img: require("../../assets/Mutton/Order-Mutton-1.jpg"),
+  },
+  {
+    id: "#3",
+    name: "Mutton Mince (Keema)",
+    gms: "Comming soon",
+    img: require("../../assets/Mutton/Order-Mutton-3.png"),
   },
 ];
 

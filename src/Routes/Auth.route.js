@@ -12,6 +12,8 @@ import Home from "../screens/Home";
 import ContactUs from "../screens/ContactUs";
 import AboutSuperChicks from "../screens/AboutUs";
 import CollapsibleView from "../components/CollapsibleView.component";
+import Products from "../screens/Products";
+import ProductDetails from "../screens/ProductDetails";
 
 const Stack = createStackNavigator();
 
@@ -60,11 +62,15 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                   <Stack.Screen name="DashboardLayout" component={DashboardL} />
                 ) : (
                   <React.Fragment>
+                    <Stack.Screen
+                      name="ProductDetails"
+                      component={ProductDetails}
+                    />
                     <Stack.Screen name="Home" component={Home} />
                     <Stack.Screen name="ContactUs" component={ContactUs} />
                     <Stack.Screen name="About" component={AboutSuperChicks} />
+                    <Stack.Screen name="Products" component={Products} />
                     <Stack.Screen name="Co" component={CollapsibleView} />
-
                     <Stack.Screen name="Login" component={Login} />
                   </React.Fragment>
                 )}
