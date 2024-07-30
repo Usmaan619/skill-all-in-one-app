@@ -67,7 +67,8 @@ const ProductDetails = ({ navigation }) => {
       <Image
         source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
         style={{ elevation: 12 }}
-        className="h-40 w-40 rounded-full"
+        className="h-52 w-full object-cover"
+        resizeMode="cover"
       />
     </View>
   );
@@ -83,7 +84,7 @@ const ProductDetails = ({ navigation }) => {
           <CollapsibleView navi={navigation} className="absolute " />
           <Image
             source={ICONS?.homeBg}
-            className="absolute top-0 h-[200px] w-full object-cover z-10"
+            className="absolute top-0 h-[200px] w-full object-cover z-10 "
           />
           <View className="relative  mt-16 ">
             <View style={styles.container}>
@@ -93,10 +94,38 @@ const ProductDetails = ({ navigation }) => {
                 autoplay
                 loop
               />
+              <View className="flex-row justify-between mt-6">
+                <Image
+                  source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
+                  style={{ elevation: 12 }}
+                  className="h-20 w-20 object-cover rounded-lg"
+                  resizeMode="cover"
+                />
+                <Image
+                  source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
+                  style={{ elevation: 12 }}
+                  className="h-20 w-20 object-cover rounded-lg"
+                  resizeMode="cover"
+                />
+                <Image
+                  source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
+                  style={{ elevation: 12 }}
+                  className="h-20 w-20 object-cover rounded-lg"
+                  resizeMode="cover"
+                />
+                <Image
+                  source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
+                  style={{ elevation: 12 }}
+                  className="h-20 w-20 object-cover rounded-lg"
+                  resizeMode="cover"
+                />
+              </View>
 
               <View style={styles.detailsSection}>
                 <Text style={styles.heading}>Delivery Details</Text>
-                <Text>Check estimated delivery date/pickup option.</Text>
+                <Text className="text-slate-600 my-2">
+                  Check estimated delivery date/pickup option.
+                </Text>
                 <View style={styles.inputGroup}>
                   <TextInput
                     style={styles.input}
@@ -173,11 +202,11 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   carousel: {
-    width: 340,
+    width: 360,
     height: 200,
-    padding: 19,
+    // padding: 19,
     elevation: 3,
-    margin: 12,
+    margin: 2,
     overflow: "hidden",
   },
   carouselItem: {
@@ -191,7 +220,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   heading: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
   },
   inputGroup: {
