@@ -1,28 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   ScrollView,
   ImageBackground,
   Image,
   TouchableOpacity,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; // Assuming you are using Expo, otherwise use react-native-vector-icons
-import { ICONS } from "../constants/Constant";
+import { COLOURs, ICONS } from "../constants/Constant";
 import CollapsibleView from "../components/CollapsibleView.component";
 import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
 
 import Carousel from "react-native-x-carousel";
+import Del from "../hooks/Del.hook";
+import Hr from "../tags/Hr.tag";
+import Entypo from "@expo/vector-icons/Entypo";
+import { LinearGradient } from "expo-linear-gradient";
+import { heightPercentageToDP } from "react-native-responsive-screen";
+import { Card } from "react-native-paper";
+import { useRoute } from "@react-navigation/native";
+import { getSingleProduct } from "../services/Auth.service";
+import { connect, useDispatch } from "react-redux";
+import { addToCart } from "../redux/actions/action";
 
 const ProductDetails = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const route = useRoute();
+
+  const singleProductId = route?.params?.data?.id;
+  console.log("singleProduct: ", singleProductId);
+
   const [quantity, setQuantity] = useState(1);
+  const [pages, setPages] = useState();
+  const [product, setProduct] = useState();
+  console.log("product: ", product);
   const images = [
     { src: require("../../assets/Mutton/Order-Mutton-2.jpg"), alt: "Slide 1" },
-    { src: require("../../assets/Mutton/Order-Mutton-2.jpg"), alt: "Slide 2" },
+    {
+      src: require("../../assets/most-popular-products/home-Products.jpg"),
+      alt: "Slide 2",
+    },
     { src: require("../../assets/Mutton/Order-Mutton-2.jpg"), alt: "Slide 3" },
     { src: require("../../assets/Mutton/Order-Mutton-2.jpg"), alt: "Slide 4" },
   ];
@@ -58,6 +78,15 @@ const ProductDetails = ({ navigation }) => {
     },
   ];
 
+  useEffect(() => {
+    new Promise(async (resolve, reject) => {
+      const res = setProduct(await getSingleProduct(singleProductId));
+      console.log("res: ", res);
+
+      resolve(1);
+    });
+  }, []);
+
   const renderCarousel = (data) => (
     <View
       key={data.alt}
@@ -72,6 +101,18 @@ const ProductDetails = ({ navigation }) => {
       />
     </View>
   );
+  const [amount, setAmount] = useState(1);
+  const setDecrease = () => {
+    amount > 1 ? setAmount(amount - 1) : setAmount(1);
+  };
+
+  const setIncrease = () => {
+    amount < 10 ? setAmount(amount + 1) : setAmount(10);
+  };
+
+  const handleAddToCart = (id, amount, singleProduct) => {
+    dispatch(addToCart(id, amount, singleProduct));
+  };
 
   return (
     <React.Fragment>
@@ -84,27 +125,34 @@ const ProductDetails = ({ navigation }) => {
           <CollapsibleView navi={navigation} className="absolute " />
           <Image
             source={ICONS?.homeBg}
-            className="absolute top-0 h-[200px] w-full object-cover z-10 "
+            className="absolute top-0 h-[190px] w-full object-cover z-10 "
           />
           <View className="relative  mt-16 ">
             <View style={styles.container}>
               <Carousel
                 data={images}
                 renderItem={renderCarousel}
-                autoplay
-                loop
+                // autoplay
+                // loop
+                onPage={(p) => {
+                  setPages(p?.current);
+                }}
               />
               <View className="flex-row justify-between mt-6">
                 <Image
                   source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
                   style={{ elevation: 12 }}
-                  className="h-20 w-20 object-cover rounded-lg"
+                  className={`h-20 w-20 object-cover rounded-lg  ${
+                    images[pages]?.src ? "" : "opacity-70"
+                  } `}
                   resizeMode="cover"
                 />
                 <Image
-                  source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
+                  source={require("../../assets/most-popular-products/home-Products.jpg")}
                   style={{ elevation: 12 }}
-                  className="h-20 w-20 object-cover rounded-lg"
+                  className={`h-20 w-20 object-cover rounded-lg  ${
+                    images[pages]?.src ? "" : "opacity-70"
+                  } `}
                   resizeMode="cover"
                 />
                 <Image
@@ -126,67 +174,114 @@ const ProductDetails = ({ navigation }) => {
                 <Text className="text-slate-600 my-2">
                   Check estimated delivery date/pickup option.
                 </Text>
-                <View style={styles.inputGroup}>
+                <View className="flex-row">
                   <TextInput
+                    className="m-0  "
                     style={styles.input}
                     placeholder="Apply Valid Pincode"
                   />
-                  <Button title="Check" onPress={() => {}} />
+                  <TouchableOpacity className="bg-[#f1f1f1] h-10 flex-row justify-center items-center p-2">
+                    <Text className="text-[#db1516]">Check</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
 
               <View style={styles.productInfo}>
-                <Text style={styles.productTitle}>Chicken Mince(KEEMA)</Text>
+                <Text style={styles.productTitle} className="font-medium">
+                  {product?.name}
+                </Text>
                 <View style={styles.priceSection}>
-                  <Text style={styles.price}>Rs 311</Text>
+                  <Text style={styles.price}>{product?.price}</Text>
                   <Text style={styles.originalPrice}>
-                    {/* <del>389</del> */}
+                    <Del>{product?.discount}</Del>
                   </Text>
-                  <Text style={styles.discount}>NA</Text>
+                  <Text style={styles.discount}>{product?.offers}</Text>
                 </View>
-                <Text>Quantity:</Text>
-                <View style={styles.quantitySection}>
-                  <Button title="-" onPress={() => setQuantity(quantity - 1)} />
-                  <Text>{quantity}</Text>
-                  <Button title="+" onPress={() => setQuantity(quantity + 1)} />
+                <Hr />
+                <View className="flex-row  items-baseline gap-3 my-1">
+                  <Text className="text-lg font-normal">Quantity:</Text>
+                  <View className="w-20 h-9 border-[#f00] border rounded-lg flex-row justify-between px-1 items-center ">
+                    <TouchableOpacity onPress={setDecrease}>
+                      <Entypo name="minus" size={22} color="#f00" />
+                    </TouchableOpacity>
+                    <Text>{amount}</Text>
+                    <TouchableOpacity onPress={setIncrease}>
+                      <Entypo name="plus" size={22} color="#f00" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <TouchableOpacity>
-                  <Text style={styles.moreThan20}>
+                  <Text style={styles.moreThan20} className="text-lg">
                     For more than 20kg click here
                   </Text>
                 </TouchableOpacity>
-                <Text style={styles.description}>
-                  SuperChicks Chicken Keema is made from fresh, cleaned chicken
-                  breast & leg that has been ground to perfection. All you have
-                  to do is take the mince from the pack and add it to your pan
-                  for a quick meal. To retain its pristine taste, texture and
-                  flavour, it's adviced to not wash the meat.
+                <Text
+                  style={styles.description}
+                  className="text-sm text-slate-600"
+                >
+                  {product?.description}
                 </Text>
-                <View style={styles.cartButtons}>
-                  <Button title="Add to Cart" onPress={() => {}} />
-                  <Button title="Buy Now" onPress={() => {}} />
+                <View className="grid gap-3 justify-center items-center">
+                  <View className="w-2/3">
+                    {/* add to cart  */}
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleAddToCart(product?.id, amount, product);
+                      }}
+                      style={[styles.button]}
+                    >
+                      <LinearGradient
+                        colors={["#ffffff", "#fff"]} // Gradient colors
+                        style={[styles.linearGradient]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                      >
+                        <Text style={styles.text}>Add to Cart</Text>
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </View>
+                  <View className="w-2/3">
+                    <CommonButton onPress={() => {}} title={"Buy Now"} />
+                  </View>
                 </View>
               </View>
-
+              <View className="my-2">
+                <Hr />
+              </View>
+              {/* Similar Products */}
               <Text style={styles.similarProductsHeading}>
                 Similar Products
               </Text>
-              <View style={styles.similarProducts}>
-                {similarProducts.map((product, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.productCard}
-                    onPress={() => {}}
-                  >
-                    <Image source={product.img} style={styles.productImage} />
-                    <Text style={styles.productName}>{product.name}</Text>
-                    <Text style={styles.productPrice}>{product.price}</Text>
-                    <Text style={styles.productOriginalPrice}>
-                      {/* <del>{product.originalPrice}</del> */}
+
+              <Card
+                style={{ marginBottom: "10%", elevation: 10, marginTop: 10 }}
+              >
+                <Card.Cover
+                  source={require("../../assets/most-popular-products/home-Products.jpg")}
+                  resizeMode="cover"
+                  className="bg-white h-60 w-full"
+                />
+                <Card.Title
+                  title={"Chicken mixed with bone"}
+                  titleStyle={{
+                    fontSize: 18,
+                    fontWeight: "700",
+                    textAlign: "center",
+                  }}
+                />
+
+                <Card.Actions>
+                  <View className="flex-row justify-center w-full px-2">
+                    <Text className="text-base ">
+                      148 Rs{" "}
+                      <Del>
+                        <Text className="text-[#db1516]">185 Rs</Text>
+                      </Del>{" "}
                     </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+                  </View>
+                </Card.Actions>
+              </Card>
+              {/* Similar Products */}
             </View>
           </View>
           {/* Footer */}
@@ -230,20 +325,20 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    borderColor: "#ccc",
+    borderColor: "#f1f1f1",
     borderWidth: 1,
-    marginRight: 10,
     padding: 5,
+    backgroundColor: "#f1f1f1",
   },
   productInfo: {
     marginVertical: 20,
   },
   productTitle: {
     fontSize: 24,
-    fontWeight: "bold",
   },
   priceSection: {
     flexDirection: "row",
+
     alignItems: "center",
     marginVertical: 10,
   },
@@ -309,6 +404,45 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#888",
   },
+
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 40,
+    height: 50,
+    zIndex: 99,
+    marginHorizontal: "auto",
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#f00",
+  },
+  linearGradient: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 40,
+    height: 50,
+    width: "100%",
+    elevation: 5,
+    zIndex: 100,
+  },
+  text: {
+    color: "#f00", // default text color
+    fontSize: heightPercentageToDP("1.9%"),
+    fontWeight: "700",
+  },
 });
 
-export default ProductDetails;
+const mapStateToProps = (state) => {
+  console.log("state: ", state);
+  return {
+    ...state?.AuthReducer,
+    ...state?.LoaderReducer,
+    ...state?.CartReducer,
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);

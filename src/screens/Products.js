@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import CollapsibleView from "../components/CollapsibleView.component";
 import {
   ALIVEDESICHICKEN,
@@ -11,6 +11,7 @@ import {
 import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
 import { Card } from "react-native-paper";
+import Del from "../hooks/Del.hook";
 
 const Products = ({ navigation }) => (
   <React.Fragment>
@@ -61,7 +62,7 @@ const Products = ({ navigation }) => (
             CHICKEN
           </Text>
 
-          <Chicken />
+          <Chicken navi={navigation} />
           <Text className="text-left text-lg font-medium mb-10 mt-5">
             ALIVE DESI CHICKEN
           </Text>
@@ -79,19 +80,25 @@ const Products = ({ navigation }) => (
   </React.Fragment>
 );
 
-const Chicken = () => {
+const Chicken = ({ navi }) => {
   return (
     <React.Fragment>
       {CHICKENPRODUCTS?.map((d, idx) => (
         <Card key={idx} style={{ marginBottom: "10%", elevation: 10 }}>
-          <Card.Cover
-            source={d?.img}
-            resizeMode="cover"
-            className="bg-white h-60 w-full"
-          />
+          <TouchableOpacity
+            onPress={() => {
+              navi?.navigate("ProductDetails", { data: d });
+            }}
+          >
+            <Card.Cover
+              source={d?.image}
+              resizeMode="cover"
+              className="bg-white h-60 w-full"
+            />
+          </TouchableOpacity>
           <Card.Title
-            title={d?.name}
-            subtitle={d?.gms}
+            title={d?.title}
+            subtitle={d?.kilogram}
             titleStyle={{ fontSize: 18, fontWeight: "700" }}
             subtitleStyle={{
               fontSize: 14,
@@ -102,14 +109,14 @@ const Chicken = () => {
           <Card.Actions>
             <View className="flex-row justify-between w-full px-2">
               <Text>
-                {d?.currentPrice}{" "}
+                {d?.amount}{" "}
                 <Text
                   style={{
                     textDecorationLine: "line-through",
                     textDecorationStyle: "solid",
                   }}
                 >
-                  {d?.prePrice}
+                  {d?.del}
                 </Text>
               </Text>
               <View className="w-1/3 mb-3">
@@ -117,7 +124,7 @@ const Chicken = () => {
                   onPress={() => {
                     // handleSubmit();
                   }}
-                  title={"Add To Cart"}
+                  title={d?.button}
                 />
               </View>
             </View>
@@ -136,7 +143,7 @@ const AliveDesiChicken = () => {
           <Card.Cover
             source={d?.img}
             resizeMode="stretch"
-            className="bg-white w-full h-60 w-full"
+            className="bg-white w-full h-60 "
           />
           <Card.Title
             title={d?.name}
@@ -152,15 +159,7 @@ const AliveDesiChicken = () => {
           <Card.Actions>
             <View className="flex-row justify-between w-full px-2">
               <Text>
-                {d?.currentPrice}{" "}
-                <Text
-                  style={{
-                    textDecorationLine: "line-through",
-                    textDecorationStyle: "solid",
-                  }}
-                >
-                  {d?.prePrice}
-                </Text>
+                {d?.currentPrice} <Del>{d?.prePrice}</Del>
               </Text>
               <View className="w-1/3 mb-3">
                 {/* <CommonButton

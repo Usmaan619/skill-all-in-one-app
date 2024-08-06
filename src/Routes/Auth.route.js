@@ -14,12 +14,11 @@ import AboutSuperChicks from "../screens/AboutUs";
 import CollapsibleView from "../components/CollapsibleView.component";
 import Products from "../screens/Products";
 import ProductDetails from "../screens/ProductDetails";
+import Cart from "../screens/Cart";
 
 const Stack = createStackNavigator();
 
 const AuthRoutes = ({ token, isNetConnected, loader }) => {
-  console.log("isNetConnected: ", isNetConnected);
-  console.log("loader: ", loader);
   const dispatch = useDispatch();
   const netinfo = useNetInfo();
   const [loading, setLoading] = useState(null);
@@ -62,6 +61,9 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                   <Stack.Screen name="DashboardLayout" component={DashboardL} />
                 ) : (
                   <React.Fragment>
+                    <Stack.Screen name="Products" component={Products} />
+                    <Stack.Screen name="Cart" component={Cart} />
+
                     <Stack.Screen
                       name="ProductDetails"
                       component={ProductDetails}
@@ -69,8 +71,6 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                     <Stack.Screen name="Home" component={Home} />
                     <Stack.Screen name="ContactUs" component={ContactUs} />
                     <Stack.Screen name="About" component={AboutSuperChicks} />
-                    <Stack.Screen name="Products" component={Products} />
-                    <Stack.Screen name="Co" component={CollapsibleView} />
                     <Stack.Screen name="Login" component={Login} />
                   </React.Fragment>
                 )}

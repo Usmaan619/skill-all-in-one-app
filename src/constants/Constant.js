@@ -29,6 +29,8 @@ export const ICONS = {
   footerBgImg: require("../../assets/Footer/footer-img.png"),
   bgImg: require("../../assets/bgImage/background-img.png"),
   productTopImg: require("../../assets/png/product-top.png"),
+
+  headerBgImg: require("../../assets/png/account-1.png"),
 };
 
 export const ABOUTHOMEIMG = [
@@ -134,7 +136,7 @@ export const HAPPYCUSTOMERS2 = [
   },
 ];
 
-export const CHICKENPRODUCTS = [
+export const CHICKENPRODUCTS_OLD = [
   {
     id: "#1",
     name: "Chicken mixed with bone",
@@ -228,6 +230,72 @@ export const MUTTON = [
     name: "Mutton Mince (Keema)",
     gms: "Comming soon",
     img: require("../../assets/Mutton/Order-Mutton-3.png"),
+  },
+];
+
+export const CHICKENPRODUCTS = [
+  {
+    id: "ch-721",
+    image: require("../../assets/Chicken Product image/Chiken Mixed With Bones.jpeg"),
+    title: "Chicken mixed with bone",
+    kilogram: "500gms | Serve 4",
+    amount: "148 Rs",
+    del: "185 Rs",
+    button: "Add to Cart",
+  },
+  {
+    id: "ch-722",
+    image: require("../../assets/Chicken Product image/Chiken Boneless.jpeg"),
+    title: "Chicken (Boneless)",
+    kilogram: "500gms | Serve 4",
+    amount: "319 Rs",
+    del: "399 Rs",
+    button: "Add to Cart",
+  },
+  {
+    id: "ch-723",
+    image: require("../../assets/Chicken Product image/Chiken drumstik pack of 6.jpg"),
+    title: "Chicken Drumstick of 6 Piece",
+    kilogram: "500gms | Serve 2 - 3",
+    amount: "311 Rs",
+    del: "389 Rs",
+    button: "Add to Cart",
+  },
+  {
+    id: "ch-724",
+    image: require("../../assets/Chicken Product image/Chiken drumstik pack of 2.jpg"),
+    title: "Chicken Drumstick of 2 Piece",
+    kilogram: "500gms | Serve 1 - 2",
+    amount: "119 Rs",
+    del: "149 Rs",
+    button: "Add to Cart",
+  },
+  {
+    id: "ch-725",
+    image: require("../../assets/Chicken Product image/Chiken-WIngs.png"),
+    title: "Chicken Wings",
+    kilogram: "500gms | Serve 4",
+    amount: "175 Rs",
+    del: "219 Rs",
+    button: "Add to Cart",
+  },
+  {
+    id: "ch-726",
+    image: require("../../assets/Chicken Product image/chicken Mince [keema].jpeg"),
+    title: "Chicken Mince (Keema)",
+    kilogram: "500gms | Serve 5 - 6",
+    amount: "311 Rs",
+    del: "389 Rs",
+    button: "Add to Cart",
+  },
+  {
+    id: "ch-727",
+    image: require("../../assets/Chicken Product image/Chicken Breast.jpg"),
+    title: "Chicken Breast",
+    kilogram: "500gms | Serve 4",
+    amount: "271 Rs",
+    del: "339 Rs",
+    button: "Add to Cart",
   },
 ];
 

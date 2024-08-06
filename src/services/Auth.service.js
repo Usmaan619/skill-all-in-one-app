@@ -2,6 +2,7 @@ import axios from "axios";
 import { environment } from "../environments/environment";
 import { setData } from "./Storage.service";
 import { SetToken } from "../redux/actions/action";
+import { axiosInstance } from "../axios/interceptor";
 
 export const registerAPI = async (payload) => {
   try {
@@ -20,7 +21,16 @@ export const loginAPI = async (payload) => {
   }
 };
 
-
+export const getSingleProduct = async (id) => {
+  try {
+    const response = await axiosInstance.get(
+      `${environment?.apiUrl}product?id=${id}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
 
 export const formatPrice = (price) => {
   if (!price) return "";
