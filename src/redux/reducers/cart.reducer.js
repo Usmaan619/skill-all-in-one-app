@@ -26,6 +26,7 @@ const CartReducer = (state = initialState, action) => {
         (curItem) => curItem.id === singleProduct.id
       );
 
+      console.log("existingProduct: ", existingProduct);
       if (existingProduct) {
         const updatedProduct = state.cart.map((curElem) => {
           if (curElem.id === singleProduct.id) {
@@ -40,6 +41,7 @@ const CartReducer = (state = initialState, action) => {
           }
           return curElem;
         });
+        console.log("updatedProduct: ", updatedProduct);
         return {
           ...state,
           cart: updatedProduct,
@@ -52,6 +54,8 @@ const CartReducer = (state = initialState, action) => {
           price: singleProduct.price,
           max: singleProduct.stock,
         };
+        console.log("cartProduct: ", cartProduct);
+        console.log("state.cart: ", state.cart);
         return {
           ...state,
           cart: [...state.cart, cartProduct],

@@ -14,12 +14,34 @@ import CollapsibleView from "../components/CollapsibleView.component";
 import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { Card, Icon } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import CheckoutScreen from "./Address";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  calculateTotalItems,
+  calculateTotalPrice,
+  removeItem,
+  setDecrement,
+  setIncrement,
+} from "../redux/actions/action";
+import { Icon } from "react-native-paper";
 
 const Cart = ({ navigation }) => {
+  const dispatch = useDispatch();
   const route = useRoute();
+
+  // this code using cart page
+  const cart = useSelector((state) => state.cart.cart);
+  const totalItems = useSelector((state) => state.cart.total_item);
+  const totalPrice = useSelector((state) => state.cart.total_price);
+  console.log("totalItems: ", totalItems);
+  console.log("totalPrice: ", totalPrice);
+
+  console.log("cart: ", cart);
+  useEffect(() => {
+    dispatch(calculateTotalItems());
+    dispatch(calculateTotalPrice());
+  }, [cart, dispatch]);
 
   return (
     <React.Fragment>
@@ -34,85 +56,123 @@ const Cart = ({ navigation }) => {
             source={ICONS?.homeBg}
             className="absolute top-0 h-[190px] w-full object-cover z-10 "
           />
-          <View className="relative  mt-16 ">
-            <View style={styles.container}>
-              <Text style={styles.header}>Your Cart</Text>
-              {/* Product listing */}
-              <View style={styles.summaryRow}>
-                <View style={styles.summaryText}>
-                  <View className="flex-row ">
-                    <Image
-                      source={require("../../assets/Chicken Product image/Chiken Boneless.jpeg")}
-                      style={styles.productImage}
-                    />
-                    <View className="grid  gap-2">
-                      <Text className="text-sm font-medium">
-                        Chicken Mixed With Bones
-                      </Text>
-                      <View className="flex-row justify-between">
-                        <Text className="font-medium">₹148.00</Text>
-                        <Text className="font-medium">₹148.00</Text>
-                      </View>
-                      <View style={styles.quantityContainer}>
-                        <AntDesign
-                          name="minuscircleo"
-                          style={styles.icon}
-                          size={21}
-                          color="black"
-                        />
-                        <Text className="mx-2">1</Text>
 
-                        <AntDesign
-                          name="pluscircleo"
-                          style={styles.icon}
-                          size={21}
-                          color="black"
+          {cart?.length ? (
+            <View className="relative  mt-16 ">
+              <View style={styles.container}>
+                <Text style={styles.header}>Your Cart</Text>
+                {/* Product listing */}
+                {cart?.map((c, idx) => (
+                  <View key={idx} style={styles.productListRow}>
+                    <View style={styles.summaryText}>
+                      <View className="flex-row ">
+                        <Image
+                          source={require("../../assets/Chicken Product image/Chiken Boneless.jpeg")}
+                          style={styles.productImage}
                         />
+                        <View className="grid gap-2">
+                          <Text className="text-sm font-medium break-normal w-52">
+                            {c?.name}
+                          </Text>
+                          <View className="flex-row items-baseline ">
+                            <Text className="font-medium">₹{c?.price}</Text>
+                            <Text className="font-medium mx-4">
+                              ₹{c?.amount * c?.price}
+                            </Text>
+                          </View>
+                          <View style={styles.quantityContainer}>
+                            <TouchableOpacity
+                              onPress={() => {
+                                dispatch(setDecrement(c?.id));
+                              }}
+                            >
+                              <AntDesign
+                                name="minuscircleo"
+                                style={styles.icon}
+                                size={21}
+                                color="black"
+                              />
+                            </TouchableOpacity>
+                            <Text className="mx-2">{c?.amount}</Text>
+                            <TouchableOpacity
+                              onPress={() => {
+                                dispatch(setIncrement(c?.id));
+                              }}
+                            >
+                              <AntDesign
+                                name="pluscircleo"
+                                style={styles.icon}
+                                size={21}
+                                color="black"
+                              />
+                            </TouchableOpacity>
+                          </View>
+                        </View>
                       </View>
                     </View>
+                    {/* delete icon */}
+                    <TouchableOpacity
+                      onPress={(remove) => {
+                        console.log("remove: ", remove);
+                        console.log("c?.id: ", c?.id);
+                        dispatch(removeItem(c?.id));
+                      }}
+                    >
+                      <AntDesign
+                        style={styles.summaryValue}
+                        name="delete"
+                        size={22}
+                        color="red"
+                      />
+                    </TouchableOpacity>
                   </View>
+                ))}
+                {/* Product listing end*/}
+
+                <View style={styles.separator} />
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryText}>Total Items</Text>
+                  <Text style={styles.summaryValue}>{totalItems}</Text>
                 </View>
-                {/* delete icon */}
-                <AntDesign
-                  style={styles.summaryValue}
-                  name="delete"
-                  size={22}
-                  color="red"
+                <View style={styles.separator} />
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryText}>Shipping Charge</Text>
+                  <Text style={[styles.summaryValue, styles.textColorRed]}>
+                    ₹30.00
+                  </Text>
+                </View>
+                <View style={styles.separator} />
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryText}>Sub Total</Text>
+                  <Text style={styles.summaryValue}>₹{totalPrice + 30}</Text>
+                </View>
+                <View style={styles.separator} />
+
+                {/* Proceed To Checkout */}
+                <CommonButton
+                  onPress={() => {
+                    //   handleSubmit();
+                  }}
+                  title={"Proceed To Checkout"}
                 />
               </View>
-              {/* Product listing end*/}
-
-              <View style={styles.separator} />
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryText}>Total Items</Text>
-                <Text style={styles.summaryValue}>1</Text>
-              </View>
-              <View style={styles.separator} />
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryText}>Shipping Charge</Text>
-                <Text style={[styles.summaryValue, styles.textColorRed]}>
-                  ₹30.00
-                </Text>
-              </View>
-              <View style={styles.separator} />
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryText}>Sub Total</Text>
-                <Text style={styles.summaryValue}>₹178.00</Text>
-              </View>
-              <View style={styles.separator} />
-
-              {/* Proceed To Checkout */}
-              <CommonButton
-                onPress={() => {
-                  //   handleSubmit();
-                }}
-                title={"Proceed To Checkout"}
+            </View>
+          ) : (
+            <View style={{ flex: 1 }}>
+              <Text className="text-center font-medium mt-20 text-lg">
+                - : Your Basket is Empty : -
+              </Text>
+              <Image
+                source={ICONS?.emptyCart}
+                resizeMode="contain"
+                className="object-cover h-80 w-full mt-5"
               />
             </View>
-          </View>
+          )}
+
           {/* Footer */}
           <Footer />
-          <CheckoutScreen/>
+          {/* <CheckoutScreen /> */}
         </ImageBackground>
       </ScrollView>
     </React.Fragment>
@@ -147,11 +207,11 @@ const styles = StyleSheet.create({
   productRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 8,
   },
   productImage: {
-    width: 80,
-    height: 80,
+    width: 90,
+    height: 100,
     borderRadius: 5,
     marginRight: 10,
     resizeMode: "cover",
@@ -174,10 +234,18 @@ const styles = StyleSheet.create({
     // flex: 1,
     textAlign: "center",
   },
+  productListRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    marginBottom: 6,
+  },
+
   summaryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 16,
+    marginBottom: 6,
   },
   summaryText: {
     fontWeight: "bold",

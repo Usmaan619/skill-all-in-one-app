@@ -31,6 +31,8 @@ export const ICONS = {
   productTopImg: require("../../assets/png/product-top.png"),
 
   headerBgImg: require("../../assets/png/account-1.png"),
+
+  emptyCart: require("../../assets/png/empty-cart.png"),
 };
 
 export const ABOUTHOMEIMG = [

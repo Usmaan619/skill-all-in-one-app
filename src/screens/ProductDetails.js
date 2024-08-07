@@ -22,7 +22,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
 import { Card } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
-import { getSingleProduct } from "../services/Auth.service";
+import { getSingleProductAPI } from "../services/Auth.service";
 import { connect, useDispatch } from "react-redux";
 import { addToCart } from "../redux/actions/action";
 
@@ -80,8 +80,11 @@ const ProductDetails = ({ navigation }) => {
 
   useEffect(() => {
     new Promise(async (resolve, reject) => {
-      const res = setProduct(await getSingleProduct(singleProductId));
-      console.log("res: ", res);
+      try {
+        setProduct(await getSingleProductAPI(singleProductId));
+      } catch (error) {
+        console.log("error: ", error);
+      }
 
       resolve(1);
     });
@@ -435,10 +438,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log("state: ", state);
   return {
-    ...state?.AuthReducer,
-    ...state?.LoaderReducer,
     ...state?.CartReducer,
   };
 };

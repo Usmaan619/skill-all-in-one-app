@@ -12,6 +12,9 @@ import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
 import { Card } from "react-native-paper";
 import Del from "../hooks/Del.hook";
+import { addToCart } from "../redux/actions/action";
+import { getSingleProductAPI } from "../services/Auth.service";
+import { useDispatch } from "react-redux";
 
 const Products = ({ navigation }) => (
   <React.Fragment>
@@ -62,7 +65,7 @@ const Products = ({ navigation }) => (
             CHICKEN
           </Text>
 
-          <Chicken navi={navigation} />
+          <Chicken navi={navigation} dis={useDispatch()} />
           <Text className="text-left text-lg font-medium mb-10 mt-5">
             ALIVE DESI CHICKEN
           </Text>
@@ -80,7 +83,14 @@ const Products = ({ navigation }) => (
   </React.Fragment>
 );
 
-const Chicken = ({ navi }) => {
+const Chicken = ({ navi, dis }) => {
+  const addProduct = async (id) => {
+    const response = await getSingleProductAPI(id);
+    console.log("response:addProduct ", response);
+    /** action add to cart */
+    dis(addToCart(id, 1, response));
+  };
+
   return (
     <React.Fragment>
       {CHICKENPRODUCTS?.map((d, idx) => (
@@ -122,7 +132,7 @@ const Chicken = ({ navi }) => {
               <View className="w-1/3 mb-3">
                 <CommonButton
                   onPress={() => {
-                    // handleSubmit();
+                    addProduct(d?.id);
                   }}
                   title={d?.button}
                 />

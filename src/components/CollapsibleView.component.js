@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,11 +11,14 @@ import { COLOURs, ICONS } from "../constants/Constant";
 import { AntDesign } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 const CollapsibleView = ({ navi }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [animation] = useState(new Animated.Value(0));
+  const totalItems = useSelector((state) => state?.cart?.total_item);
 
-  console.log("collapsed: ", collapsed);
+  useEffect(() => {}, [totalItems]);
+
   const toggleCollapse = () => {
     Animated.timing(animation, {
       toValue: collapsed ? 1 : 0,
@@ -62,6 +65,7 @@ const CollapsibleView = ({ navi }) => {
         >
           <TouchableOpacity
             onPress={() => {
+              toggleCollapse();
               navi.navigate("Home");
             }}
           >
@@ -69,6 +73,7 @@ const CollapsibleView = ({ navi }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              toggleCollapse();
               navi.navigate("ContactUs");
             }}
           >
@@ -76,6 +81,7 @@ const CollapsibleView = ({ navi }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              toggleCollapse();
               navi.navigate("About");
             }}
           >
@@ -83,13 +89,20 @@ const CollapsibleView = ({ navi }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              toggleCollapse();
               navi.navigate("Cart");
             }}
           >
-            <AntDesign name="shoppingcart" size={26} color="black" />
+            <View className="relative">
+              <AntDesign name="shoppingcart" size={26} color="black" />
+              <View className="absolute top-[-15] left-5 bg-[#db1516] h-5 w-5 rounded-full ">
+                <Text className="text-[#fff] text-center">{totalItems}</Text>
+              </View>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              toggleCollapse();
               navi.navigate("Login");
             }}
           >
@@ -97,6 +110,7 @@ const CollapsibleView = ({ navi }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              toggleCollapse();
               navi.navigate("Login");
             }}
           >

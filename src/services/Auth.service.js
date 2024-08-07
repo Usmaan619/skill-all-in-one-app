@@ -21,7 +21,7 @@ export const loginAPI = async (payload) => {
   }
 };
 
-export const getSingleProduct = async (id) => {
+export const getSingleProductAPI = async (id) => {
   try {
     const response = await axiosInstance.get(
       `${environment?.apiUrl}product?id=${id}`
