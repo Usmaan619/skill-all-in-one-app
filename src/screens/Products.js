@@ -1,5 +1,13 @@
 import React from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import CollapsibleView from "../components/CollapsibleView.component";
 import {
   ALIVEDESICHICKEN,
@@ -18,68 +26,76 @@ import { useDispatch } from "react-redux";
 
 const Products = ({ navigation }) => (
   <React.Fragment>
-    <ScrollView style={{ flexGrow: 1 }}>
-      {/* bg img */}
-      <CollapsibleView navi={navigation} className="absolute" />
-      {/* home */}
+    <ImageBackground
+      source={ICONS?.bgImg}
+      style={styles.backgroundImage}
+      resizeMode="cover"
+    >
+      <ScrollView style={{ flexGrow: 1 }}>
+        {/* bg img */}
+        <CollapsibleView navi={navigation} className="absolute" />
+        {/* home */}
 
-      <Image
-        source={ICONS?.homeBg}
-        className="absolute top-0 h-[900px] object-cover"
-      />
-
-      <View className="px-10 relative h-screen">
-        <View className="flex justify-center mt-6">
-          <Text className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}>
-            Order raw meat &
-          </Text>
-          <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-            get it delivered at
-          </Text>
-          <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-            your door steps.
-          </Text>
-
-          <Text className="text-base mt-4 text-left">
-            Absolutely fresh Chicken 100% Natural & Chemical free
-          </Text>
-        </View>
         <Image
-          source={ICONS?.productTopImg}
-          className="h-2/5 w-full mt-12 
-          "
+          source={ICONS?.homeBg}
+          className="absolute top-0 h-[900px] object-cover"
         />
-      </View>
-      {/* home end */}
 
-      <View className="px-4">
-        <Text className=" text-center text-3xl font-semibold">
-          Order Fresh {"\n"} Chicken, Mutton & {"\n"} Fish from
-        </Text>
-        <Text className="text-[#DB1516] text-center text-3xl font-semibold">
-          SuperChicks
-        </Text>
+        <View className="px-10 relative h-screen">
+          <View className="flex justify-center mt-6">
+            <Text
+              className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
+            >
+              Order raw meat &
+            </Text>
+            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+              get it delivered at
+            </Text>
+            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+              your door steps.
+            </Text>
 
-        <View className="my-3">
-          <Text className="text-left text-lg font-medium mb-10 mt-5">
-            CHICKEN
-          </Text>
-
-          <Chicken navi={navigation} dis={useDispatch()} />
-          <Text className="text-left text-lg font-medium mb-10 mt-5">
-            ALIVE DESI CHICKEN
-          </Text>
-          <AliveDesiChicken />
-          <Text className="text-left text-lg font-medium mb-10 mt-5">
-            MUTTON
-          </Text>
-          <Mutton />
+            <Text className="text-base mt-4 text-left">
+              Absolutely fresh Chicken 100% Natural & Chemical free
+            </Text>
+          </View>
+          <Image
+            source={ICONS?.productTopImg}
+            className="h-2/5 w-full mt-12 
+          "
+          />
         </View>
-      </View>
+        {/* home end */}
 
-      {/* Footer */}
-      <Footer />
-    </ScrollView>
+        <View className="px-4">
+          <Text className=" text-center text-3xl font-semibold">
+            Order Fresh {"\n"} Chicken, Mutton & {"\n"} Fish from
+          </Text>
+          <Text className="text-[#DB1516] text-center text-3xl font-semibold">
+            SuperChicks
+          </Text>
+
+          <View className="my-3">
+            <Text className="text-left text-lg font-medium mb-10 mt-5">
+              CHICKEN
+            </Text>
+
+            <Chicken navi={navigation} dis={useDispatch()} />
+            <Text className="text-left text-lg font-medium mb-10 mt-5">
+              ALIVE DESI CHICKEN
+            </Text>
+            <AliveDesiChicken />
+            <Text className="text-left text-lg font-medium mb-10 mt-5">
+              MUTTON
+            </Text>
+            <Mutton />
+          </View>
+        </View>
+
+        {/* Footer */}
+        <Footer />
+      </ScrollView>
+    </ImageBackground>
   </React.Fragment>
 );
 
@@ -236,5 +252,15 @@ const Mutton = () => {
     </React.Fragment>
   );
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    backgroundColor: "#fff",
+  },
+});
 
 export default Products;

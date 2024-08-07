@@ -45,12 +45,12 @@ const Cart = ({ navigation }) => {
 
   return (
     <React.Fragment>
-      <ScrollView style={{ flexGrow: 1 }} className="bg-white">
-        <ImageBackground
-          source={ICONS?.bgImg}
-          style={styles.backgroundImage}
-          resizeMode="cover"
-        >
+      <ImageBackground
+        source={ICONS?.bgImg}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <ScrollView style={{ flexGrow: 1 }}>
           <CollapsibleView navi={navigation} className="absolute " />
           <Image
             source={ICONS?.homeBg}
@@ -151,7 +151,7 @@ const Cart = ({ navigation }) => {
                 {/* Proceed To Checkout */}
                 <CommonButton
                   onPress={() => {
-                    //   handleSubmit();
+                    navigation?.navigate("CheckoutScreen");
                   }}
                   title={"Proceed To Checkout"}
                 />
@@ -173,8 +173,8 @@ const Cart = ({ navigation }) => {
           {/* Footer */}
           <Footer />
           {/* <CheckoutScreen /> */}
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </React.Fragment>
   );
 };
@@ -183,7 +183,13 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
   },
-
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    backgroundColor: "#fff",
+  },
   header: {
     fontSize: 24,
     fontWeight: "bold",

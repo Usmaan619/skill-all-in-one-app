@@ -119,12 +119,12 @@ const ProductDetails = ({ navigation }) => {
 
   return (
     <React.Fragment>
-      <ScrollView style={{ flexGrow: 1 }} className="bg-white">
-        <ImageBackground
-          source={ICONS?.bgImg}
-          style={styles.backgroundImage}
-          resizeMode="cover"
-        >
+      <ImageBackground
+        source={ICONS?.bgImg}
+        resizeMode="cover"
+        style={styles?.backgroundImage}
+      >
+        <ScrollView style={{ flexGrow: 1 }}>
           <CollapsibleView navi={navigation} className="absolute " />
           <Image
             source={ICONS?.homeBg}
@@ -289,8 +289,8 @@ const ProductDetails = ({ navigation }) => {
           </View>
           {/* Footer */}
           <Footer />
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </React.Fragment>
   );
 };
@@ -434,6 +434,13 @@ const styles = StyleSheet.create({
     color: "#f00", // default text color
     fontSize: heightPercentageToDP("1.9%"),
     fontWeight: "700",
+  },
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    backgroundColor: "#fff",
   },
 });
 

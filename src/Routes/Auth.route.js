@@ -15,6 +15,7 @@ import CollapsibleView from "../components/CollapsibleView.component";
 import Products from "../screens/Products";
 import ProductDetails from "../screens/ProductDetails";
 import Cart from "../screens/Cart";
+import CheckoutScreen from "../screens/Address";
 
 const Stack = createStackNavigator();
 
@@ -61,6 +62,11 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                   <Stack.Screen name="DashboardLayout" component={DashboardL} />
                 ) : (
                   <React.Fragment>
+                    <Stack.Screen
+                      name="CheckoutScreen"
+                      component={CheckoutScreen}
+                    />
+                    <Stack.Screen name="Home" component={Home} />
                     <Stack.Screen name="Products" component={Products} />
                     <Stack.Screen name="Cart" component={Cart} />
 
@@ -68,7 +74,6 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                       name="ProductDetails"
                       component={ProductDetails}
                     />
-                    <Stack.Screen name="Home" component={Home} />
                     <Stack.Screen name="ContactUs" component={ContactUs} />
                     <Stack.Screen name="About" component={AboutSuperChicks} />
                     <Stack.Screen name="Login" component={Login} />

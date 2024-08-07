@@ -171,6 +171,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 20,
   },
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    backgroundColor: "#fff",
+  },
 });
 
 export default AboutSuperChicks;

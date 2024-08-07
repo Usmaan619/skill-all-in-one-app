@@ -1,5 +1,12 @@
 import React from "react";
-import { Image, StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
 import { GradientHOC } from "../HOC/Gradient";
 import {
   ABOUTHOMEIMG,
@@ -33,64 +40,70 @@ const Home = ({ navigation }) => {
   };
   return (
     <React.Fragment>
-      <ScrollView style={{ flexGrow: 1 }}>
-        {/* bg img */}
-        <CollapsibleView navi={navigation} className="absolute" />
-        {/* home */}
-        <Image
-          source={ICONS?.homeBg}
-          className="absolute top-0 h-[870px] object-cover"
-        />
-        <View className="px-10 relative h-screen ">
-          <View className="flex justify-center mt-6">
-            <Text
-              className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
-            >
-              We Deliver
-            </Text>
-            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-              Fresh & Premium
-            </Text>
-            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-              Meats Everyday.
-            </Text>
-
-            <Text className="text-base mt-4 text-left">
-              Why leave the house? Chicken delivery coming through.
-            </Text>
-
-            {/* Categories btn */}
-            <View className="w-1/3 h-7 mt-5">
-              <CommonButton
-                onPress={() => {
-                  handleSubmit();
-                }}
-                title={"Categories"}
-              />
-            </View>
-          </View>
+      <ImageBackground
+        source={ICONS?.bgImg}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <ScrollView style={{ flexGrow: 1 }}>
+          {/* bg img */}
+          <CollapsibleView navi={navigation} className="absolute" />
+          {/* home */}
           <Image
-            source={ICONS?.superSubLogo}
-            className="h-1/3 w-full mt-12 
-          "
+            source={ICONS?.homeBg}
+            className="absolute top-0 h-[870px] object-cover"
           />
-        </View>
-        {/* home end */}
-        {/* About */}
-        <AboutHome />
+          <View className="px-10 relative h-screen ">
+            <View className="flex justify-center mt-6">
+              <Text
+                className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
+              >
+                We Deliver
+              </Text>
+              <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+                Fresh & Premium
+              </Text>
+              <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+                Meats Everyday.
+              </Text>
 
-        {/* Explor */}
-        <ExploreCategories navi={navigation} />
-        {/* Most Popular Products */}
-        <MostPopularProducts />
+              <Text className="text-base mt-4 text-left">
+                Why leave the house? Chicken delivery coming through.
+              </Text>
 
-        {/* Why Order From SuperChicks */}
-        <WhyOrderFromSuperChicks />
-        {/* Hear From Our Happy Customers */}
-        <HearFromOurHappyCustomers />
-        {/* Footer */}
-        <Footer />
-      </ScrollView>
+              {/* Categories btn */}
+              <View className="w-1/3 h-7 mt-5">
+                <CommonButton
+                  onPress={() => {
+                    navigation.navigate("Products");
+                  }}
+                  title={"Categories"}
+                />
+              </View>
+            </View>
+            <Image
+              source={ICONS?.superSubLogo}
+              className="h-1/3 w-full mt-12 
+          "
+            />
+          </View>
+          {/* home end */}
+          {/* About */}
+          <AboutHome />
+
+          {/* Explor */}
+          <ExploreCategories navi={navigation} />
+          {/* Most Popular Products */}
+          <MostPopularProducts />
+
+          {/* Why Order From SuperChicks */}
+          <WhyOrderFromSuperChicks />
+          {/* Hear From Our Happy Customers */}
+          <HearFromOurHappyCustomers />
+          {/* Footer */}
+          <Footer />
+        </ScrollView>
+      </ImageBackground>
     </React.Fragment>
   );
 };
@@ -401,6 +414,13 @@ const styles = StyleSheet.create({
     elevation: 3,
     margin: 12,
     overflow: "hidden",
+  },
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    zIndex: 0,
+    backgroundColor: "#fff",
   },
 });
 

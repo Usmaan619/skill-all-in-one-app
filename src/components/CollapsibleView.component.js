@@ -11,13 +11,18 @@ import { COLOURs, ICONS } from "../constants/Constant";
 import { AntDesign } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
-const CollapsibleView = ({ navi }) => {
+import { connect, useSelector } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
+const CollapsibleView = ({ navi, total_item }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [animation] = useState(new Animated.Value(0));
-  const totalItems = useSelector((state) => state?.cart?.total_item);
 
-  useEffect(() => {}, [totalItems]);
+  const totalItems = useSelector((state) => state?.cart?.total_item);
+  const [totalCartItems, setTotalCartItems] = useState(totalItems);
+
+  useEffect(() => {
+    setTotalCartItems(totalItems);
+  }, [totalCartItems]);
 
   const toggleCollapse = () => {
     Animated.timing(animation, {
@@ -96,7 +101,7 @@ const CollapsibleView = ({ navi }) => {
             <View className="relative">
               <AntDesign name="shoppingcart" size={26} color="black" />
               <View className="absolute top-[-15] left-5 bg-[#db1516] h-5 w-5 rounded-full ">
-                <Text className="text-[#fff] text-center">{totalItems}</Text>
+                <Text className="text-[#fff] text-center">{total_item}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -122,4 +127,12 @@ const CollapsibleView = ({ navi }) => {
   );
 };
 
-export default CollapsibleView;
+const mapStateToProps = (state) => {
+  return {
+    ...state?.cart,
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollapsibleView);
