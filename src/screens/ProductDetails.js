@@ -9,7 +9,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { COLOURs, ICONS } from "../constants/Constant";
+import { COLOURs, ICONS, IMAGE } from "../constants/Constant";
 import CollapsibleView from "../components/CollapsibleView.component";
 import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
@@ -25,58 +25,14 @@ import { useRoute } from "@react-navigation/native";
 import { getSingleProductAPI } from "../services/Auth.service";
 import { connect, useDispatch } from "react-redux";
 import { addToCart } from "../redux/actions/action";
+import MyImageCarousel from "./Custom";
 
 const ProductDetails = ({ navigation }) => {
   const dispatch = useDispatch();
   const route = useRoute();
 
-  const singleProductId = route?.params?.data?.id;
-  console.log("singleProduct: ", singleProductId);
-
-  const [quantity, setQuantity] = useState(1);
-  const [pages, setPages] = useState();
   const [product, setProduct] = useState();
   console.log("product: ", product);
-  const images = [
-    { src: require("../../assets/Mutton/Order-Mutton-2.jpg"), alt: "Slide 1" },
-    {
-      src: require("../../assets/most-popular-products/home-Products.jpg"),
-      alt: "Slide 2",
-    },
-    { src: require("../../assets/Mutton/Order-Mutton-2.jpg"), alt: "Slide 3" },
-    { src: require("../../assets/Mutton/Order-Mutton-2.jpg"), alt: "Slide 4" },
-  ];
-
-  const similarProducts = [
-    {
-      link: "/singleproduct/ch-721",
-      img: ICONS?.headerLogo,
-      name: "Chicken mixed with bone",
-      price: "148 Rs",
-      originalPrice: "185 Rs",
-    },
-    {
-      link: "/singleproduct/ch-725",
-      img: ICONS?.headerLogo,
-      name: "Chicken Wings",
-      price: "175 Rs",
-      originalPrice: "219 Rs",
-    },
-    {
-      link: "/singleproduct/ch-727",
-      img: ICONS?.headerLogo,
-      name: "Chicken Breast",
-      price: "271 Rs",
-      originalPrice: "339 Rs",
-    },
-    {
-      link: "/singleproduct/ch-726",
-      img: ICONS?.headerLogo,
-      name: "Chicken Mince (Keema)",
-      price: "311 Rs",
-      originalPrice: "389 Rs",
-    },
-  ];
 
   useEffect(() => {
     new Promise(async (resolve, reject) => {
@@ -85,25 +41,36 @@ const ProductDetails = ({ navigation }) => {
       } catch (error) {
         console.log("error: ", error);
       }
-
       resolve(1);
     });
   }, []);
 
-  const renderCarousel = (data) => (
-    <View
-      key={data.alt}
-      style={styles.carousel}
-      className="bg-white rounded-lg"
-    >
-      <Image
-        source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
-        style={{ elevation: 12 }}
-        className="h-52 w-full object-cover"
-        resizeMode="cover"
-      />
-    </View>
-  );
+  const singleProductId = route?.params?.data?.id;
+
+  const singleProduct = IMAGE.filter((item) => item.id === singleProductId);
+
+  console.log("singleProduct: ", singleProduct);
+
+  const imgArray = singleProduct?.imgs || [];
+
+  console.log("imgArray: ", imgArray);
+
+  const renderCarousel = ({ item, index }) => {
+    return (
+      <View
+        key={`${index}`}
+        style={styles.carousel}
+        className="bg-white rounded-lg"
+      >
+        <Image
+          source={item.imgs1}
+          style={{ elevation: 12 }}
+          className="h-52 w-full object-cover"
+          resizeMode="cover"
+        />
+      </View>
+    );
+  };
   const [amount, setAmount] = useState(1);
   const setDecrease = () => {
     amount > 1 ? setAmount(amount - 1) : setAmount(1);
@@ -132,30 +99,43 @@ const ProductDetails = ({ navigation }) => {
           />
           <View className="relative  mt-16 ">
             <View style={styles.container}>
-              <Carousel
-                data={images}
+              {/* <Carousel
+                data={img}
                 renderItem={renderCarousel}
                 // autoplay
                 // loop
                 onPage={(p) => {
                   setPages(p?.current);
                 }}
-              />
+              /> */}
+              {/* <Carousel
+                data={singleProduct?.imgs}
+                renderItem={renderCarousel}
+                onPage={(p) => {
+                  // setPages(p?.current);
+                }}
+              /> */}
+
+              <MyImageCarousel route={{ params: { id: "ch-721" } }} />
+
               <View className="flex-row justify-between mt-6">
                 <Image
                   source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
                   style={{ elevation: 12 }}
-                  className={`h-20 w-20 object-cover rounded-lg  ${
-                    images[pages]?.src ? "" : "opacity-70"
-                  } `}
+                  className={`h-20 w-20 object-cover rounded-lg  `}
                   resizeMode="cover"
+                  // ${
+                  //   images[pages]?.src ? "" : "opacity-70"
+                  // }
                 />
                 <Image
                   source={require("../../assets/most-popular-products/home-Products.jpg")}
                   style={{ elevation: 12 }}
-                  className={`h-20 w-20 object-cover rounded-lg  ${
-                    images[pages]?.src ? "" : "opacity-70"
-                  } `}
+                  className={`h-20 w-20 object-cover rounded-lg 
+                    `}
+                  //    ${
+                  //   IMAGE[pages]?.src ? "" : "opacity-70"
+                  // }
                   resizeMode="cover"
                 />
                 <Image
@@ -171,7 +151,6 @@ const ProductDetails = ({ navigation }) => {
                   resizeMode="cover"
                 />
               </View>
-
               <View style={styles.detailsSection}>
                 <Text style={styles.heading}>Delivery Details</Text>
                 <Text className="text-slate-600 my-2">
@@ -188,7 +167,6 @@ const ProductDetails = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               </View>
-
               <View style={styles.productInfo}>
                 <Text style={styles.productTitle} className="font-medium">
                   {product?.name}
@@ -255,7 +233,6 @@ const ProductDetails = ({ navigation }) => {
               <Text style={styles.similarProductsHeading}>
                 Similar Products
               </Text>
-
               <Card
                 style={{ marginBottom: "10%", elevation: 10, marginTop: 10 }}
               >

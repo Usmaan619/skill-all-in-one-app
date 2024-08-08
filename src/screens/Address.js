@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,40 +17,42 @@ import CollapsibleView from "../components/CollapsibleView.component";
 import CommonButton from "../components/Button.component";
 import { Formik } from "formik";
 import { number } from "yup";
-import { checkoutValidationSchema } from "../utils/Helper";
+import { checkoutValidationSchema, FormatPrice } from "../utils/Helper";
 import {
   TimePickerModal,
   en,
   registerTranslation,
 } from "react-native-paper-dates";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  calculateTotalItems,
+  calculateTotalPrice,
+} from "../redux/actions/action";
+import { postAddressAPI } from "../services/Auth.service";
 
 registerTranslation("en", en);
 
 const CheckoutScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  // this code using cart page
+  const cart = useSelector((state) => state.cart.cart);
+  console.log("cart:calculateTotalItems ", cart);
+  const totalItems = useSelector((state) => state.cart.total_item);
+  const totalPrice = useSelector((state) => state.cart.total_price);
+  console.log("totalItems: ", totalItems);
+  console.log("totalPrice: ", totalPrice);
+
+  useEffect(() => {
+    dispatch(calculateTotalItems());
+    dispatch(calculateTotalPrice());
+  }, [cart, dispatch]);
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState("");
 
-  const handleZipcodeChange = (event) => {
-    const { value } = event.target;
-    // setEnteredZipcode(value);
-    if (PINCODES.includes(parseInt(value))) {
-      // setMessage("");
-    }
-  };
-  /** address */
-  // additional: "tetetetetetesst";
-  // address: "Chipa Bakhal";
-  // date: "2024-08-08";
-  // email: "test@mailinator.com";
-  // landmark: "landmark";
-  // name: "Abaan aLi";
-  // number: "7000015122";
-  // paymentMethod: "cash";
-  // time: "12:24";
-  // zipcode: "452002";
-
-  const onSubmit = (value) => {
-    console.log("value: ", value);
+  const onSubmit = async (value) => {
+    // const res = await postAddressAPI();
   };
 
   const [timePickerVisible, setTimePickerVisible] = useState(false);
@@ -288,20 +290,24 @@ const CheckoutScreen = () => {
                         </Text>
                       </View>
                       <View style={styles.separator} />
-                      <View style={styles.row}>
-                        <Text style={styles.productDetail}>
-                          Chicken Mixed With Bones{" "}
-                          <Text style={styles.quantity}>x 2</Text>
-                        </Text>
-                        <Text style={[styles.productDetail, styles.textRight]}>
-                          ₹296.00
-                        </Text>
-                      </View>
+                      {cart.map((c, idx) => (
+                        <View style={styles.row} key={idx}>
+                          <Text style={styles.productDetail}>
+                            {c?.name}
+                            <Text style={styles.quantity}> x{c?.amount}</Text>
+                          </Text>
+                          <Text
+                            style={[styles.productDetail, styles.textRight]}
+                          >
+                            <FormatPrice price={c?.price * c?.amount} />
+                          </Text>
+                        </View>
+                      ))}
                       <View style={styles.separator} />
                       <View style={styles.row}>
                         <Text style={styles.summaryColumn}>Subtotal</Text>
                         <Text style={[styles.summaryColumn, styles.textRight]}>
-                          ₹296.00
+                          <FormatPrice price={totalPrice} />
                         </Text>
                       </View>
                       <View style={styles.separator} />
@@ -310,21 +316,21 @@ const CheckoutScreen = () => {
                           Shipping Charge
                         </Text>
                         <Text style={[styles.summaryColumn, styles.textRight]}>
-                          ₹30.00
+                          <FormatPrice price={30} />
                         </Text>
                       </View>
                       <View style={styles.separator} />
                       <View style={styles.row}>
                         <Text style={styles.summaryColumn}>Promo Discount</Text>
-                        <Text
-                          style={[styles.summaryColumn, styles.textRight]}
-                        ></Text>
+                        <Text style={[styles.summaryColumn, styles.textRight]}>
+                          00.00
+                        </Text>
                       </View>
                       <View style={styles.separator} />
                       <View style={styles.row}>
                         <Text style={styles.summaryColumn}>Order Total</Text>
                         <Text style={[styles.summaryColumn, styles.textRight]}>
-                          ₹326.00
+                          <FormatPrice price={totalPrice + 30} />
                         </Text>
                       </View>
                     </View>

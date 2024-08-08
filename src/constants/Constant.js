@@ -138,67 +138,6 @@ export const HAPPYCUSTOMERS2 = [
   },
 ];
 
-export const CHICKENPRODUCTS_OLD = [
-  {
-    id: "#1",
-    name: "Chicken mixed with bone",
-    gms: "500gms | Serve 4",
-    currentPrice: "148 Rs",
-    prePrice: "185 Rs",
-    img: require("../../assets/Chicken Product image/Chiken Mixed With Bones.jpeg"),
-  },
-  {
-    id: "#2",
-    name: "Chicken (Boneless)",
-    gms: "500gms | Serve 4",
-    currentPrice: "319 Rs",
-    prePrice: "399 Rs",
-    img: require("../../assets/Chicken Product image/Chiken Boneless.jpeg"),
-  },
-
-  {
-    id: "#3",
-    name: "Chicken Drumstick of 6 Piece",
-    gms: "500gms | Serve 2 - 3",
-    currentPrice: "311 Rs",
-    prePrice: "389 Rs",
-    img: require("../../assets/Chicken Product image/Chiken drumstik pack of 6.jpg"),
-  },
-  {
-    id: "#4",
-    name: "Chicken Drumstick of 2 Piece",
-    gms: "500gms | Serve 1 - 2",
-    currentPrice: "119 Rs",
-    prePrice: "149 Rs",
-    img: require("../../assets/Chicken Product image/Chiken drumstik pack of 2.jpg"),
-  },
-
-  {
-    id: "#5",
-    name: "Chicken Wings",
-    gms: "500gms | Serve 4",
-    currentPrice: "175 Rs",
-    prePrice: "219 Rs",
-    img: require("../../assets/Chicken Product image/Chiken-WIngs.png"),
-  },
-  {
-    id: "#6",
-    name: "Chicken Mince (Keema)",
-    gms: "500gms | Serve 5 - 6",
-    currentPrice: "311 Rs",
-    prePrice: "389 Rs",
-    img: require("../../assets/Chicken Product image/chicken Mince [keema].jpeg"),
-  },
-  {
-    id: "#7",
-    name: "Chicken Breast",
-    gms: "500gms | Serve 4",
-    currentPrice: "311 Rs",
-    prePrice: "389 Rs",
-    img: require("../../assets/Chicken Product image/Chicken Breast.jpg"),
-  },
-];
-
 export const ALIVEDESICHICKEN = [
   {
     id: "#1",
@@ -239,6 +178,7 @@ export const CHICKENPRODUCTS = [
   {
     id: "ch-721",
     image: require("../../assets/Chicken Product image/Chiken Mixed With Bones.jpeg"),
+
     title: "Chicken mixed with bone",
     kilogram: "500gms | Serve 4",
     amount: "148 Rs",
@@ -301,6 +241,135 @@ export const CHICKENPRODUCTS = [
   },
 ];
 
+export const IMAGE = [
+  {
+    id: "ch-721",
+    title: "Chicken mixed with bone",
+    imgs: [
+      {
+        imgs1: require("../../assets/Chicken Product image/Chiken Mixed With Bones.jpeg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken mix with bones/chicken-mix-bones-2.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken mix with bones/chicken-mix-bones-1.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken mix with bones/chicken-mix-bones-3.jpg"),
+      },
+    ],
+  },
+  {
+    id: "ch-722",
+    title: "Chicken (Boneless)",
+    imgs: [
+      {
+        imgs1: require("../../assets/Chicken Product image/Chiken Boneless.jpeg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken Boneless/chicken-bonless-1.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken Boneless/chicken-bonless-2.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken Boneless/chicken-bonless-3.jpg"),
+      },
+    ],
+  },
+  {
+    id: "ch-723",
+    title: "Chicken Drumstick of 6 Piece",
+    imgs: [
+      {
+        imgs1: require("../../assets/Chicken Product image/Chiken drumstik pack of 6.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken drumstick 6 pieces/chicken-drumstick-6-1.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken drumstick 6 pieces/chicken-drumstick-6-2.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken drumstick 6 pieces/chicken-drumstick-6-3.jpg"),
+      },
+    ],
+  },
+  {
+    id: "ch-724",
+    title: "Chicken Drumstick of 2 Piece",
+    imgs: [
+      {
+        imgs1: require("../../assets/Chicken Product image/Chiken drumstik pack of 2.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken drumstick 2 pieces/chicken-durmstick-1.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken drumstick 2 pieces/chicken-durmstick-2.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken drumstick 2 pieces/chicken-durmstick-3.jpg"),
+      },
+    ],
+  },
+  {
+    id: "ch-725",
+    title: "Chicken Wings",
+    imgs: [
+      {
+        imgs1: require("../../assets/Chicken Product image/Chiken-WIngs.png"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken wings/chicken-wings-1.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken wings/chicken-wings-2.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken wings/chicken-wings-3.jpg"),
+      },
+    ],
+  },
+  {
+    id: "ch-726",
+    title: "Chicken Mince (Keema)",
+    imgs: [
+      {
+        imgs1: require("../../assets/Chicken Product image/chicken Mince [keema].jpeg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken keema/chickenkeema-1.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken keema/chickenkeema-2.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken keema/chickenkeema-3.jpg"),
+      },
+    ],
+  },
+  {
+    id: "ch-727",
+    title: "Chicken Breast",
+    imgs: [
+      {
+        imgs1: require("../../assets/Chicken Product image/Chicken Breast.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken Breast/chicken-breast-1.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken Breast/chicken-breast-2.jpg"),
+      },
+      {
+        imgs1: require("../../assets/Description/Chicken Breast/chicken-breast-3.jpg"),
+      },
+    ],
+  },
+];
+
 export const COLOURs = {
   pink: "#ffe5e5",
   light: "#d0a6a6",
@@ -308,9 +377,3 @@ export const COLOURs = {
 
   headerLightColor: "#fff2f2",
 };
-
-export const PINCODES = [
-  451010, 452001, 452002, 452003, 452004, 452005, 452006, 452007, 452008,
-  452009, 452010, 452011, 452012, 452013, 452014, 452015, 452016, 452018,
-  452020, 453111, 453112, 453331, 453332, 453555, 453556, 453771, 456015,
-];

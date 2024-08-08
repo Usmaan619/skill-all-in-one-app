@@ -62,12 +62,12 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                   <Stack.Screen name="DashboardLayout" component={DashboardL} />
                 ) : (
                   <React.Fragment>
+                    <Stack.Screen name="Products" component={Products} />
                     <Stack.Screen
                       name="CheckoutScreen"
                       component={CheckoutScreen}
                     />
                     <Stack.Screen name="Home" component={Home} />
-                    <Stack.Screen name="Products" component={Products} />
                     <Stack.Screen name="Cart" component={Cart} />
 
                     <Stack.Screen

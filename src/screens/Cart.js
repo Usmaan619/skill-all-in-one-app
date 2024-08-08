@@ -25,6 +25,7 @@ import {
   setIncrement,
 } from "../redux/actions/action";
 import { Icon } from "react-native-paper";
+import { FormatPrice } from "../utils/Helper";
 
 const Cart = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -34,10 +35,7 @@ const Cart = ({ navigation }) => {
   const cart = useSelector((state) => state.cart.cart);
   const totalItems = useSelector((state) => state.cart.total_item);
   const totalPrice = useSelector((state) => state.cart.total_price);
-  console.log("totalItems: ", totalItems);
-  console.log("totalPrice: ", totalPrice);
 
-  console.log("cart: ", cart);
   useEffect(() => {
     dispatch(calculateTotalItems());
     dispatch(calculateTotalPrice());
@@ -75,9 +73,11 @@ const Cart = ({ navigation }) => {
                             {c?.name}
                           </Text>
                           <View className="flex-row items-baseline ">
-                            <Text className="font-medium">₹{c?.price}</Text>
+                            <Text className="font-medium">
+                              ₹<FormatPrice price={c?.price} />
+                            </Text>
                             <Text className="font-medium mx-4">
-                              ₹{c?.amount * c?.price}
+                              ₹<FormatPrice price={c?.amount * c?.price} />
                             </Text>
                           </View>
                           <View style={styles.quantityContainer}>
@@ -113,8 +113,6 @@ const Cart = ({ navigation }) => {
                     {/* delete icon */}
                     <TouchableOpacity
                       onPress={(remove) => {
-                        console.log("remove: ", remove);
-                        console.log("c?.id: ", c?.id);
                         dispatch(removeItem(c?.id));
                       }}
                     >
@@ -144,7 +142,9 @@ const Cart = ({ navigation }) => {
                 <View style={styles.separator} />
                 <View style={styles.summaryRow}>
                   <Text style={styles.summaryText}>Sub Total</Text>
-                  <Text style={styles.summaryValue}>₹{totalPrice + 30}</Text>
+                  <Text style={styles.summaryValue}>
+                    ₹ <FormatPrice price={totalPrice + 30} />
+                  </Text>
                 </View>
                 <View style={styles.separator} />
 
