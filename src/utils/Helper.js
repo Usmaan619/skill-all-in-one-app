@@ -144,3 +144,97 @@ export const changePasswordValidationSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords do not match")
     .required("Confirm password is required"),
 });
+
+export const checkoutValidationSchema = yup.object().shape({
+  additional: yup
+    .string()
+    .max(250, "Additional information cannot be longer than 250 characters"),
+
+  address: yup
+    .string()
+    .required("Address is required")
+    .min(10, "Address must be at least 10 characters long")
+    .max(100, "Address cannot be longer than 100 characters"),
+
+  date: yup
+    .date()
+    .required("Date is required")
+    .typeError("Invalid date format"),
+
+  email: yup.string().email("Invalid email"),
+  // required("Email is required"),
+
+  landmark: yup
+    .string()
+    .max(100, "Landmark cannot be longer than 100 characters"),
+
+  name: yup
+    .string()
+    .required("Name is required")
+    .matches(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces")
+    .min(3, "Name must be at least 3 characters long")
+    .max(50, "Name cannot be longer than 50 characters"),
+
+  number: yup
+    .string()
+    .matches(/^\d{10}$/, "Number must be exactly 10 digits")
+    .required("Number is required"),
+
+  // paymentMethod: yup
+  //   .string()
+  //   .required("Payment Method is required")
+  //   .oneOf(
+  //     ["Credit Card", "Debit Card", "Cash", "UPI"],
+  //     "Invalid payment method"
+  //   ),
+
+  time: yup
+    .string()
+    // .required("Time is required")
+    .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH:mm format"),
+
+  zipcode: yup
+    .string()
+    .required("Zip code is required")
+    .matches(/^\d{6}$/, "Zip code must be exactly 6 digits")
+    .oneOf(
+      [
+        "451010",
+        "452001",
+        "452002",
+        "452003",
+        "452004",
+        "452005",
+        "452006",
+        "452007",
+        "452008",
+        "452009",
+        "452010",
+        "452011",
+        "452012",
+        "452013",
+        "452014",
+        "452015",
+        "452016",
+        "452018",
+        "452020",
+        "453111",
+        "453112",
+        "453331",
+        "453332",
+        "453555",
+        "453556",
+        "453771",
+        "456015",
+      ],
+      "Invalid zip code"
+    ),
+});
+
+export const FormatPrice = ({ price }) => {
+  return Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2,
+  }).format(price);
+};
