@@ -172,8 +172,8 @@ const ExploreCategories = ({ navi }) => {
             }}
           >
             <View
-              style={{ elevation: 10 }}
-              className=" bg-slate-100 h-32 w-32  justify-center items-center rounded-full"
+              style={{ elevation: 5 }}
+              className=" bg-white h-32 w-32  justify-center items-center rounded-full"
             >
               <Image source={d?.img} className="h-20 w-20 object-cover" />
             </View>
@@ -202,7 +202,14 @@ const MostPopularProducts = () => {
       </Text>
       <View className="px-6 pt-14">
         {MOSTPOPULARPRODUCTS?.map((d, idx) => (
-          <Card key={idx} style={{ marginBottom: "10%", elevation: 10 }}>
+          <Card
+            key={idx}
+            style={{
+              marginBottom: "10%",
+              elevation: 10,
+              backgroundColor: "#fff",
+            }}
+          >
             <Card.Cover source={d?.productImg} className="bg-white" />
             <Card.Title
               title={d?.name}
