@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   calculateTotalItems,
   calculateTotalPrice,
+  setHeaderScroll,
 } from "../redux/actions/action";
 import { postAddressAPI } from "../services/Auth.service";
 
@@ -65,6 +66,11 @@ const CheckoutScreen = () => {
     setFieldValue("time", formattedTime);
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(setHeaderScroll(false));
+    };
+  }, []);
   return (
     <React.Fragment>
       <ImageBackground
@@ -103,7 +109,7 @@ const CheckoutScreen = () => {
               formikFn = formikProps;
               return (
                 <React.Fragment>
-                  <CollapsibleView navi={navigation} className="absolute " />
+                  {/* <CollapsibleView navi={navigation} className="absolute " /> */}
                   <Image
                     source={ICONS?.homeBg}
                     className="absolute top-0 h-[200px] w-full object-cover z-10"

@@ -11,11 +11,11 @@ import { AxiosInterceptors } from "../axios/interceptor";
 import Home from "../screens/Home";
 import ContactUs from "../screens/ContactUs";
 import AboutSuperChicks from "../screens/AboutUs";
-import CollapsibleView from "../components/CollapsibleView.component";
 import Products from "../screens/Products";
 import ProductDetails from "../screens/ProductDetails";
 import Cart from "../screens/Cart";
 import CheckoutScreen from "../screens/Address";
+import CollapsibleViewComponent from "../components/CollapsibleView.component";
 
 const Stack = createStackNavigator();
 
@@ -53,21 +53,22 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
           ) : (
             <>
               <Stack.Navigator
-                screenOptions={{
-                  headerShown: false,
+                screenOptions={({ navigation }) => ({
+                  headerShown: true,
                   animation: "slide_from_right",
-                }}
+                  header: () => <CollapsibleViewComponent navi={navigation} />,
+                })}
               >
                 {token ? (
                   <Stack.Screen name="DashboardLayout" component={DashboardL} />
                 ) : (
                   <React.Fragment>
+                    <Stack.Screen name="Home" component={Home} />
                     <Stack.Screen name="Products" component={Products} />
                     <Stack.Screen
                       name="CheckoutScreen"
                       component={CheckoutScreen}
                     />
-                    <Stack.Screen name="Home" component={Home} />
                     <Stack.Screen name="Cart" component={Cart} />
 
                     <Stack.Screen
@@ -76,7 +77,11 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                     />
                     <Stack.Screen name="ContactUs" component={ContactUs} />
                     <Stack.Screen name="About" component={AboutSuperChicks} />
-                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen
+                      options={{ headerShown: false }}
+                      name="Login"
+                      component={Login}
+                    />
                   </React.Fragment>
                 )}
               </Stack.Navigator>

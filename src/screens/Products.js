@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   ImageBackground,
@@ -20,84 +20,95 @@ import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
 import { Card } from "react-native-paper";
 import Del from "../hooks/Del.hook";
-import { addToCart } from "../redux/actions/action";
+import { addToCart, setHeaderScroll } from "../redux/actions/action";
 import { getSingleProductAPI } from "../services/Auth.service";
 import { useDispatch } from "react-redux";
+import { onScrollChange } from "../utils/Helper";
 
-const Products = ({ navigation }) => (
-  <React.Fragment>
-    <ImageBackground
-      source={ICONS?.bgImg}
-      style={styles.backgroundImage}
-      resizeMode="cover"
-    >
-      <ScrollView style={{ flexGrow: 1 }}>
-        {/* bg img */}
-        <CollapsibleView navi={navigation} className="absolute" />
-        {/* home */}
+const Products = ({ navigation }) => {
+  const dispatch = useDispatch();
 
-        <Image
-          source={ICONS?.homeBg}
-          className="absolute top-0 h-[900px] object-cover"
-        />
-
-        <View className="px-10 relative h-screen">
-          <View className="flex justify-center mt-6">
-            <Text
-              className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
-            >
-              Order raw meat &
-            </Text>
-            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-              get it delivered at
-            </Text>
-            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-              your door steps.
-            </Text>
-
-            <Text className="text-base mt-4 text-left">
-              Absolutely fresh Chicken 100% Natural & Chemical free
-            </Text>
-          </View>
+  useEffect(() => {
+    return () => {
+      dispatch(setHeaderScroll(false));
+    };
+  }, []);
+  return (
+    <React.Fragment>
+      <ImageBackground
+        source={ICONS?.bgImg}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <ScrollView
+          onScroll={(e) => {
+            onScrollChange(e, dispatch);
+          }}
+          style={{ flexGrow: 1 }}
+        >
           <Image
-            source={ICONS?.productTopImg}
-            className="h-2/5 w-full mt-12 
-          "
+            source={ICONS?.homeBg}
+            className="absolute top-0 h-[800px] object-cover"
           />
-        </View>
-        {/* home end */}
 
-        <View className="px-4">
-          <Text className=" text-center text-3xl font-semibold">
-            Order Fresh {"\n"} Chicken, Mutton & {"\n"} Fish from
-          </Text>
-          <Text className="text-[#DB1516] text-center text-3xl font-semibold">
-            SuperChicks
-          </Text>
+          <View className="px-10 relative h-screen">
+            <View className="flex justify-center mt-6">
+              <Text
+                className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
+              >
+                Order raw meat &
+              </Text>
+              <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+                get it delivered at
+              </Text>
+              <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+                your door steps.
+              </Text>
 
-          <View className="my-3">
-            <Text className="text-left text-lg font-medium mb-10 mt-5">
-              CHICKEN
-            </Text>
-
-            <Chicken navi={navigation} dis={useDispatch()} />
-            <Text className="text-left text-lg font-medium mb-10 mt-5">
-              ALIVE DESI CHICKEN
-            </Text>
-            <AliveDesiChicken />
-            <Text className="text-left text-lg font-medium mb-10 mt-5">
-              MUTTON
-            </Text>
-            <Mutton />
+              <Text className="text-base mt-4 text-left">
+                Absolutely fresh Chicken 100% Natural & Chemical free
+              </Text>
+            </View>
+            <Image
+              source={ICONS?.productTopImg}
+              className="h-2/5 w-full mt-12 
+            "
+            />
           </View>
-        </View>
+          {/* home end */}
 
-        {/* Footer */}
-        <Footer />
-      </ScrollView>
-    </ImageBackground>
-  </React.Fragment>
-);
+          <View className="px-4">
+            <Text className=" text-center text-3xl font-semibold">
+              Order Fresh {"\n"} Chicken, Mutton & {"\n"} Fish from
+            </Text>
+            <Text className="text-[#DB1516] text-center text-3xl font-semibold">
+              SuperChicks
+            </Text>
+
+            <View className="my-3">
+              <Text className="text-left text-lg font-medium mb-10 mt-5">
+                CHICKEN
+              </Text>
+
+              <Chicken navi={navigation} dis={useDispatch()} />
+              <Text className="text-left text-lg font-medium mb-10 mt-5">
+                ALIVE DESI CHICKEN
+              </Text>
+              <AliveDesiChicken />
+              <Text className="text-left text-lg font-medium mb-10 mt-5">
+                MUTTON
+              </Text>
+              <Mutton />
+            </View>
+          </View>
+
+          {/* Footer */}
+          <Footer />
+        </ScrollView>
+      </ImageBackground>
+    </React.Fragment>
+  );
+};
 
 const Chicken = ({ navi, dis }) => {
   const addProduct = async (id) => {
@@ -110,7 +121,14 @@ const Chicken = ({ navi, dis }) => {
   return (
     <React.Fragment>
       {CHICKENPRODUCTS?.map((d, idx) => (
-        <Card key={idx} style={{ marginBottom: "10%", elevation: 10 }}>
+        <Card
+          key={idx}
+          style={{
+            marginBottom: "10%",
+            elevation: 10,
+            backgroundColor: "#fff",
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               navi?.navigate("ProductDetails", { data: d });
@@ -165,7 +183,14 @@ const AliveDesiChicken = () => {
   return (
     <React.Fragment>
       {ALIVEDESICHICKEN?.map((d, idx) => (
-        <Card key={idx} style={{ marginBottom: "10%", elevation: 10 }}>
+        <Card
+          key={idx}
+          style={{
+            marginBottom: "10%",
+            elevation: 10,
+            backgroundColor: "#fff",
+          }}
+        >
           <Card.Cover
             source={d?.img}
             resizeMode="stretch"
@@ -207,7 +232,14 @@ const Mutton = () => {
   return (
     <React.Fragment>
       {MUTTON?.map((d, idx) => (
-        <Card key={idx} style={{ marginBottom: "10%", elevation: 10 }}>
+        <Card
+          key={idx}
+          style={{
+            marginBottom: "10%",
+            elevation: 10,
+            backgroundColor: "#fff",
+          }}
+        >
           <Card.Cover
             source={d?.img}
             resizeMode="cover"

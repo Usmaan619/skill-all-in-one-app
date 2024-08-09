@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -14,8 +14,17 @@ import { ICONS } from "../constants/Constant";
 import CollapsibleView from "../components/CollapsibleView.component";
 import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
+import { setHeaderScroll } from "../redux/actions/action";
+import { useDispatch } from "react-redux";
 
 const ContactUs = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(setHeaderScroll(false));
+    };
+  }, []);
   return (
     <React.Fragment>
       <ScrollView style={{ flexGrow: 1 }}>
@@ -24,12 +33,11 @@ const ContactUs = ({ navigation }) => {
           style={styles.backgroundImage}
           resizeMode="cover"
         >
-          <CollapsibleView navi={navigation} className="absolute " />
           <Image
             source={ICONS?.homeBg}
-            className="absolute top-0 h-[200px] w-full object-cover z-10"
+            className="absolute -top-1 h-[200px] w-full object-cover z-10"
           />
-          <View className="px-10 relative  mt-16">
+          <View className="px-10 relative  mt-44 ">
             <View style={styles.header}>
               <Text style={styles.headerText}>Contact Us</Text>
             </View>

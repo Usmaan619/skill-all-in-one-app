@@ -22,6 +22,7 @@ import {
   calculateTotalPrice,
   removeItem,
   setDecrement,
+  setHeaderScroll,
   setIncrement,
 } from "../redux/actions/action";
 import { Icon } from "react-native-paper";
@@ -41,6 +42,12 @@ const Cart = ({ navigation }) => {
     dispatch(calculateTotalPrice());
   }, [cart, dispatch]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(setHeaderScroll(false));
+    };
+  }, []);
+
   return (
     <React.Fragment>
       <ImageBackground
@@ -49,14 +56,14 @@ const Cart = ({ navigation }) => {
         resizeMode="cover"
       >
         <ScrollView style={{ flexGrow: 1 }}>
-          <CollapsibleView navi={navigation} className="absolute " />
+          {/* <CollapsibleView navi={navigation} className="absolute " /> */}
           <Image
             source={ICONS?.homeBg}
             className="absolute top-0 h-[190px] w-full object-cover z-10 "
           />
 
           {cart?.length ? (
-            <View className="relative  mt-16 ">
+            <View className="relative  mt-44 ">
               <View style={styles.container}>
                 <Text style={styles.header}>Your Cart</Text>
                 {/* Product listing */}
@@ -158,8 +165,8 @@ const Cart = ({ navigation }) => {
               </View>
             </View>
           ) : (
-            <View style={{ flex: 1 }}>
-              <Text className="text-center font-medium mt-20 text-lg">
+            <View style={{ flex: 1 }} className="mt-48">
+              <Text className="text-center font-medium  text-lg">
                 - : Your Basket is Empty : -
               </Text>
               <Image

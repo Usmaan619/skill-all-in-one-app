@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -28,8 +28,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { onScrollChange } from "../utils/Helper";
+import { useDispatch } from "react-redux";
+import { setHeaderScroll } from "../redux/actions/action";
 
 const Home = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   const handleSubmit = () => {
     toggleModal();
   };
@@ -38,106 +43,112 @@ const Home = ({ navigation }) => {
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(setHeaderScroll(false));
+    };
+  }, []);
+
+  // bg-[#ffe5e5]
   return (
-    <React.Fragment>
-      <ImageBackground
-        source={ICONS?.bgImg}
-        style={styles.backgroundImage}
-        resizeMode="cover"
+    <ImageBackground
+      className="w-full h-full bg-white m-0 p-0 relative"
+      source={ICONS?.bgImg}
+      resizeMode="cover"
+    >
+      <ScrollView
+        onScroll={(e) => {
+          onScrollChange(e, dispatch);
+        }}
       >
-        <ScrollView style={{ flexGrow: 1 }}>
-          {/* bg img */}
-          <CollapsibleView navi={navigation} className="absolute" />
-          {/* home */}
-          <Image
-            source={ICONS?.homeBg}
-            className="absolute top-0 h-[870px] object-cover"
-          />
-          <View className="px-10 relative h-screen ">
-            <View className="flex justify-center mt-6">
-              <Text
-                className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
-              >
-                We Deliver
-              </Text>
-              <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-                Fresh & Premium
-              </Text>
-              <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-                Meats Everyday.
-              </Text>
+        <Image
+          source={ICONS?.homeBg}
+          resizeMode="cover"
+          className="absolute top-0 h-[870px]  "
+        />
+        <View className="px-10 relative h-screen ">
+          <View className="flex justify-center mt-6">
+            <Text
+              className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
+            >
+              We Deliver
+            </Text>
+            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+              Fresh & Premium
+            </Text>
+            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+              Meats Everyday.
+            </Text>
 
-              <Text className="text-base mt-4 text-left">
-                Why leave the house? Chicken delivery coming through.
-              </Text>
+            <Text className="text-base mt-4 text-left">
+              Why leave the house? Chicken delivery coming through.
+            </Text>
 
-              {/* Categories btn */}
-              <View className="w-1/3 h-7 mt-5">
-                <CommonButton
-                  onPress={() => {
-                    navigation.navigate("Products");
-                  }}
-                  title={"Categories"}
-                />
-              </View>
+            {/* Categories btn */}
+            <View className="w-1/3 h-7 mt-5">
+              <CommonButton
+                onPress={() => {
+                  navigation.navigate("Products");
+                }}
+                title={"Categories"}
+              />
             </View>
-            <Image
-              source={ICONS?.superSubLogo}
-              className="h-1/3 w-full mt-12 
-          "
-            />
           </View>
-          {/* home end */}
-          {/* About */}
-          <AboutHome />
+          <Image
+            source={ICONS?.superSubLogo}
+            className="h-1/3 w-full mt-12 
+          "
+          />
+        </View>
+        {/* home end */}
+        {/* About */}
+        <AboutHome />
 
-          {/* Explor */}
-          <ExploreCategories navi={navigation} />
-          {/* Most Popular Products */}
-          <MostPopularProducts />
+        {/* Explor */}
+        <ExploreCategories navi={navigation} />
+        {/* Most Popular Products */}
+        <MostPopularProducts />
 
-          {/* Why Order From SuperChicks */}
-          <WhyOrderFromSuperChicks />
-          {/* Hear From Our Happy Customers */}
-          <HearFromOurHappyCustomers />
-          {/* Footer */}
-          <Footer />
-        </ScrollView>
-      </ImageBackground>
-    </React.Fragment>
+        {/* Why Order From SuperChicks */}
+        <WhyOrderFromSuperChicks />
+        {/* Hear From Our Happy Customers */}
+        <HearFromOurHappyCustomers />
+        {/* Footer */}
+        <Footer />
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
 const AboutHome = () => {
   return (
-    <React.Fragment>
-      <View className="px-5">
-        <Image
-          resizeMode="cover"
-          source={ICONS?.headerLogo}
-          className="h-28 w-32 "
-        />
+    <View className="px-5">
+      <Image
+        resizeMode="cover"
+        source={ICONS?.headerLogo}
+        className="h-28 w-32 "
+      />
 
-        <View className="">
-          <Text className="text-lg font-medium">
-            About <Text style={{ color: COLOURs?.red }}>SuperChicks</Text>
-          </Text>
+      <View className="">
+        <Text className="text-lg font-medium">
+          About <Text style={{ color: COLOURs?.red }}>SuperChicks</Text>
+        </Text>
 
-          <Text className="text-base text-slate-600 mt-2">
-            SuperChicks provides you fresh and hygienic meat products at very
-            reasonable price. Forget the old days of purchasing meat from stinky
-            and unhygienic shops. Now just order it online and get it delivered
-            to your door steps.
-          </Text>
+        <Text className="text-base text-slate-600 mt-2">
+          SuperChicks provides you fresh and hygienic meat products at very
+          reasonable price. Forget the old days of purchasing meat from stinky
+          and unhygienic shops. Now just order it online and get it delivered to
+          your door steps.
+        </Text>
 
-          <View className="flex justify-center items-center my-5">
-            {ABOUTHOMEIMG?.map((d, i) => (
-              <Image key={i} source={d} className="h-44 w-72 my-2 " />
-            ))}
-          </View>
+        <View className="flex justify-center items-center my-5">
+          {ABOUTHOMEIMG?.map((d, i) => (
+            <Image key={i} source={d} className="h-44 w-72 my-2 " />
+          ))}
         </View>
       </View>
-    </React.Fragment>
+    </View>
   );
 };
 
@@ -416,7 +427,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   backgroundImage: {
-    flex: 1,
     width: "100%",
     height: "100%",
     zIndex: 0,

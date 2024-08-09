@@ -6,6 +6,7 @@ import {
   Animated,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { COLOURs, ICONS } from "../constants/Constant";
 import { AntDesign } from "@expo/vector-icons";
@@ -13,7 +14,7 @@ import { Foundation } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { connect, useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
-const CollapsibleView = ({ navi, total_item }) => {
+const CollapsibleView = ({ navi, total_item, headerScroll }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [animation] = useState(new Animated.Value(0));
 
@@ -39,9 +40,9 @@ const CollapsibleView = ({ navi, total_item }) => {
   });
 
   return (
-    <View className="z-50" style={{ elevation: 10 }}>
+    <View className={`z-50  ${headerScroll ? " bg-white" : "bg-[#ffe5e5]"} `}>
       <TouchableWithoutFeedback>
-        <View className="flex-row justify-center items-center mt-10 z-40">
+        <View className="flex-row justify-center items-center mt-10  z-40">
           <View
             className={`flex-row justify-between px-7 items-center h-20 w-80 bg-[#fff2f2] ${
               collapsed ? "rounded-3xl" : "rounded-t-3xl"
@@ -129,7 +130,7 @@ const CollapsibleView = ({ navi, total_item }) => {
 
 const mapStateToProps = (state) => {
   return {
-    ...state?.cart,
+    ...state?.scrollReducer,
   };
 };
 

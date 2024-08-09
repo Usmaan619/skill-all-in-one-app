@@ -9,12 +9,10 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { COLOURs, ICONS, IMAGE } from "../constants/Constant";
+import { ICONS } from "../constants/Constant";
 import CollapsibleView from "../components/CollapsibleView.component";
 import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
-
-import Carousel from "react-native-x-carousel";
 import Del from "../hooks/Del.hook";
 import Hr from "../tags/Hr.tag";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -24,53 +22,27 @@ import { Card } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import { getSingleProductAPI } from "../services/Auth.service";
 import { connect, useDispatch } from "react-redux";
-import { addToCart } from "../redux/actions/action";
-import MyImageCarousel from "./Custom";
+import { addToCart, setHeaderScroll } from "../redux/actions/action";
+import ImageCarousel from "./CustomImageCarousel";
+import { onScrollChange } from "../utils/Helper";
 
 const ProductDetails = ({ navigation }) => {
   const dispatch = useDispatch();
   const route = useRoute();
 
   const [product, setProduct] = useState();
-  console.log("product: ", product);
 
   useEffect(() => {
     new Promise(async (resolve, reject) => {
       try {
         setProduct(await getSingleProductAPI(singleProductId));
-      } catch (error) {
-        console.log("error: ", error);
-      }
+      } catch (error) {}
       resolve(1);
     });
   }, []);
 
   const singleProductId = route?.params?.data?.id;
 
-  const singleProduct = IMAGE.filter((item) => item.id === singleProductId);
-
-  console.log("singleProduct: ", singleProduct);
-
-  const imgArray = singleProduct?.imgs || [];
-
-  console.log("imgArray: ", imgArray);
-
-  const renderCarousel = ({ item, index }) => {
-    return (
-      <View
-        key={`${index}`}
-        style={styles.carousel}
-        className="bg-white rounded-lg"
-      >
-        <Image
-          source={item.imgs1}
-          style={{ elevation: 12 }}
-          className="h-52 w-full object-cover"
-          resizeMode="cover"
-        />
-      </View>
-    );
-  };
   const [amount, setAmount] = useState(1);
   const setDecrease = () => {
     amount > 1 ? setAmount(amount - 1) : setAmount(1);
@@ -84,6 +56,11 @@ const ProductDetails = ({ navigation }) => {
     dispatch(addToCart(id, amount, singleProduct));
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(setHeaderScroll(false));
+    };
+  }, []);
   return (
     <React.Fragment>
       <ImageBackground
@@ -91,66 +68,22 @@ const ProductDetails = ({ navigation }) => {
         resizeMode="cover"
         style={styles?.backgroundImage}
       >
-        <ScrollView style={{ flexGrow: 1 }}>
-          <CollapsibleView navi={navigation} className="absolute " />
+        <ScrollView
+          onScroll={(e) => {
+            onScrollChange(e, dispatch);
+          }}
+          style={{ flexGrow: 1 }}
+        >
           <Image
             source={ICONS?.homeBg}
+            resizeMode="cover"
             className="absolute top-0 h-[190px] w-full object-cover z-10 "
           />
-          <View className="relative  mt-16 ">
+          <View className="relative  mt-16 z-10">
             <View style={styles.container}>
-              {/* <Carousel
-                data={img}
-                renderItem={renderCarousel}
-                // autoplay
-                // loop
-                onPage={(p) => {
-                  setPages(p?.current);
-                }}
-              /> */}
-              {/* <Carousel
-                data={singleProduct?.imgs}
-                renderItem={renderCarousel}
-                onPage={(p) => {
-                  // setPages(p?.current);
-                }}
-              /> */}
-
-              <MyImageCarousel route={{ params: { id: "ch-721" } }} />
-
-              <View className="flex-row justify-between mt-6">
-                <Image
-                  source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
-                  style={{ elevation: 12 }}
-                  className={`h-20 w-20 object-cover rounded-lg  `}
-                  resizeMode="cover"
-                  // ${
-                  //   images[pages]?.src ? "" : "opacity-70"
-                  // }
-                />
-                <Image
-                  source={require("../../assets/most-popular-products/home-Products.jpg")}
-                  style={{ elevation: 12 }}
-                  className={`h-20 w-20 object-cover rounded-lg 
-                    `}
-                  //    ${
-                  //   IMAGE[pages]?.src ? "" : "opacity-70"
-                  // }
-                  resizeMode="cover"
-                />
-                <Image
-                  source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
-                  style={{ elevation: 12 }}
-                  className="h-20 w-20 object-cover rounded-lg"
-                  resizeMode="cover"
-                />
-                <Image
-                  source={require("../../assets/Mutton/Order-Mutton-2.jpg")}
-                  style={{ elevation: 12 }}
-                  className="h-20 w-20 object-cover rounded-lg"
-                  resizeMode="cover"
-                />
-              </View>
+              {/* Carousel */}
+              <ImageCarousel route={{ params: { id: singleProductId } }} />
+              {/* end Carousel */}
               <View style={styles.detailsSection}>
                 <Text style={styles.heading}>Delivery Details</Text>
                 <Text className="text-slate-600 my-2">

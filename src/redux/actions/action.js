@@ -12,6 +12,13 @@ export const CLEAR_CART = "CLEAR_CART";
 export const CART_TOTAL_ITEM = "CART_TOTAL_ITEM";
 export const CART_TOTAL_PRICE = "CART_TOTAL_PRICE";
 
+export const SET_HEADER_SCROLL = "SET_HEADER_SCROLL";
+
+export const setHeaderScroll = (isScrolled) => ({
+  type: SET_HEADER_SCROLL,
+  payload: isScrolled,
+});
+
 export const SetIsLoggedIn = (data) => ({
   type: SET_IS_LOGGED_IN,
   payload: data,

@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { setHeaderScroll } from "../redux/actions/action";
 
 export const loginSvc = (data, values) => {
   return data.find((u) => {
@@ -238,3 +239,11 @@ export const FormatPrice = ({ price }) => {
     maximumFractionDigits: 2,
   }).format(price);
 };
+
+// export const onScrollChange = (event) =>
+//   event?.nativeEvent?.contentOffset?.y > 650 ? true : false;
+
+export const onScrollChange = (event, dispatch) =>
+  dispatch(
+    setHeaderScroll(event?.nativeEvent?.contentOffset?.y > 650 ? true : false)
+  );
