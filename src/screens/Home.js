@@ -11,13 +11,9 @@ import {
   WHYORDERFORMSUPERCHICKS,
 } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
-import { Avatar, Card } from "react-native-paper";
+import { Card } from "react-native-paper";
 import Carousel, { PaginationLight } from "react-native-x-carousel";
 import { Rating } from "react-native-ratings";
-import { Entypo } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import { setHeaderScroll } from "../redux/actions/action";
@@ -91,7 +87,7 @@ const Home = ({ navigation }) => {
       {/* Explor */}
       <ExploreCategories navi={navigation} />
       {/* Most Popular Products */}
-      <MostPopularProducts />
+      <MostPopularProducts navigation={navigation} />
 
       {/* Why Order From SuperChicks */}
       <WhyOrderFromSuperChicks />
@@ -170,8 +166,7 @@ const ExploreCategories = ({ navi }) => {
   );
 };
 
-const MostPopularProducts = () => {
-  const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
+const MostPopularProducts = ({ navigation }) => {
   return (
     <View className="my-10">
       <Text className="text-center text-2xl font-semibold">
@@ -207,7 +202,7 @@ const MostPopularProducts = () => {
                 {d?.btn && (
                   <CommonButton
                     onPress={() => {
-                      handleSubmit();
+                      navigation.navigate("Products");
                     }}
                     title={d?.btn}
                   />
