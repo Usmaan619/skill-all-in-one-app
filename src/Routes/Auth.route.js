@@ -16,6 +16,7 @@ import ProductDetails from "../screens/ProductDetails";
 import Cart from "../screens/Cart";
 import CheckoutScreen from "../screens/Address";
 import CollapsibleViewComponent from "../components/CollapsibleView.component";
+import { View } from "react-native-animatable";
 
 const Stack = createStackNavigator();
 
@@ -55,8 +56,17 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
               <Stack.Navigator
                 screenOptions={({ navigation }) => ({
                   headerShown: true,
+                  // headerTransparent: true, // This helps with the white space issue
+
                   animation: "slide_from_right",
-                  header: () => <CollapsibleViewComponent navi={navigation} />,
+                  header: () => (
+                    <View
+                      style={{ height: 111, backgroundColor: "transparent" }}
+                    >
+                      {/* Adjust height or background as needed */}
+                      <CollapsibleViewComponent navi={navigation} />
+                    </View>
+                  ),
                 })}
               >
                 {token ? (

@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { ICONS } from "../constants/Constant";
-import CollapsibleView from "../components/CollapsibleView.component";
 import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
 import Del from "../hooks/Del.hook";
@@ -30,6 +29,38 @@ const ProductDetails = ({ navigation }) => {
   const dispatch = useDispatch();
   const route = useRoute();
 
+  const similarProductData = [
+    {
+      id: "ch-721",
+      img: require("../../assets/Chicken Product image/Chiken Mixed With Bones.jpeg"),
+      title: "Chicken mixed with bone",
+      kilogram: "500gms | Serve 4",
+      amt: "148 Rs",
+      del: "185 Rs",
+    },
+    {
+      id: "ch-725",
+      img: require("../../assets/Chicken Product image/Chiken-WIngs.png"),
+      title: "Chicken Wings",
+      amt: "175 Rs",
+      del: "219 Rs",
+    },
+    {
+      id: "ch-727",
+      img: require("../../assets/Chicken Product image/Chicken Breast.jpg"),
+      title: "Chicken Breast",
+      amt: "271 Rs",
+      del: "339 Rs",
+    },
+    {
+      id: "ch-726",
+      img: require("../../assets/Chicken Product image/chicken Mince [keema].jpeg"),
+      title: "Chicken Mince (Keema)",
+      amt: "311 Rs",
+      del: "389 Rs",
+    },
+  ];
+
   const [product, setProduct] = useState();
 
   useEffect(() => {
@@ -39,9 +70,9 @@ const ProductDetails = ({ navigation }) => {
       } catch (error) {}
       resolve(1);
     });
-  }, []);
+  }, [singleProductId]);
 
-  const singleProductId = route?.params?.data?.id;
+  let singleProductId = route?.params?.data?.id;
 
   const [amount, setAmount] = useState(1);
   const setDecrease = () => {
@@ -166,34 +197,49 @@ const ProductDetails = ({ navigation }) => {
               <Text style={styles.similarProductsHeading}>
                 Similar Products
               </Text>
-              <Card
-                style={{ marginBottom: "10%", elevation: 10, marginTop: 10 }}
-              >
-                <Card.Cover
-                  source={require("../../assets/most-popular-products/home-Products.jpg")}
-                  resizeMode="cover"
-                  className="bg-white h-60 w-full"
-                />
-                <Card.Title
-                  title={"Chicken mixed with bone"}
-                  titleStyle={{
-                    fontSize: 18,
-                    fontWeight: "700",
-                    textAlign: "center",
+              {similarProductData.map((p, index) => (
+                <Card
+                  key={index}
+                  style={{
+                    marginBottom: "10%",
+                    elevation: 10,
+                    marginTop: 10,
+                    backgroundColor: "#fff",
                   }}
-                />
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      singleProductId = p?.id;
+                    }}
+                  >
+                    <Card.Cover
+                      source={p?.img}
+                      resizeMode="cover"
+                      className="bg-white h-60 w-full"
+                    />
+                  </TouchableOpacity>
+                  <Card.Title
+                    title={p?.title}
+                    titleStyle={{
+                      fontSize: 18,
+                      fontWeight: "700",
+                      textAlign: "center",
+                    }}
+                  />
 
-                <Card.Actions>
-                  <View className="flex-row justify-center w-full px-2">
-                    <Text className="text-base ">
-                      148 Rs{" "}
-                      <Del>
-                        <Text className="text-[#db1516]">185 Rs</Text>
-                      </Del>{" "}
-                    </Text>
-                  </View>
-                </Card.Actions>
-              </Card>
+                  <Card.Actions>
+                    <View className="flex-row justify-center w-full px-2">
+                      <Text className="text-base ">
+                        {p?.amt}{" "}
+                        <Del>
+                          <Text className="text-[#db1516]">{p?.del}</Text>
+                        </Del>{" "}
+                      </Text>
+                    </View>
+                  </Card.Actions>
+                </Card>
+              ))}
+
               {/* Similar Products */}
             </View>
           </View>

@@ -61,6 +61,7 @@ const Home = ({ navigation }) => {
         onScroll={(e) => {
           onScrollChange(e, dispatch);
         }}
+          contentInsetAdjustmentBehavior="automatic"
       >
         <Image
           source={ICONS?.homeBg}

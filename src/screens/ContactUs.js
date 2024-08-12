@@ -16,6 +16,7 @@ import CommonButton from "../components/Button.component";
 import Footer from "../common/Footer";
 import { setHeaderScroll } from "../redux/actions/action";
 import { useDispatch } from "react-redux";
+import { onScrollChange } from "../utils/Helper";
 
 const ContactUs = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -27,17 +28,23 @@ const ContactUs = ({ navigation }) => {
   }, []);
   return (
     <React.Fragment>
-      <ScrollView style={{ flexGrow: 1 }}>
-        <ImageBackground
-          source={ICONS?.bgImg}
-          style={styles.backgroundImage}
-          resizeMode="cover"
+      <ImageBackground
+        source={ICONS?.bgImg}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        <ScrollView
+          style={{ flexGrow: 1 }}
+          onScroll={(e) => {
+            onScrollChange(e, dispatch);
+          }}
+            contentInsetAdjustmentBehavior="automatic"
         >
           <Image
             source={ICONS?.homeBg}
-            className="absolute -top-1 h-[200px] w-full object-cover z-10"
+            className=" h-[200px] w-full  z-10"
           />
-          <View className="px-10 relative  mt-44 ">
+          <View className="px-10 relative  mt-10 ">
             <View style={styles.header}>
               <Text style={styles.headerText}>Contact Us</Text>
             </View>
@@ -114,8 +121,8 @@ const ContactUs = ({ navigation }) => {
           </View>
           {/* Footer */}
           <Footer />
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </React.Fragment>
   );
 };
