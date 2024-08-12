@@ -5,12 +5,9 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; // Assuming you are using Expo, otherwise use react-native-vector-icons
 import { ICONS } from "../constants/Constant";
-import CollapsibleView from "../components/CollapsibleView.component";
 import Footer from "../common/Footer";
 import { onScrollChange } from "../utils/Helper";
 import { useDispatch } from "react-redux";
@@ -37,13 +34,12 @@ const AboutSuperChicks = ({ navigation }) => {
           style={styles.backgroundImage}
           resizeMode="cover"
         >
-          {/* <CollapsibleView navi={navigation} className="absolute " /> */}
           <Image
             source={ICONS?.homeBg}
             resizeMode="cover"
-            className="absolute -top-1 h-[200px] w-full  z-10"
+            className=" h-[200px] w-full  z-10"
           />
-          <View className="px-10 relative mt-40">
+          <View className="px-6 ">
             <View className="mt-10 h-screen">
               <View style={styles.col}>
                 <View style={styles.aboutContent}>
@@ -75,13 +71,15 @@ const AboutSuperChicks = ({ navigation }) => {
                   promise.
                 </Text>
               </View>
-              <View style={styles.colImage}>
-                {/* //  <Image
-//     source={require("./path_to_image/ABout_page_image.jpg")}
-//     style={styles.image}
-//   /> */}
+              <View className="mb-4">
+                <Image
+                  source={ICONS?.aboutUsImg}
+                  resizeMode="cover"
+                  style={styles.image}
+                />
               </View>
             </View>
+
             <View style={styles.fullWidthCol}>
               <Text style={styles.subHeaderText}>
                 How does your order reach your doorstep?
@@ -129,7 +127,7 @@ const AboutSuperChicks = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
   },
   row: {
     flexDirection: "row",
@@ -139,6 +137,7 @@ const styles = StyleSheet.create({
   col: {
     flex: 1,
     paddingRight: 10,
+    marginBottom: 50,
   },
   colImage: {
     flex: 1,

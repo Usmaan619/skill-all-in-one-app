@@ -48,7 +48,8 @@ const Products = ({ navigation }) => {
         >
           <Image
             source={ICONS?.homeBg}
-            className="absolute top-0 h-[800px] object-cover"
+            resizeMode="cover"
+            className="absolute h-[720px] top-0  w-full  "
           />
 
           <View className="px-10 relative h-screen">

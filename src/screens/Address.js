@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   ScrollView,
   ImageBackground,
   Image,
+  Animated,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { RadioButton } from "react-native-paper";
@@ -35,15 +37,14 @@ registerTranslation("en", en);
 
 const CheckoutScreen = () => {
   const dispatch = useDispatch();
+  let formikFn;
   const navigation = useNavigation();
 
   // this code using cart page
   const cart = useSelector((state) => state.cart.cart);
-  console.log("cart:calculateTotalItems ", cart);
+
   const totalItems = useSelector((state) => state.cart.total_item);
   const totalPrice = useSelector((state) => state.cart.total_price);
-  console.log("totalItems: ", totalItems);
-  console.log("totalPrice: ", totalPrice);
 
   useEffect(() => {
     dispatch(calculateTotalItems());
@@ -71,6 +72,46 @@ const CheckoutScreen = () => {
       dispatch(setHeaderScroll(false));
     };
   }, []);
+  const [showNextForm, setShowNextForm] = useState(false);
+  const [showThirdForm, setShowThirdForm] = useState(false);
+  const animation = useRef(new Animated.Value(0)).current;
+  const scrollViewRef = useRef(null);
+
+  const handleNext = () => {
+    setShowNextForm(true);
+
+    setTimeout(() => {
+      Animated.spring(animation, {
+        toValue: 1,
+        useNativeDriver: true,
+      }).start(() => {
+        scrollViewRef.current.scrollTo({
+          x: Dimensions.get("screen")?.width - 30,
+          y: 0,
+          animated: true,
+        });
+      });
+    }, 10); // 100ms delay to ensure the state is updated
+  };
+
+  const handleNextSecondForm = () => {
+    setShowThirdForm(true);
+
+    setTimeout(() => {
+      Animated.spring(animation, {
+        toValue: 1,
+        useNativeDriver: true,
+      }).start(() => {
+        scrollViewRef.current.scrollTo({
+          x: Dimensions.get("screen")?.width * 2 + 20,
+          y: 0,
+          animated: true,
+        });
+      });
+    }, 10); // 100ms delay to ensure the state is updated
+  };
+
+  useEffect(() => {}, [showNextForm, showThirdForm]);
   return (
     <React.Fragment>
       <ImageBackground
@@ -109,131 +150,218 @@ const CheckoutScreen = () => {
               formikFn = formikProps;
               return (
                 <React.Fragment>
-                  {/* <CollapsibleView navi={navigation} className="absolute " /> */}
                   <Image
                     source={ICONS?.homeBg}
-                    className="absolute top-0 h-[200px] w-full object-cover z-10"
+                    className=" h-[200px] w-full  z-10"
                   />
-                  <View className="px-4 relative  mt-16">
+                  <View className="px-4">
                     <Text style={styles.header}>Order Checkout</Text>
                     <View style={styles.section}>
                       <Text style={styles.subHeader}>Shipping Address</Text>
-                      <View>
-                        <View style={styles.inputContainer}>
-                          <Text style={styles.label}>
-                            Name <Text style={styles.required}>*</Text>
-                          </Text>
-                          <TextInput
-                            onChangeText={handleChange("name")}
-                            onBlur={handleBlur("name")}
-                            value={values.name}
-                            style={styles.input}
-                            placeholder="Name"
-                          />
-                          {touched.name && errors.name && (
-                            <Text style={styles.errors}>{errors.name}</Text>
-                          )}
-                        </View>
-                        <View style={styles.inputContainer}>
-                          <Text style={styles.label}>
-                            Phone Number <Text style={styles.required}>*</Text>
-                          </Text>
-                          <TextInput
-                            onChangeText={handleChange("number")}
-                            onBlur={handleBlur("number")}
-                            value={values.number}
-                            style={styles.input}
-                            placeholder="Phone Number"
-                            keyboardType="numeric"
-                          />
-                          {touched.number && errors.number && (
-                            <Text style={styles.errors}>{errors.number}</Text>
-                          )}
-                        </View>
-                      </View>
-                      <View>
-                        <View style={styles.inputContainer}>
-                          <Text style={styles.label}>Email</Text>
-                          <TextInput
-                            onChangeText={handleChange("email")}
-                            onBlur={handleBlur("email")}
-                            value={values.email}
-                            style={styles.input}
-                            placeholder="Email Address"
-                            keyboardType="email-address"
-                          />
-                          {touched.email && errors.email && (
-                            <Text style={styles.errors}>{errors.email}</Text>
-                          )}
-                        </View>
-                        <View style={styles.inputContainer}>
-                          <Text style={styles.label}>
-                            Address <Text style={styles.required}>*</Text>
-                          </Text>
-                          <TextInput
-                            onChangeText={handleChange("address")}
-                            onBlur={handleBlur("address")}
-                            value={values.address}
-                            style={styles.input}
-                            placeholder="Address"
-                          />
-                          {touched.address && errors.address && (
-                            <Text style={styles.errors}>{errors.address}</Text>
-                          )}
-                        </View>
-                      </View>
-                      <View>
-                        <View style={styles.inputContainer}>
-                          <Text style={styles.label}>Time</Text>
-                          <TouchableOpacity
-                            onPress={() => setTimePickerVisible(true)}
-                          >
+                      {/*  */}
+                      <ScrollView
+                        ref={scrollViewRef}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        style={styles.container}
+                      >
+                        <View
+                          style={{
+                            width: Dimensions.get("screen")?.width - 30,
+                          }}
+                        >
+                          <View style={styles.inputContainer}>
+                            <Text style={styles.label}>
+                              Name <Text style={styles.required}>*</Text>
+                            </Text>
                             <TextInput
-                              label="Time"
-                              value={values.time}
-                              onBlur={handleBlur("time")}
-                              editable={false}
+                              onChangeText={handleChange("name")}
+                              onBlur={handleBlur("name")}
+                              value={values.name}
                               style={styles.input}
-                              error={touched.time && !!errors.time}
+                              placeholder="Name"
                             />
-                          </TouchableOpacity>
-                          {touched.time && errors.time && (
-                            <Text style={{ color: "red" }}>{errors.time}</Text>
-                          )}
+                            {touched.name && errors.name && (
+                              <Text style={styles.errors}>{errors.name}</Text>
+                            )}
+                          </View>
+                          <View style={styles.inputContainer}>
+                            <Text style={styles.label}>
+                              Phone Number{" "}
+                              <Text style={styles.required}>*</Text>
+                            </Text>
+                            <TextInput
+                              onChangeText={handleChange("number")}
+                              onBlur={handleBlur("number")}
+                              value={values.number}
+                              style={styles.input}
+                              placeholder="Phone Number"
+                              keyboardType="numeric"
+                            />
+                            {touched.number && errors.number && (
+                              <Text style={styles.errors}>{errors.number}</Text>
+                            )}
+                          </View>
+                          <View
+                            className="w-1/3 h-14 mt-3"
+                            style={{ marginStart: 10 }}
+                          >
+                            <CommonButton onPress={handleNext} title={"Next"} />
+                          </View>
+                        </View>
+                        {showNextForm && (
+                          <Animated.View
+                            style={{
+                              opacity: animation,
+                              transform: [
+                                {
+                                  translateX: animation.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [
+                                      Dimensions.get("screen")?.width - 30,
+                                      0,
+                                    ],
+                                  }),
+                                },
+                              ],
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: Dimensions.get("screen")?.width - 30,
+                              }}
+                            >
+                              <View style={styles.inputContainer}>
+                                <Text style={styles.label}>
+                                  Address <Text style={styles.required}>*</Text>
+                                </Text>
+                                <TextInput
+                                  onChangeText={handleChange("address")}
+                                  onBlur={handleBlur("address")}
+                                  value={values.address}
+                                  style={styles.input}
+                                  placeholder="Address"
+                                />
+                                {touched.address && errors.address && (
+                                  <Text style={styles.errors}>
+                                    {errors.address}
+                                  </Text>
+                                )}
+                              </View>
+                              <View style={styles.inputContainer}>
+                                <Text style={styles.label}>Email</Text>
+                                <TextInput
+                                  onChangeText={handleChange("email")}
+                                  onBlur={handleBlur("email")}
+                                  value={values.email}
+                                  style={styles.input}
+                                  placeholder="Email Address"
+                                  keyboardType="email-address"
+                                />
+                                {touched.email && errors.email && (
+                                  <Text style={styles.errors}>
+                                    {errors.email}
+                                  </Text>
+                                )}
+                              </View>
 
-                          <TimePickerModal
-                            visible={timePickerVisible}
-                            onDismiss={() => setTimePickerVisible(false)}
-                            onConfirm={(time) =>
-                              handleTimeConfirm(time, setFieldValue)
-                            }
-                            hours={12} // default hour
-                            minutes={0} // default minute
-                            label="Select time"
-                            cancelLabel="Cancel"
-                            confirmLabel="Ok"
-                            locale="en"
-                            animationType="slide"
-                            // clockIcon="none"
-                            keyboardIcon={false}
-                          />
-                        </View>
-                        <View style={styles.inputContainer}>
-                          <Text style={styles.label}>
-                            Zipcode <Text style={styles.required}>*</Text>
-                          </Text>
-                          <TextInput
-                            onChangeText={handleChange("zipcode")}
-                            onBlur={handleBlur("zipcode")}
-                            value={values.zipcode}
-                            style={styles.input}
-                            placeholder="Zipcode"
-                          />
-                          {touched.zipcode && errors.zipcode && (
-                            <Text style={styles.errors}>{errors.zipcode}</Text>
-                          )}
-                        </View>
-                      </View>
+                              <View
+                                className="w-1/3 h-14 mt-3"
+                                style={{ marginStart: 10 }}
+                              >
+                                <CommonButton
+                                  onPress={handleNextSecondForm}
+                                  title={"Next"}
+                                />
+                              </View>
+                            </View>
+                          </Animated.View>
+                        )}
+
+                        {showThirdForm && (
+                          <Animated.View
+                            style={{
+                              opacity: animation,
+                              transform: [
+                                {
+                                  translateX: animation.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [
+                                      Dimensions.get("screen")?.width - 30,
+                                      0,
+                                    ],
+                                  }),
+                                },
+                              ],
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: Dimensions.get("screen")?.width - 30,
+                              }}
+                            >
+                                  <View style={styles.inputContainer}>
+                                <Text style={styles.label}>
+                                  Zipcode <Text style={styles.required}>*</Text>
+                                </Text>
+                                <TextInput
+                                  onChangeText={handleChange("zipcode")}
+                                  onBlur={handleBlur("zipcode")}
+                                  value={values.zipcode}
+                                  style={styles.input}
+                                  placeholder="Zipcode"
+                                />
+                                {touched.zipcode && errors.zipcode && (
+                                  <Text style={styles.errors}>
+                                    {errors.zipcode}
+                                  </Text>
+                                )}
+                              </View>
+                              <View style={styles.inputContainer}>
+
+                                <Text style={styles.label}>Time</Text>
+                                <TouchableOpacity
+                                  onPress={() => setTimePickerVisible(true)}
+                                >
+                                  <TextInput
+                                    label="Time"
+                                    value={values.time}
+                                    onBlur={handleBlur("time")}
+                                    editable={false}
+                                    style={styles.input}
+                                    error={touched.time && !!errors.time}
+                                  />
+                                </TouchableOpacity>
+                                {touched.time && errors.time && (
+                                  <Text style={{ color: "red" }}>
+                                    {errors.time}
+                                  </Text>
+                                )}
+
+                                <TimePickerModal
+                                  visible={timePickerVisible}
+                                  onDismiss={() => setTimePickerVisible(false)}
+                                  onConfirm={(time) =>
+                                    handleTimeConfirm(time, setFieldValue)
+                                  }
+                                  hours={12} // default hour
+                                  minutes={0} // default minute
+                                  label="Select time"
+                                  cancelLabel="Cancel"
+                                  confirmLabel="Ok"
+                                  locale="en"
+                                  animationType="slide"
+                                  // clockIcon="none"
+                                  keyboardIcon={false}
+                                />
+                              </View>
+                          
+                            </View>
+                          </Animated.View>
+                        )}
+                      </ScrollView>
+
+                      {/*  */}
                     </View>
                     <View style={styles.section}>
                       <Text style={styles.subHeader}>
@@ -286,6 +414,8 @@ const CheckoutScreen = () => {
                         )}
                       </View>
                     </View>
+
+                    {/* Your Order */}
                     <View style={styles.section}>
                       <Text style={styles.orderSummaryHeader}>Your Order</Text>
                       <View style={styles.separator} />
@@ -386,7 +516,8 @@ const CheckoutScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    // padding: 16,
+    width: "100%",
   },
   header: {
     fontSize: 24,
@@ -480,7 +611,8 @@ const styles = StyleSheet.create({
   errors: {
     fontSize: 12,
     color: "red",
-    marginTop: "2%",
+    marginTop: 1,
+    marginBottom: 0,
     marginLeft: "1%",
   },
 });

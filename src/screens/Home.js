@@ -61,12 +61,12 @@ const Home = ({ navigation }) => {
         onScroll={(e) => {
           onScrollChange(e, dispatch);
         }}
-          contentInsetAdjustmentBehavior="automatic"
+        contentInsetAdjustmentBehavior="automatic"
       >
         <Image
           source={ICONS?.homeBg}
           resizeMode="cover"
-          className="absolute top-0 h-[870px]  "
+          className="absolute top-0 h-[700px] w-full  "
         />
         <View className="px-10 relative h-screen ">
           <View className="flex justify-center mt-6">

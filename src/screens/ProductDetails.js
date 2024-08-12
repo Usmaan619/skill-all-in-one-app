@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -24,42 +24,13 @@ import { connect, useDispatch } from "react-redux";
 import { addToCart, setHeaderScroll } from "../redux/actions/action";
 import ImageCarousel from "./CustomImageCarousel";
 import { onScrollChange } from "../utils/Helper";
+import { Similar } from "./SimilarProducts";
 
 const ProductDetails = ({ navigation }) => {
   const dispatch = useDispatch();
   const route = useRoute();
 
-  const similarProductData = [
-    {
-      id: "ch-721",
-      img: require("../../assets/Chicken Product image/Chiken Mixed With Bones.jpeg"),
-      title: "Chicken mixed with bone",
-      kilogram: "500gms | Serve 4",
-      amt: "148 Rs",
-      del: "185 Rs",
-    },
-    {
-      id: "ch-725",
-      img: require("../../assets/Chicken Product image/Chiken-WIngs.png"),
-      title: "Chicken Wings",
-      amt: "175 Rs",
-      del: "219 Rs",
-    },
-    {
-      id: "ch-727",
-      img: require("../../assets/Chicken Product image/Chicken Breast.jpg"),
-      title: "Chicken Breast",
-      amt: "271 Rs",
-      del: "339 Rs",
-    },
-    {
-      id: "ch-726",
-      img: require("../../assets/Chicken Product image/chicken Mince [keema].jpeg"),
-      title: "Chicken Mince (Keema)",
-      amt: "311 Rs",
-      del: "389 Rs",
-    },
-  ];
+  let singleProductId = route?.params?.data?.id ?? route?.params?.id;
 
   const [product, setProduct] = useState();
 
@@ -70,9 +41,8 @@ const ProductDetails = ({ navigation }) => {
       } catch (error) {}
       resolve(1);
     });
+    if (singleProductId) scrollToTop();
   }, [singleProductId]);
-
-  let singleProductId = route?.params?.data?.id;
 
   const [amount, setAmount] = useState(1);
   const setDecrease = () => {
@@ -92,6 +62,12 @@ const ProductDetails = ({ navigation }) => {
       dispatch(setHeaderScroll(false));
     };
   }, []);
+
+  const scrollViewRef = useRef(null);
+
+  const scrollToTop = () =>
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+
   return (
     <React.Fragment>
       <ImageBackground
@@ -100,6 +76,7 @@ const ProductDetails = ({ navigation }) => {
         style={styles?.backgroundImage}
       >
         <ScrollView
+          ref={scrollViewRef}
           onScroll={(e) => {
             onScrollChange(e, dispatch);
           }}
@@ -168,7 +145,7 @@ const ProductDetails = ({ navigation }) => {
                 </Text>
                 <View className="grid gap-3 justify-center items-center">
                   <View className="w-2/3">
-                    {/* add to cart  */}
+                    {/* add to cart white btn  */}
                     <TouchableOpacity
                       onPress={() => {
                         handleAddToCart(product?.id, amount, product);
@@ -193,54 +170,9 @@ const ProductDetails = ({ navigation }) => {
               <View className="my-2">
                 <Hr />
               </View>
-              {/* Similar Products */}
-              <Text style={styles.similarProductsHeading}>
-                Similar Products
-              </Text>
-              {similarProductData.map((p, index) => (
-                <Card
-                  key={index}
-                  style={{
-                    marginBottom: "10%",
-                    elevation: 10,
-                    marginTop: 10,
-                    backgroundColor: "#fff",
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      singleProductId = p?.id;
-                    }}
-                  >
-                    <Card.Cover
-                      source={p?.img}
-                      resizeMode="cover"
-                      className="bg-white h-60 w-full"
-                    />
-                  </TouchableOpacity>
-                  <Card.Title
-                    title={p?.title}
-                    titleStyle={{
-                      fontSize: 18,
-                      fontWeight: "700",
-                      textAlign: "center",
-                    }}
-                  />
-
-                  <Card.Actions>
-                    <View className="flex-row justify-center w-full px-2">
-                      <Text className="text-base ">
-                        {p?.amt}{" "}
-                        <Del>
-                          <Text className="text-[#db1516]">{p?.del}</Text>
-                        </Del>{" "}
-                      </Text>
-                    </View>
-                  </Card.Actions>
-                </Card>
-              ))}
 
               {/* Similar Products */}
+              <Similar navigation={navigation} />
             </View>
           </View>
           {/* Footer */}

@@ -38,13 +38,10 @@ const ContactUs = ({ navigation }) => {
           onScroll={(e) => {
             onScrollChange(e, dispatch);
           }}
-            contentInsetAdjustmentBehavior="automatic"
+          contentInsetAdjustmentBehavior="automatic"
         >
-          <Image
-            source={ICONS?.homeBg}
-            className=" h-[200px] w-full  z-10"
-          />
-          <View className="px-10 relative  mt-10 ">
+          <Image source={ICONS?.homeBg} className=" h-[200px] w-full  " />
+          <View className="px-10 ">
             <View style={styles.header}>
               <Text style={styles.headerText}>Contact Us</Text>
             </View>

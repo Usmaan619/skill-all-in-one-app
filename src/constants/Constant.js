@@ -33,6 +33,7 @@ export const ICONS = {
   headerBgImg: require("../../assets/png/account-1.png"),
 
   emptyCart: require("../../assets/png/empty-cart.png"),
+  aboutUsImg: require("../../assets/png/ABout page image.jpg"),
 };
 
 export const ABOUTHOMEIMG = [

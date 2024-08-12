@@ -56,8 +56,6 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
               <Stack.Navigator
                 screenOptions={({ navigation }) => ({
                   headerShown: true,
-                  // headerTransparent: true, // This helps with the white space issue
-
                   animation: "slide_from_right",
                   header: () => (
                     <View

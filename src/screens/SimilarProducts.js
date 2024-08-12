@@ -1,32 +1,95 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import Del from "../hooks/Del.hook";
+import { Card } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
-const Similar = ({ id, img, title, amt, del }) => {
+export const Similar = ({navigation}) => {
   // const navigation = useNavigation();
 
+  const similarProductData = [
+    {
+      id: "ch-721",
+      img: require("../../assets/Chicken Product image/Chiken Mixed With Bones.jpeg"),
+      title: "Chicken mixed with bone",
+      kilogram: "500gms | Serve 4",
+      amt: "148 Rs",
+      del: "185 Rs",
+    },
+    {
+      id: "ch-725",
+      img: require("../../assets/Chicken Product image/Chiken-WIngs.png"),
+      title: "Chicken Wings",
+      amt: "175 Rs",
+      del: "219 Rs",
+    },
+    {
+      id: "ch-727",
+      img: require("../../assets/Chicken Product image/Chicken Breast.jpg"),
+      title: "Chicken Breast",
+      amt: "271 Rs",
+      del: "339 Rs",
+    },
+    {
+      id: "ch-726",
+      img: require("../../assets/Chicken Product image/chicken Mince [keema].jpeg"),
+      title: "Chicken Mince (Keema)",
+      amt: "311 Rs",
+      del: "389 Rs",
+    },
+  ];
+
   return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("SingleProduct", { id })}
-    >
-      <View style={styles.similarProductImg}>
-        <Image source={img} style={styles.image} />
-      </View>
+    <>
+      <Text style={styles.similarProductsHeading}>Similar Products</Text>
+      {similarProductData.map((p, index) => (
+        <Card
+          key={index}
+          style={{
+            marginBottom: "10%",
+            elevation: 10,
+            marginTop: 10,
+            backgroundColor: "#fff",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ProductDetails", { id: p?.id })}
+          >
+            <Card.Cover
+              source={p?.img}
+              resizeMode="cover"
+              className="bg-white h-60 w-full"
+            />
+          </TouchableOpacity>
+          <Card.Title
+            title={p?.title}
+            titleStyle={{
+              fontSize: 18,
+              fontWeight: "700",
+              textAlign: "center",
+            }}
+          />
 
-      <View style={styles.similarProductName}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-
-      <View style={styles.similarProductPrice}>
-        <Text style={styles.amt}>{amt}</Text>
-        <Text style={styles.del}>{del}</Text>
-      </View>
-    </TouchableOpacity>
+          <Card.Actions>
+            <View className="flex-row justify-center w-full px-2">
+              <Text className="text-base ">
+                {p?.amt}{" "}
+                <Del>
+                  <Text className="text-[#db1516]">{p?.del}</Text>
+                </Del>{" "}
+              </Text>
+            </View>
+          </Card.Actions>
+        </Card>
+      ))}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  similarProductImg: {
-    // Add your image container styles here
+  similarProductsHeading: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
   image: {
     width: "100%",
@@ -53,5 +116,3 @@ const styles = StyleSheet.create({
     color: "grey",
   },
 });
-
-export default Similar;

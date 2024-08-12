@@ -26,7 +26,7 @@ import {
   setIncrement,
 } from "../redux/actions/action";
 import { Icon } from "react-native-paper";
-import { FormatPrice } from "../utils/Helper";
+import { FormatPrice, onScrollChange } from "../utils/Helper";
 
 const Cart = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -55,7 +55,12 @@ const Cart = ({ navigation }) => {
         style={styles.backgroundImage}
         resizeMode="cover"
       >
-        <ScrollView style={{ flexGrow: 1 }}>
+        <ScrollView
+          onScroll={(e) => {
+            onScrollChange(e, dispatch);
+          }}
+          style={{ flexGrow: 1 }}
+        >
           {/* <CollapsibleView navi={navigation} className="absolute " /> */}
           <Image
             source={ICONS?.homeBg}
