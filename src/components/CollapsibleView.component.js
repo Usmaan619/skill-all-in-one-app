@@ -6,14 +6,12 @@ import {
   Animated,
   Image,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 import { COLOURs, ICONS } from "../constants/Constant";
 import { AntDesign } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { connect, useSelector } from "react-redux";
-import { useFocusEffect } from "@react-navigation/native";
 const CollapsibleView = ({ navi, total_item, headerScroll }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [animation] = useState(new Animated.Value(0));
@@ -40,7 +38,9 @@ const CollapsibleView = ({ navi, total_item, headerScroll }) => {
   });
 
   return (
-    <View className={`z-50  ${headerScroll ? " bg-white" : "bg-[#ffe5e5]"} mt-3`}>
+    <View
+      className={`z-50  ${headerScroll ? " bg-white" : "bg-[#ffe5e5]"} mt-3`}
+    >
       <TouchableWithoutFeedback>
         <View className="flex-row justify-center items-center mt-10 mb-3  z-40">
           <View
@@ -101,7 +101,11 @@ const CollapsibleView = ({ navi, total_item, headerScroll }) => {
           >
             <View className="relative">
               <AntDesign name="shoppingcart" size={26} color="black" />
-              <View className="absolute top-[-15] left-5 bg-[#db1516] h-5 w-5 rounded-full ">
+              <View
+                className={`absolute top-[-15] left-5 ${
+                  total_item ? "bg-green-600" : "bg-[#db1516]"
+                }  h-6 w-6 rounded-full `}
+              >
                 <Text className="text-[#fff] text-center">{total_item}</Text>
               </View>
             </View>
@@ -131,6 +135,7 @@ const CollapsibleView = ({ navi, total_item, headerScroll }) => {
 const mapStateToProps = (state) => {
   return {
     ...state?.scrollReducer,
+    ...state?.cart,
   };
 };
 

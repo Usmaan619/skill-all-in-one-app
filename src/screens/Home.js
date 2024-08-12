@@ -1,13 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  ImageBackground,
-} from "react-native";
-import { GradientHOC } from "../HOC/Gradient";
+import React, { useEffect } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 import {
   ABOUTHOMEIMG,
   COLOURs,
@@ -19,18 +11,17 @@ import {
   WHYORDERFORMSUPERCHICKS,
 } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
-import CollapsibleView from "../components/CollapsibleView.component";
 import { Avatar, Card } from "react-native-paper";
 import Carousel, { PaginationLight } from "react-native-x-carousel";
-import { AirbnbRating, Rating } from "react-native-ratings";
+import { Rating } from "react-native-ratings";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { onScrollChange } from "../utils/Helper";
 import { useDispatch } from "react-redux";
 import { setHeaderScroll } from "../redux/actions/action";
+import GradientHOC from "../HOC/Gradient";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -52,73 +43,58 @@ const Home = ({ navigation }) => {
 
   // bg-[#ffe5e5]
   return (
-    <ImageBackground
-      className="w-full h-full bg-white m-0 p-0 relative"
-      source={ICONS?.bgImg}
-      resizeMode="cover"
-    >
-      <ScrollView
-        onScroll={(e) => {
-          onScrollChange(e, dispatch);
-        }}
-        contentInsetAdjustmentBehavior="automatic"
-      >
-        <Image
-          source={ICONS?.homeBg}
-          resizeMode="cover"
-          className="absolute top-0 h-[700px] w-full  "
-        />
-        <View className="px-10 relative h-screen ">
-          <View className="flex justify-center mt-6">
-            <Text
-              className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
-            >
-              We Deliver
-            </Text>
-            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-              Fresh & Premium
-            </Text>
-            <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-              Meats Everyday.
-            </Text>
+    <>
+      <Image
+        source={ICONS?.homeBg}
+        resizeMode="cover"
+        className="absolute top-0 h-[700px] w-full  "
+      />
+      <View className="px-10 relative h-screen ">
+        <View className="flex justify-center mt-6">
+          <Text className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}>
+            We Deliver
+          </Text>
+          <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+            Fresh & Premium
+          </Text>
+          <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+            Meats Everyday.
+          </Text>
 
-            <Text className="text-base mt-4 text-left">
-              Why leave the house? Chicken delivery coming through.
-            </Text>
+          <Text className="text-base mt-4 text-left">
+            Why leave the house? Chicken delivery coming through.
+          </Text>
 
-            {/* Categories btn */}
-            <View className="w-1/3 h-7 mt-5">
-              <CommonButton
-                onPress={() => {
-                  navigation.navigate("Products");
-                }}
-                title={"Categories"}
-              />
-            </View>
+          {/* Categories btn */}
+          <View className="w-1/3 h-7 mt-5">
+            <CommonButton
+              onPress={() => {
+                navigation.navigate("Products");
+              }}
+              title={"Categories"}
+            />
           </View>
-          <Image
-            source={ICONS?.superSubLogo}
-            className="h-1/3 w-full mt-12 
-          "
-          />
         </View>
-        {/* home end */}
-        {/* About */}
-        <AboutHome />
+        <Image
+          source={ICONS?.superSubLogo}
+          className="h-1/3 w-full mt-12 
+          "
+        />
+      </View>
+      {/* home end */}
+      {/* About */}
+      <AboutHome />
 
-        {/* Explor */}
-        <ExploreCategories navi={navigation} />
-        {/* Most Popular Products */}
-        <MostPopularProducts />
+      {/* Explor */}
+      <ExploreCategories navi={navigation} />
+      {/* Most Popular Products */}
+      <MostPopularProducts />
 
-        {/* Why Order From SuperChicks */}
-        <WhyOrderFromSuperChicks />
-        {/* Hear From Our Happy Customers */}
-        <HearFromOurHappyCustomers />
-        {/* Footer */}
-        <Footer />
-      </ScrollView>
-    </ImageBackground>
+      {/* Why Order From SuperChicks */}
+      <WhyOrderFromSuperChicks />
+      {/* Hear From Our Happy Customers */}
+      <HearFromOurHappyCustomers />
+    </>
   );
 };
 

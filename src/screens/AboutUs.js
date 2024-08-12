@@ -1,17 +1,10 @@
 import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-  ImageBackground,
-} from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import { ICONS } from "../constants/Constant";
 import Footer from "../common/Footer";
-import { onScrollChange } from "../utils/Helper";
 import { useDispatch } from "react-redux";
 import { setHeaderScroll } from "../redux/actions/action";
+import GradientHOC from "../HOC/Gradient";
 
 const AboutSuperChicks = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -23,104 +16,86 @@ const AboutSuperChicks = ({ navigation }) => {
   }, []);
   return (
     <React.Fragment>
-      <ScrollView
-        onScroll={(e) => {
-          onScrollChange(e, dispatch);
-        }}
-        style={{ flexGrow: 1 }}
-      >
-        <ImageBackground
-          source={ICONS?.bgImg}
-          style={styles.backgroundImage}
-          resizeMode="cover"
-        >
-          <Image
-            source={ICONS?.homeBg}
-            resizeMode="cover"
-            className=" h-[200px] w-full  z-10"
-          />
-          <View className="px-6 ">
-            <View className="mt-10 h-screen">
-              <View style={styles.col}>
-                <View style={styles.aboutContent}>
-                  <Text style={styles.headerText}>
-                    About <Text style={styles.highlight}>SuperChicks</Text>
-                  </Text>
-                  <Text style={styles.subHeaderText}>
-                    Delivering fresh Chicken, fresh Mutton, and fresh Fish to
-                    your doorstep
-                  </Text>
-                </View>
-                <Text style={styles.paragraph}>
-                  SuperChicks supplies provide you fresh and hygienic meat
-                  products at very reasonable prices. Forget the old days of
-                  purchasing meat from stinky and unhygienic shops. Now just
-                  order it online and get it delivered to your doorsteps.
-                  SuperChicks supplies provide you fresh and hygienic meat
-                  products at very reasonable prices. Forget the old days of
-                  purchasing meat from stinky and unhygienic shops. Now just
-                  order it online and get it delivered to your doorsteps. Our
-                  online store allows you to conveniently purchase raw, 100%
-                  fresh food, including chicken, freshwater fish, and mutton
-                  that is never frozen. As a leading online company, SuperChicks
-                  is committed to offering the finest quality and freshness in
-                  chicken, fish, and mutton. Our products are sourced from fresh
-                  slaughter and processed just a few hours before being
-                  delivered to your doorstep, ensuring hygiene and quality at
-                  every step. Our products come with a 100% quality satisfaction
-                  promise.
-                </Text>
-              </View>
-              <View className="mb-4">
-                <Image
-                  source={ICONS?.aboutUsImg}
-                  resizeMode="cover"
-                  style={styles.image}
-                />
-              </View>
-            </View>
-
-            <View style={styles.fullWidthCol}>
+      <Image
+        source={ICONS?.homeBg}
+        resizeMode="cover"
+        className=" h-[200px] w-full  z-10"
+      />
+      <View className="px-6 ">
+        <View className="mt-10 h-screen">
+          <View style={styles.col}>
+            <View style={styles.aboutContent}>
+              <Text style={styles.headerText}>
+                About <Text style={styles.highlight}>SuperChicks</Text>
+              </Text>
               <Text style={styles.subHeaderText}>
-                How does your order reach your doorstep?
-              </Text>
-              <Text style={styles.paragraph}>
-                When you place an order with us, we guarantee a 110 minutes
-                delivery. Our team ensures that the products are fresh,
-                hygienic, and processed shortly before being handed over to our
-                delivery executive.
+                Delivering fresh Chicken, fresh Mutton, and fresh Fish to your
+                doorstep
               </Text>
             </View>
-            <View style={styles.fullWidthCol}>
-              <Text style={styles.subHeaderText}>
-                The benefits of ordering from SUPER-CHICKS:
-              </Text>
-              <Text style={styles.paragraph}>
-                We offer Cash on Delivery (COD) as well as online mode of
-                payment to give customers the freedom to inspect the quality and
-                freshness of our products. We prioritize delivering only fresh
-                products and take prompt action to rectify any issues.
-              </Text>
-              <Text style={styles.paragraph}>
-                If you are looking for the best experience and highest quality
-                meat and fish online, SuperChicks is the right choice for you.
-                Our products are tender and live-slaughtered just before
-                delivery, ensuring the utmost freshness and quality. We are here
-                to deliver on our promises and provide you with an excellent
-                culinary experience.
-              </Text>
-            </View>
-            <View style={styles.fullWidthCol}>
-              <Text style={styles.highlightRed}>
-                Choose SuperChicks for your meat and fish needs, and we
-                guarantee your satisfaction with every order.
-              </Text>
-            </View>
+            <Text style={styles.paragraph}>
+              SuperChicks supplies provide you fresh and hygienic meat products
+              at very reasonable prices. Forget the old days of purchasing meat
+              from stinky and unhygienic shops. Now just order it online and get
+              it delivered to your doorsteps. SuperChicks supplies provide you
+              fresh and hygienic meat products at very reasonable prices. Forget
+              the old days of purchasing meat from stinky and unhygienic shops.
+              Now just order it online and get it delivered to your doorsteps.
+              Our online store allows you to conveniently purchase raw, 100%
+              fresh food, including chicken, freshwater fish, and mutton that is
+              never frozen. As a leading online company, SuperChicks is
+              committed to offering the finest quality and freshness in chicken,
+              fish, and mutton. Our products are sourced from fresh slaughter
+              and processed just a few hours before being delivered to your
+              doorstep, ensuring hygiene and quality at every step. Our products
+              come with a 100% quality satisfaction promise.
+            </Text>
           </View>
-          {/* Footer */}
-          <Footer />
-        </ImageBackground>
-      </ScrollView>
+          <View className="mb-4">
+            <Image
+              source={ICONS?.aboutUsImg}
+              resizeMode="cover"
+              style={styles.image}
+            />
+          </View>
+        </View>
+
+        <View style={styles.fullWidthCol}>
+          <Text style={styles.subHeaderText}>
+            How does your order reach your doorstep?
+          </Text>
+          <Text style={styles.paragraph}>
+            When you place an order with us, we guarantee a 110 minutes
+            delivery. Our team ensures that the products are fresh, hygienic,
+            and processed shortly before being handed over to our delivery
+            executive.
+          </Text>
+        </View>
+        <View style={styles.fullWidthCol}>
+          <Text style={styles.subHeaderText}>
+            The benefits of ordering from SUPER-CHICKS:
+          </Text>
+          <Text style={styles.paragraph}>
+            We offer Cash on Delivery (COD) as well as online mode of payment to
+            give customers the freedom to inspect the quality and freshness of
+            our products. We prioritize delivering only fresh products and take
+            prompt action to rectify any issues.
+          </Text>
+          <Text style={styles.paragraph}>
+            If you are looking for the best experience and highest quality meat
+            and fish online, SuperChicks is the right choice for you. Our
+            products are tender and live-slaughtered just before delivery,
+            ensuring the utmost freshness and quality. We are here to deliver on
+            our promises and provide you with an excellent culinary experience.
+          </Text>
+        </View>
+        <View style={styles.fullWidthCol}>
+          <Text style={styles.highlightRed}>
+            Choose SuperChicks for your meat and fish needs, and we guarantee
+            your satisfaction with every order.
+          </Text>
+        </View>
+      </View>
     </React.Fragment>
   );
 };
@@ -195,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AboutSuperChicks;
+export default GradientHOC(AboutSuperChicks);

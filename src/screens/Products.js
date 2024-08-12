@@ -1,14 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Image,
-  ImageBackground,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import CollapsibleView from "../components/CollapsibleView.component";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   ALIVEDESICHICKEN,
   CHICKENPRODUCTS,
@@ -17,13 +8,12 @@ import {
   MUTTON,
 } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
-import Footer from "../common/Footer";
 import { Card } from "react-native-paper";
 import Del from "../hooks/Del.hook";
 import { addToCart, setHeaderScroll } from "../redux/actions/action";
 import { getSingleProductAPI } from "../services/Auth.service";
 import { useDispatch } from "react-redux";
-import { onScrollChange } from "../utils/Helper";
+import GradientHOC from "../HOC/Gradient";
 
 const Products = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -35,78 +25,60 @@ const Products = ({ navigation }) => {
   }, []);
   return (
     <React.Fragment>
-      <ImageBackground
-        source={ICONS?.bgImg}
-        style={styles.backgroundImage}
+      <Image
+        source={ICONS?.homeBg}
         resizeMode="cover"
-      >
-        <ScrollView
-          onScroll={(e) => {
-            onScrollChange(e, dispatch);
-          }}
-          style={{ flexGrow: 1 }}
-        >
-          <Image
-            source={ICONS?.homeBg}
-            resizeMode="cover"
-            className="absolute h-[720px] top-0  w-full  "
-          />
+        className="absolute h-[720px] top-0  w-full  "
+      />
 
-          <View className="px-10 relative h-screen">
-            <View className="flex justify-center mt-6">
-              <Text
-                className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}
-              >
-                Order raw meat &
-              </Text>
-              <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-                get it delivered at
-              </Text>
-              <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
-                your door steps.
-              </Text>
+      <View className="px-10 relative h-screen">
+        <View className="flex justify-center mt-6">
+          <Text className={`mt-2 text-2xl text-left font-bold text-[#DB1516]`}>
+            Order raw meat &
+          </Text>
+          <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+            get it delivered at
+          </Text>
+          <Text className="mt-2 text-2xl  font-bold text-[#DB1516]">
+            your door steps.
+          </Text>
 
-              <Text className="text-base mt-4 text-left">
-                Absolutely fresh Chicken 100% Natural & Chemical free
-              </Text>
-            </View>
-            <Image
-              source={ICONS?.productTopImg}
-              className="h-2/5 w-full mt-12 
+          <Text className="text-base mt-4 text-left">
+            Absolutely fresh Chicken 100% Natural & Chemical free
+          </Text>
+        </View>
+        <Image
+          source={ICONS?.productTopImg}
+          className="h-2/5 w-full mt-12 
             "
-            />
-          </View>
-          {/* home end */}
+        />
+      </View>
+      {/* home end */}
 
-          <View className="px-4">
-            <Text className=" text-center text-3xl font-semibold">
-              Order Fresh {"\n"} Chicken, Mutton & {"\n"} Fish from
-            </Text>
-            <Text className="text-[#DB1516] text-center text-3xl font-semibold">
-              SuperChicks
-            </Text>
+      <View className="px-4">
+        <Text className=" text-center text-3xl font-semibold">
+          Order Fresh {"\n"} Chicken, Mutton & {"\n"} Fish from
+        </Text>
+        <Text className="text-[#DB1516] text-center text-3xl font-semibold">
+          SuperChicks
+        </Text>
 
-            <View className="my-3">
-              <Text className="text-left text-lg font-medium mb-10 mt-5">
-                CHICKEN
-              </Text>
+        <View className="my-3">
+          <Text className="text-left text-lg font-medium mb-10 mt-5">
+            CHICKEN
+          </Text>
 
-              <Chicken navi={navigation} dis={useDispatch()} />
-              <Text className="text-left text-lg font-medium mb-10 mt-5">
-                ALIVE DESI CHICKEN
-              </Text>
-              <AliveDesiChicken />
-              <Text className="text-left text-lg font-medium mb-10 mt-5">
-                MUTTON
-              </Text>
-              <Mutton />
-            </View>
-          </View>
-
-          {/* Footer */}
-          <Footer />
-        </ScrollView>
-      </ImageBackground>
+          <Chicken navi={navigation} dis={useDispatch()} />
+          <Text className="text-left text-lg font-medium mb-10 mt-5">
+            ALIVE DESI CHICKEN
+          </Text>
+          <AliveDesiChicken />
+          <Text className="text-left text-lg font-medium mb-10 mt-5">
+            MUTTON
+          </Text>
+          <Mutton />
+        </View>
+      </View>
     </React.Fragment>
   );
 };
@@ -296,4 +268,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Products;
+export default GradientHOC(Products);

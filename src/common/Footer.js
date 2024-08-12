@@ -1,9 +1,9 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { ICONS } from "../constants/Constant";
 import { AntDesign, Entypo, EvilIcons, FontAwesome } from "@expo/vector-icons";
 
-const Footer = () => {
+const Footer = ({ navigation, scrollToTop }) => {
   return (
     <React.Fragment>
       <Image
@@ -46,7 +46,10 @@ const Footer = () => {
           <Text className="text-base font-medium text-[#db1516]">
             Important Links
           </Text>
-          <Text className="flex-row items-baseline">Home</Text>
+
+          <TouchableOpacity onPress={() => {}}>
+            <Text className="flex-row items-baseline">Home</Text>
+          </TouchableOpacity>
           <Text className="flex-row items-baseline">Contant Us</Text>
           <Text className="flex-row items-baseline">About</Text>
         </View>

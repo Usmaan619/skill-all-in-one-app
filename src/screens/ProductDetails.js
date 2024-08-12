@@ -1,32 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
-  ScrollView,
-  ImageBackground,
   Image,
   TouchableOpacity,
 } from "react-native";
 import { ICONS } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
-import Footer from "../common/Footer";
 import Del from "../hooks/Del.hook";
 import Hr from "../tags/Hr.tag";
 import Entypo from "@expo/vector-icons/Entypo";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import { Card } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import { getSingleProductAPI } from "../services/Auth.service";
 import { connect, useDispatch } from "react-redux";
 import { addToCart, setHeaderScroll } from "../redux/actions/action";
 import ImageCarousel from "./CustomImageCarousel";
-import { onScrollChange } from "../utils/Helper";
 import { Similar } from "./SimilarProducts";
+import GradientHOC from "../HOC/Gradient";
 
-const ProductDetails = ({ navigation }) => {
+const ProductDetails = ({ navigation, scrollToTop }) => {
   const dispatch = useDispatch();
   const route = useRoute();
 
@@ -63,122 +59,98 @@ const ProductDetails = ({ navigation }) => {
     };
   }, []);
 
-  const scrollViewRef = useRef(null);
-
-  const scrollToTop = () =>
-    scrollViewRef.current?.scrollTo({ y: 0, animated: true });
-
   return (
     <React.Fragment>
-      <ImageBackground
-        source={ICONS?.bgImg}
+      <Image
+        source={ICONS?.homeBg}
         resizeMode="cover"
-        style={styles?.backgroundImage}
-      >
-        <ScrollView
-          ref={scrollViewRef}
-          onScroll={(e) => {
-            onScrollChange(e, dispatch);
-          }}
-          style={{ flexGrow: 1 }}
-        >
-          <Image
-            source={ICONS?.homeBg}
-            resizeMode="cover"
-            className="absolute top-0 h-[190px] w-full object-cover z-10 "
-          />
-          <View className="relative  mt-16 z-10">
-            <View style={styles.container}>
-              {/* Carousel */}
-              <ImageCarousel route={{ params: { id: singleProductId } }} />
-              {/* end Carousel */}
-              <View style={styles.detailsSection}>
-                <Text style={styles.heading}>Delivery Details</Text>
-                <Text className="text-slate-600 my-2">
-                  Check estimated delivery date/pickup option.
-                </Text>
-                <View className="flex-row">
-                  <TextInput
-                    className="m-0  "
-                    style={styles.input}
-                    placeholder="Apply Valid Pincode"
-                  />
-                  <TouchableOpacity className="bg-[#f1f1f1] h-10 flex-row justify-center items-center p-2">
-                    <Text className="text-[#db1516]">Check</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={styles.productInfo}>
-                <Text style={styles.productTitle} className="font-medium">
-                  {product?.name}
-                </Text>
-                <View style={styles.priceSection}>
-                  <Text style={styles.price}>{product?.price}</Text>
-                  <Text style={styles.originalPrice}>
-                    <Del>{product?.discount}</Del>
-                  </Text>
-                  <Text style={styles.discount}>{product?.offers}</Text>
-                </View>
-                <Hr />
-                <View className="flex-row  items-baseline gap-3 my-1">
-                  <Text className="text-lg font-normal">Quantity:</Text>
-                  <View className="w-20 h-9 border-[#f00] border rounded-lg flex-row justify-between px-1 items-center ">
-                    <TouchableOpacity onPress={setDecrease}>
-                      <Entypo name="minus" size={22} color="#f00" />
-                    </TouchableOpacity>
-                    <Text>{amount}</Text>
-                    <TouchableOpacity onPress={setIncrease}>
-                      <Entypo name="plus" size={22} color="#f00" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <TouchableOpacity>
-                  <Text style={styles.moreThan20} className="text-lg">
-                    For more than 20kg click here
-                  </Text>
-                </TouchableOpacity>
-                <Text
-                  style={styles.description}
-                  className="text-sm text-slate-600"
-                >
-                  {product?.description}
-                </Text>
-                <View className="grid gap-3 justify-center items-center">
-                  <View className="w-2/3">
-                    {/* add to cart white btn  */}
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleAddToCart(product?.id, amount, product);
-                      }}
-                      style={[styles.button]}
-                    >
-                      <LinearGradient
-                        colors={["#ffffff", "#fff"]} // Gradient colors
-                        style={[styles.linearGradient]}
-                        start={{ x: 0, y: 0 }}
-                        end={{ x: 1, y: 0 }}
-                      >
-                        <Text style={styles.text}>Add to Cart</Text>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                  <View className="w-2/3">
-                    <CommonButton onPress={() => {}} title={"Buy Now"} />
-                  </View>
-                </View>
-              </View>
-              <View className="my-2">
-                <Hr />
-              </View>
-
-              {/* Similar Products */}
-              <Similar navigation={navigation} />
+        className="absolute top-0 h-[190px] w-full"
+      />
+      <View className="relative  mt-14 ">
+        <View style={styles.container}>
+          {/* Carousel */}
+          <ImageCarousel route={{ params: { id: singleProductId } }} />
+          {/* end Carousel */}
+          <View style={styles.detailsSection}>
+            <Text style={styles.heading}>Delivery Details</Text>
+            <Text className="text-slate-600 my-2">
+              Check estimated delivery date/pickup option.
+            </Text>
+            <View className="flex-row">
+              <TextInput
+                className="m-0  "
+                style={styles.input}
+                placeholder="Apply Valid Pincode"
+              />
+              <TouchableOpacity className="bg-[#f1f1f1] h-10 flex-row justify-center items-center p-2">
+                <Text className="text-[#db1516]">Check</Text>
+              </TouchableOpacity>
             </View>
           </View>
-          {/* Footer */}
-          <Footer />
-        </ScrollView>
-      </ImageBackground>
+          <View style={styles.productInfo}>
+            <Text style={styles.productTitle} className="font-medium">
+              {product?.name}
+            </Text>
+            <View style={styles.priceSection}>
+              <Text style={styles.price}>{product?.price}</Text>
+              <Text style={styles.originalPrice}>
+                <Del>{product?.discount}</Del>
+              </Text>
+              <Text style={styles.discount}>{product?.offers}</Text>
+            </View>
+            <Hr />
+            <View className="flex-row  items-baseline gap-3 my-1">
+              <Text className="text-lg font-normal">Quantity:</Text>
+              <View className="w-20 h-9 border-[#f00] border rounded-lg flex-row justify-between px-1 items-center ">
+                <TouchableOpacity onPress={setDecrease}>
+                  <Entypo name="minus" size={22} color="#f00" />
+                </TouchableOpacity>
+                <Text>{amount}</Text>
+                <TouchableOpacity onPress={setIncrease}>
+                  <Entypo name="plus" size={22} color="#f00" />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <TouchableOpacity>
+              <Text style={styles.moreThan20} className="text-lg">
+                For more than 20kg click here
+              </Text>
+            </TouchableOpacity>
+            <Text style={styles.description} className="text-sm text-slate-600">
+              {product?.description}
+            </Text>
+            <View className="grid gap-3 justify-center items-center">
+              <View className="w-2/3">
+                {/* add to cart white btn  */}
+                <TouchableOpacity
+                  onPress={() => {
+                    handleAddToCart(product?.id, amount, product);
+                  }}
+                  style={[styles.button]}
+                >
+                  <LinearGradient
+                    colors={["#ffffff", "#fff"]} // Gradient colors
+                    style={[styles.linearGradient]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                  >
+                    <Text style={styles.text}>Add to Cart</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+              <View className="w-2/3">
+                <CommonButton onPress={() => {}} title={"Buy Now"} />
+              </View>
+            </View>
+          </View>
+          <View className="my-2">
+            <Hr />
+          </View>
+
+          {/* Similar Products */}
+          <Similar navigation={navigation} />
+        </View>
+      </View>
     </React.Fragment>
   );
 };
@@ -340,4 +312,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductDetails);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GradientHOC(ProductDetails));

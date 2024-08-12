@@ -1,25 +1,47 @@
-import { Image, StatusBar, StyleSheet } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import React, { useRef, useEffect } from "react";
+import { ImageBackground, ScrollView, StyleSheet } from "react-native";
+import { ICONS } from "../constants/Constant";
+import { onScrollChange } from "../utils/Helper";
+import { useDispatch } from "react-redux";
+import { setHeaderScroll } from "../redux/actions/action";
+import Footer from "../common/Footer";
 
-export const GradientHOC = (Component) => {
-  const gradientProps = {
-    colors: ["#FFFFFF", "#FFF"],
-  };
+const GradientHOC = (Component) => {
+  return function WrappedComponent(props) {
+    const dispatch = useDispatch();
+    const { navigation } = props;
+    const scrollViewRef = useRef(null);
 
-  return (props) => {
+    // Function to scroll to top
+    const scrollToTop = () => {
+      scrollViewRef.current?.scrollTo({ y: 0, animated: true });
+    };
+
+    useEffect(() => {
+      return () => {
+        dispatch(setHeaderScroll(false));
+      };
+    }, [dispatch]);
+
     return (
-      <>
-        <StatusBar
-          networkActivityIndicatorVisible={true}
-          translucent={true}
-          style="auto"
-          backgroundColor="#000"
-          barStyle="light-content"
-        />
-        <LinearGradient colors={gradientProps.colors} style={styles.gradient} />
-        {/* <Image style={styles.gradient} source={ICONS.bgImg} /> */}
-        <Component {...props} />
-      </>
+      <ImageBackground
+        className="w-full h-full bg-white m-0 p-0 relative"
+        source={ICONS?.bgImg}
+        resizeMode="cover"
+      >
+        <ScrollView
+          ref={scrollViewRef} // Assign the ref to ScrollView
+          onScroll={(e) => {
+            onScrollChange(e, dispatch);
+          }}
+          style={{ flexGrow: 1 }}
+          contentInsetAdjustmentBehavior="automatic"
+        >
+          <Component {...props} scrollToTop={scrollToTop} />
+          {/* Footer */}
+          <Footer navigation={navigation} scrollToTop={scrollToTop} />
+        </ScrollView>
+      </ImageBackground>
     );
   };
 };
@@ -36,3 +58,5 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
+
+export default GradientHOC;
