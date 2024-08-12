@@ -139,8 +139,8 @@ const CheckoutScreen = () => {
           return (
             <React.Fragment>
               <Image
-                source={ICONS?.homeBg}
-                className=" h-[200px] w-full  z-10"
+                source={ICONS?.headerTopImg}
+                className="object-cover h-[40] w-full mt-7"
               />
               <View className="px-4">
                 <Text style={styles.header}>Order Checkout</Text>

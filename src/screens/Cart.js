@@ -37,12 +37,11 @@ const Cart = ({ navigation }) => {
   return (
     <React.Fragment>
       <Image
-        source={ICONS?.homeBg}
-        className="absolute top-0 h-[190px] w-full object-cover z-10 "
+        source={ICONS?.headerTopImg}
+        className="object-cover h-[40] w-full mt-7"
       />
-
       {cart?.length ? (
-        <View className="relative  mt-44 ">
+        <View className="">
           <View style={styles.container}>
             <Text style={styles.header}>Your Cart</Text>
             {/* Product listing */}
@@ -144,7 +143,7 @@ const Cart = ({ navigation }) => {
           </View>
         </View>
       ) : (
-        <View style={{ flex: 1 }} className="mt-48">
+        <View style={{ flex: 1 }} className="mt-2">
           <Text className="text-center font-medium  text-lg">
             - : Your Basket is Empty : -
           </Text>

@@ -18,7 +18,10 @@ const ContactUs = ({ navigation }) => {
   }, []);
   return (
     <React.Fragment>
-      <Image source={ICONS?.homeBg} className=" h-[200px] w-full  " />
+      <Image
+        source={ICONS?.headerTopImg}
+        className="object-cover h-[40] w-full mt-7"
+      />
       <View className="px-10 ">
         <View style={styles.header}>
           <Text style={styles.headerText}>Contact Us</Text>

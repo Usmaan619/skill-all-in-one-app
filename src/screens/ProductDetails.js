@@ -62,11 +62,10 @@ const ProductDetails = ({ navigation, scrollToTop }) => {
   return (
     <React.Fragment>
       <Image
-        source={ICONS?.homeBg}
-        resizeMode="cover"
-        className="absolute top-0 h-[190px] w-full"
+        source={ICONS?.headerTopImg}
+        className="object-cover h-[40] w-full mt-7"
       />
-      <View className="relative  mt-14 ">
+      <View className="">
         <View style={styles.container}>
           {/* Carousel */}
           <ImageCarousel route={{ params: { id: singleProductId } }} />

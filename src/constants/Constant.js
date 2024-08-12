@@ -31,9 +31,15 @@ export const ICONS = {
   productTopImg: require("../../assets/png/product-top.png"),
 
   headerBgImg: require("../../assets/png/account-1.png"),
+  headerTopImg: require("../../assets/png/headerTop.png"),
 
   emptyCart: require("../../assets/png/empty-cart.png"),
+
   aboutUsImg: require("../../assets/png/ABout page image.jpg"),
+
+  chickenImg: require("../../assets/logo/logo-1.png"),
+  aliveChickenImg: require("../../assets/logo/logo-2.png"),
+  muttonImg: require("../../assets/logo/logo-3.png"),
 };
 
 export const ABOUTHOMEIMG = [

@@ -17,9 +17,8 @@ const AboutSuperChicks = ({ navigation }) => {
   return (
     <React.Fragment>
       <Image
-        source={ICONS?.homeBg}
-        resizeMode="cover"
-        className=" h-[200px] w-full  z-10"
+        source={ICONS?.headerTopImg}
+        className="object-cover h-[40] w-full mt-7"
       />
       <View className="px-6 ">
         <View className="mt-10 h-screen">
