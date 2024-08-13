@@ -138,7 +138,12 @@ const ProductDetails = ({ navigation, scrollToTop }) => {
                 </TouchableOpacity>
               </View>
               <View className="w-2/3">
-                <CommonButton onPress={() => {}} title={"Buy Now"} />
+                <CommonButton
+                  onPress={() => {
+                    navigation.navigate("Cart");
+                  }}
+                  title={"Buy Now"}
+                />
               </View>
             </View>
           </View>
