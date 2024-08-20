@@ -19,6 +19,30 @@ export const loginAPI = async (payload) => {
   }
 };
 
+export const signMCheckAPI = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      `${environment?.apiUrl}sign_m`,
+      payload
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+
+export const signUpCheckAPI = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      `${environment?.apiUrl}sign_check`,
+      payload
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+
 export const getSingleProductAPI = async (id) => {
   try {
     const response = await axiosInstance.get(
@@ -32,8 +56,32 @@ export const getSingleProductAPI = async (id) => {
 
 export const postAddressAPI = async (payload) => {
   try {
-    const response = await axiosInstance.get(
+    const response = await axiosInstance.post(
       `${environment?.apiUrl}address`,
+      payload
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+
+export const contactUsAPI = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      `${environment?.apiUrl}contact`,
+      payload
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+
+export const orderDataPostAPI = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      `${environment?.apiUrl}order_data`,
       payload
     );
     return response?.data;

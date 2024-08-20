@@ -232,6 +232,23 @@ export const checkoutValidationSchema = yup.object().shape({
     ),
 });
 
+export const contactUsValidationSchema = yup.object().shape({
+  name: yup
+    .string()
+    .matches(/(\w.+\s).+/, "Enter at least 2 names")
+    .required("Full name is required"),
+
+  email: yup
+    .string()
+    .email("Please enter valid email")
+    .required("Email is required"),
+  enquiry: yup
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be at most 1000 characters")
+    .required("Message is required"),
+});
+
 export const FormatPrice = ({ price }) => {
   return Intl.NumberFormat("en-IN", {
     style: "currency",

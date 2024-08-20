@@ -2,6 +2,7 @@ import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { ICONS } from "../constants/Constant";
 import { AntDesign, Entypo, EvilIcons, FontAwesome } from "@expo/vector-icons";
+import { Linking } from "react-native";
 
 const Footer = ({ navigation, scrollToTop }) => {
   return (
@@ -60,10 +61,34 @@ const Footer = ({ navigation, scrollToTop }) => {
               </Text>
 
               <View className="flex-row justify-between gap-2">
-                <EvilIcons name="sc-facebook" size={20} color="black" />
-                <FontAwesome name="whatsapp" size={19} color="black" />
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL(
+                      "https://www.facebook.com/profile.php?id=61556895375689&mibextid=ZbWKwL"
+                    );
+                  }}
+                >
+                  <EvilIcons name="sc-facebook" size={20} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL(
+                      "https://api.whatsapp.com/send/?phone=919244276667&text=Hello&type=phone_number&app_absent=0"
+                    );
+                  }}
+                >
+                  <FontAwesome name="whatsapp" size={19} color="black" />
+                </TouchableOpacity>
 
-                <AntDesign name="instagram" size={19} color="black" />
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL(
+                      "https://www.instagram.com/superchicks.online?igsh=aGM0Zmw3Mmx6MzJo"
+                    );
+                  }}
+                >
+                  <AntDesign name="instagram" size={19} color="black" />
+                </TouchableOpacity>
               </View>
             </View>
           </View>

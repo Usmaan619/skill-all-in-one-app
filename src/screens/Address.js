@@ -10,8 +10,8 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
+import { BlurView } from "expo-blur";
 import { RadioButton } from "react-native-paper";
-import { ICONS } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
 import { Formik } from "formik";
 import { checkoutValidationSchema, FormatPrice } from "../utils/Helper";
@@ -138,11 +138,11 @@ const CheckoutScreen = () => {
           formikFn = formikProps;
           return (
             <React.Fragment>
-              <Image
+              {/* <Image
                 source={ICONS?.headerTopImg}
                 className="object-cover h-[40] w-full mt-7"
-              />
-              <View className="px-4">
+              /> */}
+              <View className="px-4 mt-2">
                 <Text style={styles.header}>Order Checkout</Text>
                 <View style={styles.section}>
                   <Text style={styles.subHeader}>Shipping Address</Text>
@@ -162,7 +162,9 @@ const CheckoutScreen = () => {
                         <Text style={styles.label}>
                           Name <Text style={styles.required}>*</Text>
                         </Text>
+
                         <TextInput
+                          className=""
                           onChangeText={handleChange("name")}
                           onBlur={handleBlur("name")}
                           value={values.name}
@@ -190,7 +192,7 @@ const CheckoutScreen = () => {
                         )}
                       </View>
                       <View
-                        className="w-1/3 h-14 mt-3"
+                        className="w-1/3 h-14 mt-3 "
                         style={{ marginStart: 10 }}
                       >
                         <CommonButton onPress={handleNext} title={"Next"} />
@@ -503,7 +505,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   subHeader: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
   },
   row: {
@@ -517,15 +519,19 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 4,
+    marginLeft: 5,
   },
   required: {
     color: "red",
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 4,
-    padding: 8,
+    borderWidth: 2,
+    borderColor: "#c7c7c7",
+    paddingVertical: 8,
+    paddingLeft: 14,
+    backgroundColor: "#fff",
+    borderRadius: 9,
+    height: 56,
   },
   textarea: {
     borderWidth: 1,
