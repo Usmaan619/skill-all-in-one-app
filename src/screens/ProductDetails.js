@@ -14,7 +14,7 @@ import Hr from "../tags/Hr.tag";
 import Entypo from "@expo/vector-icons/Entypo";
 import { LinearGradient } from "expo-linear-gradient";
 import { heightPercentageToDP } from "react-native-responsive-screen";
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { getSingleProductAPI } from "../services/Auth.service";
 import { connect, useDispatch } from "react-redux";
 import { addToCart, setHeaderScroll } from "../redux/actions/action";
@@ -53,17 +53,17 @@ const ProductDetails = ({ navigation, scrollToTop }) => {
     dispatch(addToCart(id, amount, singleProduct));
   };
 
-  useEffect(() => {
+  useFocusEffect(() => {
     return () => {
       dispatch(setHeaderScroll(false));
     };
-  }, []);
+  });
 
   return (
     <React.Fragment>
       <Image
         source={ICONS?.headerTopImg}
-        className="object-cover h-[40] w-full mt-7"
+        className="object-cover h-[40] w-full mt-2"
       />
       <View className="">
         <View style={styles.container}>

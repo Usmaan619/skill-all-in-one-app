@@ -23,7 +23,7 @@ const Footer = ({ navigation, scrollToTop }) => {
             hygienic meat poducts at very reasonable price
           </Text>
 
-          <View className="grid gap-3 justify-center items-center my-2">
+          <View className="grid gap-3 justify-start items-start my-2">
             <Text className="text-base font-medium text-[#db1516]">
               Address
             </Text>
@@ -40,49 +40,36 @@ const Footer = ({ navigation, scrollToTop }) => {
               info@superchicks.online
             </Text>
           </View>
-        </View>
 
-        <View className="grid gap-3 justify-center items-center my-1">
-          <Text className="text-base font-medium text-[#db1516]">
-            Important Links
-          </Text>
+          <View className=" flex-row justify-between">
+            <View className="grid gap-3 justify-start items-start my-1">
+              <Text className="text-base font-medium text-[#db1516]">
+                Important Links
+              </Text>
 
-          <TouchableOpacity onPress={() => {}}>
-            <Text className="flex-row items-baseline">Home</Text>
-          </TouchableOpacity>
-          <Text className="flex-row items-baseline">Contant Us</Text>
-          <Text className="flex-row items-baseline">About</Text>
-        </View>
+              <TouchableOpacity onPress={() => {}}>
+                <Text className="flex-row items-baseline">Home</Text>
+              </TouchableOpacity>
+              <Text className="flex-row items-baseline">Contant Us</Text>
+              <Text className="flex-row items-baseline">About</Text>
+            </View>
 
-        <View className="grid gap-3 justify-center items-center my-1">
-          <Text className="text-base font-medium text-[#db1516]">
-            Important Links
-          </Text>
-          <Text className="flex-row items-baseline">Home</Text>
-          <Text className="flex-row items-baseline">Contant Us</Text>
-          <Text className="flex-row items-baseline">About</Text>
-        </View>
+            <View className="grid gap-3 t my-1 ">
+              <Text className="text-base text-right font-medium text-[#db1516]">
+                Social Media
+              </Text>
 
-        <View className="grid gap-3 justify-center items-center my-1">
-          <Text className="text-base font-medium text-[#db1516]">
-            Social Media
-          </Text>
-          <View className="flex-row justify-between w-full">
-            <EvilIcons name="sc-facebook" size={22} color="black" />
-            <FontAwesome name="whatsapp" size={19} color="black" />
-            <AntDesign
-              onPress={() => {
-                // Linking?.openURL(
-                //   "https://www.instagram.com/superchicks.online?igsh=aGM0Zmw3Mmx6MzJo"
-                // );
-              }}
-              name="instagram"
-              size={20}
-              color="black"
-            />
+              <View className="flex-row justify-between gap-2">
+                <EvilIcons name="sc-facebook" size={20} color="black" />
+                <FontAwesome name="whatsapp" size={19} color="black" />
+
+                <AntDesign name="instagram" size={19} color="black" />
+              </View>
+            </View>
           </View>
         </View>
-        <View className="bg-black h-[1px] w-full mb-2 mt-1 "></View>
+
+        <View className="bg-black h-[1px] w-full mb-2 mt-2 "></View>
       </View>
     </React.Fragment>
   );

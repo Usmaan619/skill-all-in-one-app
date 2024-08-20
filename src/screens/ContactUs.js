@@ -7,20 +7,21 @@ import Footer from "../common/Footer";
 import { setHeaderScroll } from "../redux/actions/action";
 import { useDispatch } from "react-redux";
 import GradientHOC from "../HOC/Gradient";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ContactUs = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useFocusEffect(() => {
     return () => {
       dispatch(setHeaderScroll(false));
     };
-  }, []);
+  });
   return (
     <React.Fragment>
       <Image
         source={ICONS?.headerTopImg}
-        className="object-cover h-[40] w-full mt-7"
+        className="object-cover h-[40] w-full mt-2"
       />
       <View className="px-10 ">
         <View style={styles.header}>

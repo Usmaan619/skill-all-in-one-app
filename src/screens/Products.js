@@ -15,14 +15,15 @@ import { getSingleProductAPI } from "../services/Auth.service";
 import { useDispatch } from "react-redux";
 import GradientHOC from "../HOC/Gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useFocusEffect } from "@react-navigation/native";
 const Products = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useFocusEffect(() => {
     return () => {
       dispatch(setHeaderScroll(false));
     };
-  }, []);
+  });
   return (
     <React.Fragment>
       <View className=" h-screen ">

@@ -14,6 +14,7 @@ import {
 } from "../redux/actions/action";
 import { FormatPrice } from "../utils/Helper";
 import GradientHOC from "../HOC/Gradient";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Cart = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -28,17 +29,17 @@ const Cart = ({ navigation }) => {
     dispatch(calculateTotalPrice());
   }, [cart, dispatch]);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     return () => {
       dispatch(setHeaderScroll(false));
     };
-  }, []);
+  });
 
   return (
     <React.Fragment>
       <Image
         source={ICONS?.headerTopImg}
-        className="object-cover h-[40] w-full mt-7"
+        className="object-cover h-[40] w-full mt-3 z-10"
       />
       {cart?.length ? (
         <View className="">

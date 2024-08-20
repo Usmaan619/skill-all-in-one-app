@@ -5,24 +5,25 @@ import Footer from "../common/Footer";
 import { useDispatch } from "react-redux";
 import { setHeaderScroll } from "../redux/actions/action";
 import GradientHOC from "../HOC/Gradient";
+import { useFocusEffect } from "@react-navigation/native";
 
 const AboutSuperChicks = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useFocusEffect(() => {
     return () => {
       dispatch(setHeaderScroll(false));
     };
-  }, []);
+  });
   return (
     <React.Fragment>
       <Image
         source={ICONS?.headerTopImg}
-        className="object-cover h-[40] w-full mt-7"
+        className="object-cover h-[40] w-full mt-2"
       />
       <View className="px-6 ">
         <View className="mt-10 h-screen">
-          <View style={styles.col}>
+          <View style={styles.fullWidthCol}>
             <View style={styles.aboutContent}>
               <Text style={styles.headerText}>
                 About <Text style={styles.highlight}>SuperChicks</Text>
@@ -33,21 +34,23 @@ const AboutSuperChicks = ({ navigation }) => {
               </Text>
             </View>
             <Text style={styles.paragraph}>
-              SuperChicks supplies provide you fresh and hygienic meat products
-              at very reasonable prices. Forget the old days of purchasing meat
+              SuperChicks supplies provides you fresh and hygienic meat products
+              at very reasonable price. Forget the old days of purchasing meat
               from stinky and unhygienic shops. Now just order it online and get
-              it delivered to your doorsteps. SuperChicks supplies provide you
-              fresh and hygienic meat products at very reasonable prices. Forget
-              the old days of purchasing meat from stinky and unhygienic shops.
-              Now just order it online and get it delivered to your doorsteps.
+              it delivered to your door steps.
+            </Text>
+            <Text style={styles.paragraph}>
               Our online store allows you to conveniently purchase raw, 100%
-              fresh food, including chicken, freshwater fish, and mutton that is
+              fresh food, including chicken, freshwater fish and mutton that is
               never frozen. As a leading online company, SuperChicks is
               committed to offering the finest quality and freshness in chicken,
-              fish, and mutton. Our products are sourced from fresh slaughter
-              and processed just a few hours before being delivered to your
-              doorstep, ensuring hygiene and quality at every step. Our products
-              come with a 100% quality satisfaction promise.
+              fish and mutton.
+            </Text>
+            <Text style={styles.paragraph}>
+              Our products are sourced from fresh slaught and processed just a
+              few hours before being delivered to your doorstep, ensuring
+              hygiene and quality at every step.Our products come with 100%
+              quality satisfaction promise
             </Text>
           </View>
           <View className="mb-4">
@@ -109,12 +112,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   col: {
-    flex: 1,
+    // flex: 1,
     paddingRight: 10,
-    marginBottom: 50,
+    // marginBottom: 50,
+    // marginVertical:10
   },
   colImage: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -122,7 +126,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   aboutContent: {
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   headerText: {
     fontWeight: "bold",
@@ -134,7 +138,8 @@ const styles = StyleSheet.create({
   subHeaderText: {
     fontSize: 18,
     color: "black",
-    marginBottom: 10,
+    marginBottom: 5,
+    marginTop: 10,
   },
   paragraph: {
     fontSize: 16,

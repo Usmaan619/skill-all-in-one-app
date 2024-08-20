@@ -18,6 +18,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import { setHeaderScroll } from "../redux/actions/action";
 import GradientHOC from "../HOC/Gradient";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -31,11 +32,11 @@ const Home = ({ navigation }) => {
     setIsModalVisible(!isModalVisible);
   };
 
-  useEffect(() => {
+  useFocusEffect(() => {
     return () => {
       dispatch(setHeaderScroll(false));
     };
-  }, []);
+  });
 
   // bg-[#ffe5e5]
   return (

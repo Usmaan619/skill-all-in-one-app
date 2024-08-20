@@ -39,7 +39,7 @@ const CollapsibleView = ({ navi, total_item, headerScroll }) => {
 
   return (
     <View
-      className={`z-50  ${headerScroll ? " bg-white" : "bg-[#ffe5e5]"} mt-3`}
+      className={`z-50  ${headerScroll ? " bg-white" : "bg-[#ffe5e5]"} `}
     >
       <TouchableWithoutFeedback>
         <View className="flex-row justify-center items-center mt-10 mb-3  z-40">
