@@ -11,17 +11,21 @@ import { COLOURs, ICONS } from "../constants/Constant";
 import { AntDesign } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
+import {
+  calculateTotalItems,
+  calculateTotalPrice,
+} from "../redux/actions/action";
 const CollapsibleView = ({ navi, total_item, headerScroll }) => {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cart);
+  useEffect(() => {
+    dispatch(calculateTotalItems());
+    dispatch(calculateTotalPrice());
+  }, [cart, dispatch]);
+
   const [collapsed, setCollapsed] = useState(true);
   const [animation] = useState(new Animated.Value(0));
-
-  const totalItems = useSelector((state) => state?.cart?.total_item);
-  const [totalCartItems, setTotalCartItems] = useState(totalItems);
-
-  useEffect(() => {
-    setTotalCartItems(totalItems);
-  }, [totalCartItems]);
 
   const toggleCollapse = () => {
     Animated.timing(animation, {
@@ -38,9 +42,7 @@ const CollapsibleView = ({ navi, total_item, headerScroll }) => {
   });
 
   return (
-    <View
-      className={`z-50  ${headerScroll ? " bg-white" : "bg-[#ffe5e5]"} `}
-    >
+    <View className={`z-50  ${headerScroll ? " bg-white" : "bg-[#ffe5e5]"} `}>
       <TouchableWithoutFeedback>
         <View className="flex-row justify-center items-center mt-10 mb-3  z-40">
           <View

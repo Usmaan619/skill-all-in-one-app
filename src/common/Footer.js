@@ -5,6 +5,7 @@ import { AntDesign, Entypo, EvilIcons, FontAwesome } from "@expo/vector-icons";
 import { Linking } from "react-native";
 
 const Footer = ({ navigation, scrollToTop }) => {
+  console.log("navigation: ", navigation);
   return (
     <React.Fragment>
       <Image
@@ -37,7 +38,7 @@ const Footer = ({ navigation, scrollToTop }) => {
               +91-9244276667
             </Text>
             <Text className="flex-row items-baseline">
-              <Entypo name="mail" size={16} color="black" />{" "}
+              <Entypo name="mail" size={13} color="black"  />{" "}
               info@superchicks.online
             </Text>
           </View>
@@ -48,11 +49,30 @@ const Footer = ({ navigation, scrollToTop }) => {
                 Important Links
               </Text>
 
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Home");
+                  setTimeout(() => {
+                    scrollToTop();
+                  }, 200);
+                }}
+              >
                 <Text className="flex-row items-baseline">Home</Text>
               </TouchableOpacity>
-              <Text className="flex-row items-baseline">Contant Us</Text>
-              <Text className="flex-row items-baseline">About</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("ContactUs");
+                }}
+              >
+                <Text className="flex-row items-baseline">Contant Us</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("About");
+                }}
+              >
+                <Text className="flex-row items-baseline">About</Text>
+              </TouchableOpacity>
             </View>
 
             <View className="grid gap-3 t my-1 ">

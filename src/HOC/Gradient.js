@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { ImageBackground, ScrollView, StyleSheet } from "react-native";
+import { Image, ImageBackground, ScrollView, StyleSheet } from "react-native";
 import { ICONS } from "../constants/Constant";
 import { onScrollChange } from "../utils/Helper";
 import { useDispatch } from "react-redux";

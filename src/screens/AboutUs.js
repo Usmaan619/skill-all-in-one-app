@@ -22,7 +22,7 @@ const AboutSuperChicks = ({ navigation }) => {
         className="object-cover h-[40] w-full mt-2"
       />
       <View className="px-6 ">
-        <View className="mt-10 h-screen">
+        <View className="mt-10">
           <View style={styles.fullWidthCol}>
             <View style={styles.aboutContent}>
               <Text style={styles.headerText}>
@@ -53,13 +53,13 @@ const AboutSuperChicks = ({ navigation }) => {
               quality satisfaction promise
             </Text>
           </View>
-          <View className="mb-4">
-            <Image
-              source={ICONS?.aboutUsImg}
-              resizeMode="cover"
-              style={styles.image}
-            />
-          </View>
+        </View>
+        <View className="">
+          <Image
+            source={ICONS?.aboutUsImg}
+            resizeMode="cover"
+            style={styles.image}
+          />
         </View>
 
         <View style={styles.fullWidthCol}>

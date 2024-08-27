@@ -40,6 +40,8 @@ export const ICONS = {
   chickenImg: require("../../assets/logo/logo-1.png"),
   aliveChickenImg: require("../../assets/logo/logo-2.png"),
   muttonImg: require("../../assets/logo/logo-3.png"),
+
+  whatsappImg: require("../../assets/png/whatsapp.png"),
 };
 
 export const ABOUTHOMEIMG = [
@@ -102,7 +104,7 @@ export const WHYORDERFORMSUPERCHICKS = [
     img: require("../../assets/HalalVerified/Halal-Verified-3.png"),
   },
   {
-    name: `FSSAI OF${"\n"}REGISTERED`,
+    name: `FSSAI ${"\n"}REGISTERED`,
     img: require("../../assets/HalalVerified/Halal-Verified-4.png"),
   },
 
