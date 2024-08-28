@@ -8,7 +8,6 @@ import NetworkComponent from "../components/Network.component";
 import { SetNetInfo, SetToken } from "../redux/actions/action";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { AxiosInterceptors } from "../axios/interceptor";
-
 import CollapsibleViewComponent from "../components/CollapsibleView.component";
 import { View } from "react-native-animatable";
 
