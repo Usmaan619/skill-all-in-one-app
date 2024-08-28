@@ -8,13 +8,7 @@ import NetworkComponent from "../components/Network.component";
 import { SetNetInfo, SetToken } from "../redux/actions/action";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { AxiosInterceptors } from "../axios/interceptor";
-import Home from "../screens/Home";
-import ContactUs from "../screens/ContactUs";
-import AboutSuperChicks from "../screens/AboutUs";
-import Products from "../screens/Products";
-import ProductDetails from "../screens/ProductDetails";
-import Cart from "../screens/Cart";
-import CheckoutScreen from "../screens/Address";
+
 import CollapsibleViewComponent from "../components/CollapsibleView.component";
 import { View } from "react-native-animatable";
 
@@ -71,20 +65,6 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                   <Stack.Screen name="DashboardLayout" component={DashboardL} />
                 ) : (
                   <React.Fragment>
-                    <Stack.Screen name="Home" component={Home} />
-                    <Stack.Screen name="Products" component={Products} />
-                    <Stack.Screen
-                      name="CheckoutScreen"
-                      component={CheckoutScreen}
-                    />
-                    <Stack.Screen name="Cart" component={Cart} />
-
-                    <Stack.Screen
-                      name="ProductDetails"
-                      component={ProductDetails}
-                    />
-                    <Stack.Screen name="ContactUs" component={ContactUs} />
-                    <Stack.Screen name="About" component={AboutSuperChicks} />
                     <Stack.Screen
                       options={{ headerShown: false }}
                       name="Login"
@@ -93,14 +73,6 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                   </React.Fragment>
                 )}
               </Stack.Navigator>
-
-              {/* <AnimatedLoader
-                overlayColor="rgba(255,255,255,0.75)"
-                source={require("../../assets/animation/loading.json")}
-                visible={visible}
-                animationStyle={{ width: 150, height: 150 }}
-                speed={1}
-              ></AnimatedLoader> */}
             </>
           )}
         </React.Fragment>
