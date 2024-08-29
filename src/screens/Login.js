@@ -12,24 +12,21 @@ import {
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { Formik } from "formik";
-import B from "../components/B.component";
 import { authStyles } from "../styles/Auth.styles";
 import { COLOURs, ICONS } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
 import { loginValidationSchema } from "../utils/Helper";
-import { GradientHOC } from "../HOC/Gradient";
 import { loginAPI } from "../services/Auth.service";
 import { useDispatch } from "react-redux";
 import { setData } from "../services/Storage.service";
 import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
-import { SetLoader } from "../redux/actions/loader.action";
-
 import { LinearGradient } from "expo-linear-gradient";
 
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { COLORS } from "../constants/Colors";
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -91,150 +88,119 @@ const Login = ({ navigation }) => {
     }
   };
 
-  /**
-   * get phone height
-   * */
-  const height = Dimensions.get("window")?.height;
-
+  let formikFn;
   return (
-    <ScrollView>
-      <Formik
-        validationSchema={loginValidationSchema}
-        initialValues={{
-          phoneNumber: "",
-        }}
-        onSubmit={onSubmit}
-      >
-        {(formikProps) => {
-          const {
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            isValid,
-            touched,
-          } = formikProps;
-          formikFn = formikProps;
-          return (
-            <View style={{ flex: 1, backgroundColor: "#fff", height }}>
-              <View style={styles.signUpcontainer}>
-                {/* <Image source={ICONS?.homeBg} className="absolute " /> */}
-
-                <View className="flex justify-center mt-2 ">
-                  <View className="flex-row justify-center items-center">
-                    <Image
-                      source={ICONS?.superMainLogo}
-                      resizeMode="cover"
-                      className="h-[160px] w-[160px] overflow-hidden"
-                    />
-                  </View>
-                  <Text className="text-center my-5 text-lg font-semibold text-black">
-                    Welcome Back, Please Login To your Account.
-                  </Text>
-                  <View style={styles.signUpInputMainContainer}>
-                    {isShowOtpInput && (
-                      <SafeAreaView style={styles.signUpInputSubContainer}>
-                        <Text style={styles.inputLabel}>Phone Number</Text>
-                        <BlurView intensity={100} style={styles.input}>
-                          <TextInput
-                            placeholder="999888***90"
-                            style={{ padding: 10 }}
-                            onChangeText={handleChange("phoneNumber")}
-                            onBlur={handleBlur("phoneNumber")}
-                            value={values.phoneNumber}
-                            keyboardType="number-pad"
-                          />
-                        </BlurView>
-
-                        {errors.phoneNumber && touched.phoneNumber && (
-                          <Text
-                            style={{
-                              fontSize: 10,
-                              color: "red",
-                              marginTop: "2%",
-                              marginLeft: "1%",
-                            }}
-                          >
-                            {errors.phoneNumber}
-                          </Text>
-                        )}
-                      </SafeAreaView>
-                    )}
-                    {!isShowOtpInput && (
-                      <SafeAreaView style={styles.signUpInputSubContainer}>
-                        <Text style={styles.inputLabel}>
-                          OTP{" "}
-                          {!isShowResendBtn && (
-                            <Text className="text-red-600">{`(${seconds})`}</Text>
-                          )}
-                        </Text>
-                        <BlurView intensity={100} style={styles.input}>
-                          <TextInput
-                            placeholder="9998"
-                            style={{ padding: 10 }}
-                            onChangeText={handleChange("opt")}
-                            onBlur={handleBlur("opt")}
-                            value={values.opt}
-                            keyboardType="number-pad"
-                          />
-                        </BlurView>
-                      </SafeAreaView>
-                    )}
-                  </View>
-
-                  <View style={{ marginTop: "10%" }}>
-                    <CommonButton
-                      onPress={() => {
-                        handleSubmit();
-                      }}
-                      title={"Submit"}
-                    />
-                  </View>
-                  {!isShowResendBtn && (
-                    <View style={{ marginTop: "7%" }}>
-                      <CommonButton
-                        onPress={() => {
-                          handleSubmit();
-                        }}
-                        title={"Resend"}
-                      />
-                    </View>
-                  )}
+    <Formik
+      validationSchema={loginValidationSchema}
+      initialValues={{
+        email: "",
+        password: "",
+      }}
+      onSubmit={onSubmit}
+    >
+      {(formikProps) => {
+        const {
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          isValid,
+          touched,
+        } = formikProps;
+        formikFn = formikProps;
+        return (
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: COLORS?.secBlackColor,
+            }}
+            // className="h-screen"
+          >
+            <View style={styles.signUpcontainer}>
+              <View className="flex justify-center">
+                <View className="flex-row justify-center items-center">
+                  <Image
+                    source={ICONS?.intelligenceMainImg}
+                    resizeMode="cover"
+                    className="h-[160px] w-[160px] overflow-hidden mt-4"
+                  />
                 </View>
+                <Text
+                  className={`text-center my-5 text-lg font-semibold text-white`}
+                  // style={{ color: "#b69d7f" }}
+                >
+                  Welcome Back, Please Login To your Account.
+                </Text>
+                <View style={styles.signUpInputMainContainer}>
+                  <SafeAreaView style={styles.signUpInputSubContainer}>
+                    <Text style={styles.inputLabel}>Email ID</Text>
+                    <BlurView intensity={100} style={styles.input}>
+                      <TextInput
+                        placeholder="user.@mail.com....."
+                        style={{ padding: 10 }}
+                        onChangeText={handleChange("email")}
+                        onBlur={handleBlur("email")}
+                        value={values.email}
+                      />
+                    </BlurView>
 
-                {/* About */}
-                <View className="flex justify-center items-center">
-                  <LinearGradient
-                    start={{ x: 1, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    colors={[COLOURs?.light, COLOURs?.pink]}
-                    style={{
-                      width: wp("90%"),
-                      height: hp("21%"),
-                    }}
-                    className="mt-8 rounded-lg"
-                  >
-                    <Text className="text-center my-3 font-medium">
-                      About SuperChicks
+                    {errors.email && touched.email && (
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          color: "red",
+                          marginTop: "2%",
+                          marginLeft: "1%",
+                        }}
+                      >
+                        {errors.email}
+                      </Text>
+                    )}
+                  </SafeAreaView>
+
+                  <SafeAreaView style={styles.signUpInputSubContainer}>
+                    <Text style={styles.inputLabel} className="mt-2">
+                      Password
                     </Text>
-                    <Text
-                      style={{ lineHeight: 20 }}
-                      className="text-center px-3 flex justify-center"
-                    >
-                      SuperChicks supplies provides you fresh and hygienic meat
-                      products at very reasonable price. Forget the old days of
-                      purchasing meat from stinky and unhygienic shops. Now just
-                      order it online and get it delivered to your door steps.
-                    </Text>
-                  </LinearGradient>
+                    <BlurView intensity={100} style={styles.input}>
+                      <TextInput
+                        placeholder="Password"
+                        style={{ padding: 10 }}
+                        onChangeText={handleChange("password")}
+                        onBlur={handleBlur("password")}
+                        value={values.password}
+                      />
+                    </BlurView>
+
+                    {errors.password && touched.password && (
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          color: "red",
+                          marginTop: "2%",
+                          marginLeft: "1%",
+                        }}
+                      >
+                        {errors.password}
+                      </Text>
+                    )}
+                  </SafeAreaView>
                 </View>
               </View>
+              <View style={{ marginTop: "auto" }}>
+                <CommonButton
+                  onPress={() => {
+                    handleSubmit();
+                  }}
+                  title={"Login"}
+                />
+              </View>
             </View>
-          );
-        }}
-      </Formik>
-    </ScrollView>
+          </View>
+        );
+      }}
+    </Formik>
   );
 };
 

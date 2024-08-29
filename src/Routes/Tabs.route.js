@@ -1,8 +1,8 @@
 import { Text, View, Image, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as Animatable from "react-native-animatable";
-import Home from "../screens/Home";
 import { Entypo } from "@expo/vector-icons";
+import EmployeeHome from "../employees/EmployeeHome";
 
 const Tab = createBottomTabNavigator();
 const COLORS = {
@@ -35,7 +35,7 @@ export default function TabNavigation() {
       <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen
           name="Home"
-          component={Home}
+          component={EmployeeHome}
           options={{
             tabBarIcon: ({ focused }) => {
               return (

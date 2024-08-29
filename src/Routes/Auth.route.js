@@ -8,8 +8,8 @@ import NetworkComponent from "../components/Network.component";
 import { SetNetInfo, SetToken } from "../redux/actions/action";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { AxiosInterceptors } from "../axios/interceptor";
-import CollapsibleViewComponent from "../components/CollapsibleView.component";
-import { View } from "react-native-animatable";
+import WelcomeLogin from "../screens/WelcomeLogin";
+import TabNavigation from "./Tabs.route";
 
 const Stack = createStackNavigator();
 
@@ -47,23 +47,23 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
           ) : (
             <>
               <Stack.Navigator
-                screenOptions={({ navigation }) => ({
-                  headerShown: true,
+                screenOptions={({}) => ({
+                  headerShown: false,
                   animation: "slide_from_right",
-                  header: () => (
-                    <View
-                      style={{ height: 111, backgroundColor: "transparent" }}
-                    >
-                      {/* Adjust height or background as needed */}
-                      <CollapsibleViewComponent navi={navigation} />
-                    </View>
-                  ),
                 })}
               >
-                {token ? (
-                  <Stack.Screen name="DashboardLayout" component={DashboardL} />
+                {!token ? (
+                  <Stack.Screen
+                    name="DashboardLayout"
+                    component={TabNavigation}
+                  />
                 ) : (
                   <React.Fragment>
+                    <Stack.Screen
+                      options={{ headerShown: false }}
+                      name="WelcomeLogin"
+                      component={WelcomeLogin}
+                    />
                     <Stack.Screen
                       options={{ headerShown: false }}
                       name="Login"

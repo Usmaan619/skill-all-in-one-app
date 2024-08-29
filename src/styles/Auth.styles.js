@@ -2,6 +2,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { COLORS } from "../constants/Colors";
 
 export const authStyles = {
   container: {
@@ -13,8 +14,8 @@ export const authStyles = {
   signUpcontainer: {
     alignSelf: "center",
     flex: 1,
-    marginTop: 45,
-    width: 320,
+    // marginTop: 60,
+    width: 350,
   },
   backIcon: { resizeMode: "cover", height: 20, width: 15, marginTop: 3 },
 
@@ -64,16 +65,18 @@ export const authStyles = {
     alignItems: "center",
     // marginTop: hp("1%"),
     paddingHorizontal: 15,
+    width: "100%",
   },
 
   inputSubContainer: { marginTop: hp("2.2%"), width: 320 },
 
-  signUpInputSubContainer: { marginTop: hp("0.2%"), width: "100%" },
+  signUpInputSubContainer: { marginTop: hp("1.5%"), width: "100%" },
 
   inputLabel: {
     fontSize: hp("1.6%"), // size 14
     fontWeight: "600",
-    color: "#000",
+    color: COLORS?.thirdWhiteColor,
+
     marginBottom: hp("1.5%"),
   },
 
@@ -126,7 +129,8 @@ export const authStyles = {
     height: 56,
     overflow: "hidden",
     position: "relative",
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#f1f1f1d9",
+    // backfaceVisibility:"visible"
     // borderColor: "#000",
   },
 
