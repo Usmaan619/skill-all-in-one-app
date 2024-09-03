@@ -21,7 +21,10 @@ import { Entypo, FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import { toastSuccess } from "../services/Toaster.service";
+import { useDispatch } from "react-redux";
+import { SetLoader } from "../redux/actions/loader.action";
 const EmployeeHome = () => {
+  const dispatch = useDispatch();
   const itemsPerPage = 2;
 
   const [page, setPage] = React.useState(0);
@@ -40,9 +43,17 @@ const EmployeeHome = () => {
   }, []);
 
   const getAllAttendance = async () => {
-    const data = await getAllAttendanceAPI();
+    try {
+      dispatch(SetLoader("loader", true));
+      const data = await getAllAttendanceAPI();
 
-    setAttendenceData(data);
+      setAttendenceData(data);
+      setTimeout(() => {
+        dispatch(SetLoader("loader", false));
+      }, 1000);
+    } catch (error) {
+      dispatch(SetLoader("loader", false));
+    }
   };
 
   const uploadImage = async () => {
@@ -61,6 +72,10 @@ const EmployeeHome = () => {
       const frontImg = result?.assets[0]?.base64;
 
       // api
+      dispatch(SetLoader("loader", true));
+      console.log("result: ", result);
+      if (!result) return dispatch(SetLoader("loader", false));
+
       const res = await markAttendance({
         employee_id: Number(await getData("employeeId")),
         profile_img: result?.assets[0]?.base64,
@@ -68,10 +83,14 @@ const EmployeeHome = () => {
       });
 
       if (res?.success) {
+        dispatch(SetLoader("loader", false));
+
         await getAllAttendance();
         toastSuccess(res?.message);
       }
-    } catch (error) {}
+    } catch (error) {
+      dispatch(SetLoader("loader", true));
+    }
   };
 
   const markAttendance = async (payload) => await markAttendanceAPI(payload);

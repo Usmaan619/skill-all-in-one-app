@@ -78,7 +78,7 @@ export const signUpValidationSchema = yup.object().shape({
     .required("Confirm password is required"),
 });
 
-export const loginValidationSchema = yup.object().shape({
+export const loginValidationSchema_old = yup.object().shape({
   email: yup
     .string()
     .email("Please enter valid email")
@@ -97,6 +97,25 @@ export const loginValidationSchema = yup.object().shape({
   //   .string()
   //   .min(8, ({min}) => `Password must be at least ${min} characters`)
   //   .required('Password is required'),
+});
+
+const emailOrUsername = yup
+  .string()
+  .test(
+    "email-or-username",
+    "Please enter a valid email or username",
+    function (value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const usernameRegex = /^[a-zA-Z0-9_]{3,30}$/;
+
+      return emailRegex.test(value) || usernameRegex.test(value);
+    }
+  )
+  .required("Email or Username is required");
+
+export const loginValidationSchema = yup.object().shape({
+  emailOrUsername,
+  password: yup.string().required("Password is required"),
 });
 
 export const sendOtpToEmailValidationSchema = yup.object().shape({

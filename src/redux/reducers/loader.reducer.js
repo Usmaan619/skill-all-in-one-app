@@ -1,3 +1,5 @@
+import { SET_LOADER } from "../actions/loader.action";
+
 const initialState = {
   sendOtpLoader: false,
   loader: false,
@@ -5,7 +7,7 @@ const initialState = {
 
 const LoaderReducer = (state = initialState, action) => {
   switch (action.type) {
-    case true:
+    case SET_LOADER:
       return {
         ...state,
         [action.loaderName]: action?.value,

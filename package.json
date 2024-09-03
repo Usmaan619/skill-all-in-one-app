@@ -43,6 +43,7 @@
     "react-native": "0.74.5",
     "react-native-animatable": "^1.4.0",
     "react-native-gesture-handler": "~2.16.1",
+    "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.12.3",
     "react-native-paper-dates": "^0.22.20",

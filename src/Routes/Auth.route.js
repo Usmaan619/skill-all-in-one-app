@@ -10,7 +10,7 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import { AxiosInterceptors } from "../axios/interceptor";
 import WelcomeLogin from "../screens/WelcomeLogin";
 import TabNavigation from "./Tabs.route";
-
+import Spinner from "react-native-loading-spinner-overlay";
 const Stack = createStackNavigator();
 
 const AuthRoutes = ({ token, isNetConnected, loader }) => {
@@ -36,8 +36,8 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
     })
   );
 
-  console.log("token: ", token);
   const visible = !loading ? true : loader || false;
+  console.log("token: ", token);
   return (
     <React.Fragment>
       {loading && (
@@ -76,6 +76,13 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
           )}
         </React.Fragment>
       )}
+      <Spinner
+        visible={visible}
+        animation="fade"
+        overlayColor="#000"
+        textContent={"Loading..."}
+        textStyle={{ color: "#fff" }}
+      />
     </React.Fragment>
   );
 };
@@ -85,6 +92,7 @@ const mapStateToProps = (state) => {
   return {
     ...state?.AuthReducer,
     ...state?.LoaderReducer,
+    ...state?.loader,
   };
 };
 

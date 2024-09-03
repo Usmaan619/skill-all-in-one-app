@@ -51,6 +51,23 @@ export const getAllAttendanceAPI = async () => {
   }
 };
 
+
+// export const getAllAttendanceAPI = () => {
+//   return async dispatch => {
+//     try {
+//       dispatch(SetLoader('loader', true));
+//       const response = await axiosInstance.get(
+//         `${environment.apiUrl}attend/getAllAttendance`,
+//       );
+//       dispatch(SetLoader('loader', false));
+//       return response?.data?.data;
+//     } catch (error) {
+//       dispatch(SetLoader('loader', false));
+//       return error?.response?.data;
+//     }
+//   };
+// };
+
 export const formatPrice = (price) => {
   if (!price) return "";
   // Remove commas and spaces, then convert to number

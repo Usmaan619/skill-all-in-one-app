@@ -14,42 +14,52 @@ import { Formik } from "formik";
 import { authStyles } from "../styles/Auth.styles";
 import { ICONS } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
-import { loginValidationSchema } from "../utils/Helper";
+import {
+  loginValidationSchema,
+  loginValidationSchema_old,
+} from "../utils/Helper";
 import { loginAPI } from "../services/Auth.service";
 import { useDispatch } from "react-redux";
 import { setData } from "../services/Storage.service";
 import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
 import { COLORS } from "../constants/Colors";
 import { toastSuccess } from "../services/Toaster.service";
+import { SetLoader } from "../redux/actions/loader.action";
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const onSubmit = async (val) => {
     try {
-      // dispatch(SetLoader("loader", true));
+      dispatch(SetLoader("loader", true));
       const payload = {
         email: val?.email,
         passwd: val?.password,
       };
       const res = await loginAPI(payload);
 
+      if (!res) dispatch(SetLoader("loader", false));
+
       if (res?.employee?.token) {
         dispatch(SetIsLoggedIn(true));
+
         await setData("token", res?.employee?.token);
+        setTimeout(() => {
+          dispatch(SetLoader("loader", false));
+        }, 1500);
         await setData("employeeId", res?.employee?.id?.toString());
         dispatch(SetToken(res?.employee?.token));
         if (res?.message) toastSuccess(res?.message);
       }
     } catch (error) {
-      // dispatch(SetLoader("loader", false));
+      dispatch(SetLoader("loader", false));
     }
   };
 
   let formikFn;
   return (
     <Formik
-      validationSchema={loginValidationSchema}
+      validationSchema={loginValidationSchema_old}
       initialValues={{
         email: "",
         password: "",
@@ -103,7 +113,7 @@ const Login = ({ navigation }) => {
                     <BlurView intensity={100} style={styles.input}>
                       <TextInput
                         placeholder="user.@mail.com....."
-                        style={{ padding: 10 }}
+                        style={{ paddingHorizontal: 10, paddingVertical: 5 }}
                         onChangeText={handleChange("email")}
                         onBlur={handleBlur("email")}
                         value={values.email}
@@ -131,7 +141,7 @@ const Login = ({ navigation }) => {
                     <BlurView intensity={100} style={styles.input}>
                       <TextInput
                         placeholder="Password"
-                        style={{ padding: 10 }}
+                        style={{ paddingHorizontal: 10, paddingVertical: 5 }}
                         onChangeText={handleChange("password")}
                         onBlur={handleBlur("password")}
                         value={values.password}

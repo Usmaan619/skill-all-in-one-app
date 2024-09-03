@@ -9,7 +9,7 @@ export const rootReducer = combineReducers({
    * Add other reducers here if needed
    * */
   AuthReducer,
-  LoaderReducer,
+  loader: LoaderReducer,
   cart: CartReducer,
   scrollReducer,
 });

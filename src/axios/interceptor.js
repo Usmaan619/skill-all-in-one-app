@@ -1,8 +1,9 @@
 import axios from "axios";
-import { clearStorage, getData, removeData } from "../services/Storage.service";
+import { getData, removeData } from "../services/Storage.service";
 import { environment } from "../environments/environment";
 import { toastError } from "../services/Toaster.service";
 import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
+import { SetLoader } from "../redux/actions/loader.action";
 
 const axiosInstance = axios.create({
   baseURL: environment.apiUrl,
@@ -13,7 +14,7 @@ const axiosInstance = axios.create({
 
 const AxiosInterceptors = (dispatch) => {
   // Request Interceptor
-  axiosInstance.interceptors.request.use(
+  axiosInstance?.interceptors?.request.use(
     async (config) => {
       try {
         const token = await getData("token");
@@ -29,7 +30,7 @@ const AxiosInterceptors = (dispatch) => {
   );
 
   // Response Interceptor
-  axiosInstance.interceptors.response.use(
+  axiosInstance?.interceptors?.response.use(
     (response) => response, // Directly return response for successful requests
     async (error) => {
       const errorMessage = error?.response?.data?.message;
@@ -45,7 +46,13 @@ const AxiosInterceptors = (dispatch) => {
         await removeData("token");
         await removeData("employeeId");
         toastError("Please Login");
+        setTimeout(() => {
+          dispatch(SetLoader("loader", false));
+        }, 1500);
       } else if (!error?.response?.data?.success && errorMessage) {
+        setTimeout(() => {
+          dispatch(SetLoader("loader", false));
+        }, 1500);
         toastError(errorMessage);
       }
 
