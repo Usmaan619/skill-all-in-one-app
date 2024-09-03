@@ -1,6 +1,7 @@
 import axios from "axios";
 import { environment } from "../environments/environment";
 import { axiosInstance } from "../axios/interceptor";
+import { toastError } from "./Toaster.service";
 
 export const registerAPI = async (payload) => {
   try {
@@ -12,77 +13,37 @@ export const registerAPI = async (payload) => {
 
 export const loginAPI = async (payload) => {
   try {
-    const response = await axios.post(`${environment?.apiUrl}login`, payload);
-    return response?.data;
-  } catch (error) {
-    console.log("error: ", error);
-  }
-};
-
-export const signMCheckAPI = async (payload) => {
-  try {
-    const response = await axiosInstance.post(
-      `${environment?.apiUrl}sign_m`,
+    const response = await axios.post(
+      `${environment?.apiUrl}emloyee/login`,
       payload
     );
     return response?.data;
   } catch (error) {
-    console.log("error: ", error);
+    if (!error?.response?.data?.success) {
+      if (error?.response?.data?.message) {
+        toastError(error?.response?.data?.message);
+      }
+      // dispatch(SetLoader("loader", false));
+    }
   }
 };
 
-export const signUpCheckAPI = async (payload) => {
+export const markAttendanceAPI = async (payload) => {
   try {
     const response = await axiosInstance.post(
-      `${environment?.apiUrl}sign_check`,
+      `${environment?.apiUrl}attend/create`,
       payload
     );
     return response?.data;
   } catch (error) {
-    console.log("error: ", error);
+    console.log("error:markAttendanceAPI ", error);
   }
 };
 
-export const getSingleProductAPI = async (id) => {
+export const getAllAttendanceAPI = async () => {
   try {
     const response = await axiosInstance.get(
-      `${environment?.apiUrl}product?id=${id}`
-    );
-    return response?.data;
-  } catch (error) {
-    console.log("error: ", error);
-  }
-};
-
-export const postAddressAPI = async (payload) => {
-  try {
-    const response = await axiosInstance.post(
-      `${environment?.apiUrl}address`,
-      payload
-    );
-    return response?.data;
-  } catch (error) {
-    console.log("error: ", error);
-  }
-};
-
-export const contactUsAPI = async (payload) => {
-  try {
-    const response = await axiosInstance.post(
-      `${environment?.apiUrl}contact`,
-      payload
-    );
-    return response?.data;
-  } catch (error) {
-    console.log("error: ", error);
-  }
-};
-
-export const orderDataPostAPI = async (payload) => {
-  try {
-    const response = await axiosInstance.post(
-      `${environment?.apiUrl}order_data`,
-      payload
+      `${environment?.apiUrl}attend/getAllAttendance`
     );
     return response?.data;
   } catch (error) {

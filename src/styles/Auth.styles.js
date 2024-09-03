@@ -14,7 +14,7 @@ export const authStyles = {
   signUpcontainer: {
     alignSelf: "center",
     flex: 1,
-    // marginTop: 60,
+    marginTop: "25%",
     width: 350,
   },
   backIcon: { resizeMode: "cover", height: 20, width: 15, marginTop: 3 },

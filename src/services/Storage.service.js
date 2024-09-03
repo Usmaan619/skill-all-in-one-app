@@ -48,7 +48,7 @@ export const multiRemove = async (keys) => {
   }
 };
 
-export const clearStorage = async (key) => {
+export const clearStorage = async () => {
   try {
     return await AsyncStorage.clear();
   } catch (error) {

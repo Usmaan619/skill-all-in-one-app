@@ -4,86 +4,44 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
   SafeAreaView,
   TextInput,
+  KeyboardAvoidingView,
   ScrollView,
-  Dimensions,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { Formik } from "formik";
 import { authStyles } from "../styles/Auth.styles";
-import { COLOURs, ICONS } from "../constants/Constant";
+import { ICONS } from "../constants/Constant";
 import CommonButton from "../components/Button.component";
 import { loginValidationSchema } from "../utils/Helper";
 import { loginAPI } from "../services/Auth.service";
 import { useDispatch } from "react-redux";
 import { setData } from "../services/Storage.service";
 import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
-import { LinearGradient } from "expo-linear-gradient";
-
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
 import { COLORS } from "../constants/Colors";
+import { toastSuccess } from "../services/Toaster.service";
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [isShowOtpInput, setIsShowOtpInput] = useState(true);
-  const [isShowResendBtn, setIsShowResendBtn] = useState(true);
-
-  const [seconds, setSeconds] = useState(60);
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    let timer;
-    if (isActive && seconds > 0) {
-      timer = setTimeout(() => setSeconds(seconds - 1), 1000);
-    } else if (seconds === 0) {
-      setIsActive(false);
-    }
-    return () => clearTimeout(timer);
-  }, [isActive, seconds]);
-
-  const startTimer = () => {
-    setSeconds(60);
-    setIsActive(true);
-  };
-
-  const resetTimer = () => {
-    setSeconds(60);
-    setIsActive(false);
-  };
-  console.log("seconds: ", seconds);
 
   const onSubmit = async (val) => {
     try {
-      console.log("val: ", val);
       // dispatch(SetLoader("loader", true));
-
-      const res = await loginAPI({
+      const payload = {
         email: val?.email,
-        password: val.password,
-        rememberMe: true,
-      });
+        passwd: val?.password,
+      };
+      const res = await loginAPI(payload);
 
-      if (res?.success) {
-        console.log("res?.success: ", res?.success);
-
+      if (res?.employee?.token) {
         dispatch(SetIsLoggedIn(true));
-
-        await setData("token", res?.token);
-        dispatch(SetToken(res?.token));
-        // dispatch(SetLoader("loader", false));
-        // toastSuccess(res?.message);
-        navigation.navigate("Main");
-        // unMount();
+        await setData("token", res?.employee?.token);
+        await setData("employeeId", res?.employee?.id?.toString());
+        dispatch(SetToken(res?.employee?.token));
+        if (res?.message) toastSuccess(res?.message);
       }
-
-      console.log("res:loginAPI ", res);
     } catch (error) {
-      console.log("error:loginAPI ", error);
       // dispatch(SetLoader("loader", false));
     }
   };
@@ -110,14 +68,21 @@ const Login = ({ navigation }) => {
         } = formikProps;
         formikFn = formikProps;
         return (
-          <View
+          <ScrollView
             style={{
               flex: 1,
               backgroundColor: COLORS?.secBlackColor,
             }}
             // className="h-screen"
           >
-            <View style={styles.signUpcontainer}>
+            <View
+              style={{
+                alignSelf: "center",
+                flex: 1,
+                marginTop: "13%",
+                width: 350,
+              }}
+            >
               <View className="flex justify-center">
                 <View className="flex-row justify-center items-center">
                   <Image
@@ -188,7 +153,7 @@ const Login = ({ navigation }) => {
                   </SafeAreaView>
                 </View>
               </View>
-              <View style={{ marginTop: "auto" }}>
+              <View style={{ marginTop: "10%" }}>
                 <CommonButton
                   onPress={() => {
                     handleSubmit();
@@ -197,7 +162,7 @@ const Login = ({ navigation }) => {
                 />
               </View>
             </View>
-          </View>
+          </ScrollView>
         );
       }}
     </Formik>

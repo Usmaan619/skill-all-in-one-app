@@ -52,7 +52,7 @@ const AuthRoutes = ({ token, isNetConnected, loader }) => {
                   animation: "slide_from_right",
                 })}
               >
-                {!token ? (
+                {token ? (
                   <Stack.Screen
                     name="DashboardLayout"
                     component={TabNavigation}

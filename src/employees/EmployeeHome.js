@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   Provider,
   Appbar,
@@ -12,6 +12,15 @@ import {
 } from "react-native-paper";
 import { COLORS } from "../constants/Colors";
 import * as ImagePicker from "expo-image-picker";
+import {
+  getAllAttendanceAPI,
+  markAttendanceAPI,
+} from "../services/Auth.service";
+import { getData } from "../services/Storage.service";
+import { Entypo, FontAwesome } from "@expo/vector-icons";
+import moment from "moment";
+import { ScrollView } from "react-native-gesture-handler";
+import { toastSuccess } from "../services/Toaster.service";
 const EmployeeHome = () => {
   const itemsPerPage = 2;
 
@@ -19,10 +28,22 @@ const EmployeeHome = () => {
   const from = page * itemsPerPage;
   const to = (page + 1) * itemsPerPage;
 
-  const [data, setData] = React.useState([]);
-  const [isLoading, setLoading] = React.useState(true);
-
   const [frontImage, setFrontImage] = React.useState("");
+
+  const [attendenceData, setAttendenceData] = React.useState();
+
+  React.useEffect(() => {
+    new Promise(async (resolve, reject) => {
+      await getAllAttendance();
+      resolve(1);
+    });
+  }, []);
+
+  const getAllAttendance = async () => {
+    const data = await getAllAttendanceAPI();
+
+    setAttendenceData(data);
+  };
 
   const uploadImage = async () => {
     try {
@@ -30,21 +51,53 @@ const EmployeeHome = () => {
       const result = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
+        // aspect: [4, 3],
+        // quality: 1,
         base64: true,
+        cameraType: "front",
       });
 
       setFrontImage(result?.assets[0]?.uri);
       const frontImg = result?.assets[0]?.base64;
-      console.log("frontImg: ", frontImg);
-    } catch (error) {
-      console.log("error: ", error);
-    }
+
+      // api
+      const res = await markAttendance({
+        employee_id: Number(await getData("employeeId")),
+        profile_img: result?.assets[0]?.base64,
+        present: "true",
+      });
+
+      if (res?.success) {
+        await getAllAttendance();
+        toastSuccess(res?.message);
+      }
+    } catch (error) {}
   };
 
+  const markAttendance = async (payload) => await markAttendanceAPI(payload);
+
+  // Function to generate all dates in a month
+  const getDaysInMonth = (month, year) => {
+    const date = moment()?.year(year)?.month(month)?.startOf("month");
+    const days = [];
+    const endOfMonth = moment(date).endOf("month");
+
+    while (date?.isBefore(endOfMonth) || date?.isSame(endOfMonth, "day")) {
+      days?.push(date.clone());
+      date?.add(1, "day");
+    }
+    return days;
+  };
+
+  const month = moment().month(); // September (months are 0-indexed in JS Date)
+  const year = moment()?.year();
+  const daysInMonth = getDaysInMonth(month, year);
+
   return (
-    <View className="h-full" style={{ backgroundColor: COLORS?.secBlackColor }}>
+    <ScrollView
+      className="h-screen "
+      style={{ backgroundColor: COLORS?.secBlackColor }}
+    >
       <Appbar.Header style={{ backgroundColor: COLORS?.secBlackColor }}>
         {/* <Appbar.BackAction onPress={_goBack} /> */}
         <Appbar.Content
@@ -61,7 +114,7 @@ const EmployeeHome = () => {
               <DataTable.Title
                 textStyle={{ color: COLORS?.secBlackColor, fontSize: 14 }}
               >
-                Name
+                Date
               </DataTable.Title>
               <DataTable.Title
                 textStyle={{ color: COLORS?.secBlackColor, fontSize: 14 }}
@@ -74,25 +127,49 @@ const EmployeeHome = () => {
                 Mark Attendence
               </DataTable.Title>
             </DataTable.Header>
-            {/* {data.map((l, i) => ( */}
-            <DataTable.Row style={styles.databeBox}>
-              <DataTable.Cell>Usman</DataTable.Cell>
-              <DataTable.Cell>Test</DataTable.Cell>
-              <DataTable.Cell>
-                <Button
-                  icon="camera"
-                  mode="contained-tonal"
-                  onPress={async () => await uploadImage()}
-                >
-                  Verify
-                </Button>
-              </DataTable.Cell>
-            </DataTable.Row>
-            {/* ))} */}
+
+            {daysInMonth?.map((date, i) => {
+              const currentAttendance = attendenceData?.find((a) =>
+                moment(a?.attendance_date).isSame(date, "day")
+              );
+
+              const isPastDate = moment(date).isBefore(moment(), "day");
+              const isFutureDate = moment(date).isAfter(moment(), "day");
+              return (
+                <DataTable.Row style={styles.databeBox} key={i}>
+                  <DataTable.Cell>{date?.format("YYYY-MM-DD")}</DataTable.Cell>
+                  <DataTable.Cell>
+                    {currentAttendance?.present === "true" ? (
+                      <FontAwesome name="check" size={24} color="green" />
+                    ) : (
+                      <Entypo name="cross" size={24} color="red" />
+                    )}
+                  </DataTable.Cell>
+                  <DataTable.Cell>
+                    <Button
+                      buttonColor={COLORS?.mainCamelColor}
+                      textColor={COLORS?.thirdWhiteColor}
+                      icon="camera"
+                      mode="elevated"
+                      disabled={
+                        currentAttendance?.present === "true" ||
+                        isPastDate ||
+                        isFutureDate
+                      }
+                      onPress={async () => await uploadImage()}
+                    >
+                      Verify
+                    </Button>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              );
+            })}
           </DataTable>
         </Card>
       </View>
-    </View>
+    </ScrollView>
+    // pgadmin4 for linux
+    // deaver for linux
   );
 };
 
@@ -104,12 +181,18 @@ const styles = StyleSheet.create({
   },
   mainbox: {
     textAlign: "center",
-    margin: 15,
+    // margin: 15,
     flex: 1,
     justifyContent: "space-between",
+    marginHorizontal: 14,
+    marginTop: 15,
+    marginBottom: "17%",
   },
   databeBox: {
     margin: 10,
+    // marginHorizontal: 10,
+    // marginTop:10,
+    // marginBottom:20,
     textAlign: "center",
   },
   databeHeader: {
