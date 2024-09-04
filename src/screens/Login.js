@@ -8,6 +8,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { Formik } from "formik";
@@ -28,6 +29,8 @@ import { SetLoader } from "../redux/actions/loader.action";
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
+
+  const [isShowPassword, setIsShowPassword] = useState(true);
 
   const onSubmit = async (val) => {
     try {
@@ -141,11 +144,24 @@ const Login = ({ navigation }) => {
                     <BlurView intensity={100} style={styles.input}>
                       <TextInput
                         placeholder="Password"
+                        secureTextEntry={isShowPassword}
                         style={{ paddingHorizontal: 10, paddingVertical: 5 }}
                         onChangeText={handleChange("password")}
                         onBlur={handleBlur("password")}
                         value={values.password}
                       />
+
+                      <TouchableOpacity
+                        onPress={() => setIsShowPassword(!isShowPassword)}
+                      >
+                        <Image
+                          style={styles.passwordEye}
+                          source={
+                            isShowPassword ? ICONS.crossEyeImg : ICONS.eyeImg
+                          }
+                          fadeDuration={0}
+                        />
+                      </TouchableOpacity>
                     </BlurView>
 
                     {errors.password && touched.password && (

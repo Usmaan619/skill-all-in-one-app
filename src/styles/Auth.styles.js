@@ -236,8 +236,8 @@ export const authStyles = {
   },
 
   passwordEye: {
-    height: hp("2%"),
-    width: wp("4%"),
+    height: 25,
+    width: 25,
 
     position: "absolute",
     right: 6,
