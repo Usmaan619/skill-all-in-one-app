@@ -59,7 +59,12 @@ const WelcomeLogin = ({ navigation }) => {
               <CommonButton onPress={() => {}} title={"Student Login"} />
             </View>
             <View className="my-2 w-full">
-              <CommonButton onPress={() => {}} title={"Admin Login"} />
+              <CommonButton
+                onPress={() => {
+                  navigation.navigate("Login", { type: "AM" });
+                }}
+                title={"Admin Login"}
+              />
             </View>
           </View>
         </View>

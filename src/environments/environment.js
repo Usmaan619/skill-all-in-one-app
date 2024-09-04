@@ -4,4 +4,6 @@ export const environment = {
   apiUrl: "http://192.168.1.20:3001/api/",
 
   // apiUrl: "http://192.168.152.180:3001/api/",
+  // apiUrl:
+  //   "https://f741-2401-4900-8821-e19b-c52a-3d9f-4815-4022.ngrok-free.app/api/",
 };

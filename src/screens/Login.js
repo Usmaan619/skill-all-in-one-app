@@ -26,33 +26,50 @@ import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
 import { COLORS } from "../constants/Colors";
 import { toastSuccess } from "../services/Toaster.service";
 import { SetLoader } from "../redux/actions/loader.action";
+import { useRoute } from "@react-navigation/native";
 
 const Login = ({ navigation }) => {
+  const route = useRoute();
+  console.log('route: ', route);
+
+  console.log("route: ", route);
+
   const dispatch = useDispatch();
 
   const [isShowPassword, setIsShowPassword] = useState(true);
 
   const onSubmit = async (val) => {
     try {
-      dispatch(SetLoader("loader", true));
-      const payload = {
-        email: val?.email,
-        passwd: val?.password,
-      };
-      const res = await loginAPI(payload);
+      switch (route?.params?.type) {
+        case "EL":
+          dispatch(SetLoader("loader", true));
+          const payload = {
+            email: val?.emailOrUsername,
+            passwd: val?.password,
+          };
+          const res = await loginAPI(payload);
 
-      if (!res) dispatch(SetLoader("loader", false));
+          if (!res) dispatch(SetLoader("loader", false));
 
-      if (res?.employee?.token) {
-        dispatch(SetIsLoggedIn(true));
+          if (res?.employee?.token) {
+            dispatch(SetIsLoggedIn(true));
 
-        await setData("token", res?.employee?.token);
-        setTimeout(() => {
-          dispatch(SetLoader("loader", false));
-        }, 1500);
-        await setData("employeeId", res?.employee?.id?.toString());
-        dispatch(SetToken(res?.employee?.token));
-        if (res?.message) toastSuccess(res?.message);
+            await setData("token", res?.employee?.token);
+            setTimeout(() => {
+              dispatch(SetLoader("loader", false));
+            }, 1500);
+            await setData("employeeId", res?.employee?.id?.toString());
+            dispatch(SetToken(res?.employee?.token));
+            if (res?.message) toastSuccess(res?.message);
+          }
+          break;
+        case "AM":
+
+        
+          break;
+
+        case "SD":
+          break;
       }
     } catch (error) {
       dispatch(SetLoader("loader", false));
@@ -62,9 +79,9 @@ const Login = ({ navigation }) => {
   let formikFn;
   return (
     <Formik
-      validationSchema={loginValidationSchema_old}
+      validationSchema={loginValidationSchema}
       initialValues={{
-        email: "",
+        emailOrUsername: "",
         password: "",
       }}
       onSubmit={onSubmit}
@@ -112,18 +129,18 @@ const Login = ({ navigation }) => {
                 </Text>
                 <View style={styles.signUpInputMainContainer}>
                   <SafeAreaView style={styles.signUpInputSubContainer}>
-                    <Text style={styles.inputLabel}>Email ID</Text>
+                    <Text style={styles.inputLabel}>Email ID Or User Name</Text>
                     <BlurView intensity={100} style={styles.input}>
                       <TextInput
-                        placeholder="user.@mail.com....."
+                        placeholder="user.@mail.com or username"
                         style={{ paddingHorizontal: 10, paddingVertical: 5 }}
-                        onChangeText={handleChange("email")}
-                        onBlur={handleBlur("email")}
-                        value={values.email}
+                        onChangeText={handleChange("emailOrUsername")}
+                        onBlur={handleBlur("emailOrUsername")}
+                        value={values.emailOrUsername}
                       />
                     </BlurView>
 
-                    {errors.email && touched.email && (
+                    {errors.emailOrUsername && touched.emailOrUsername && (
                       <Text
                         style={{
                           fontSize: 10,
@@ -132,7 +149,7 @@ const Login = ({ navigation }) => {
                           marginLeft: "1%",
                         }}
                       >
-                        {errors.email}
+                        {errors.emailOrUsername}
                       </Text>
                     )}
                   </SafeAreaView>
