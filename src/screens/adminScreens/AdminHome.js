@@ -26,6 +26,7 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
+import { calculateTimeDifference } from "../../utils/Helper";
 const AdminHome = () => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -100,6 +101,8 @@ const AdminHome = () => {
     { label: "2025", value: 2025 },
   ];
 
+  console.log("employeeData: ", employeeData);
+
   const fetchAttendanceData = async () => {
     if (!selectedMonth && !selectedYear)
       return Alert.alert("Error", "Please select both month and year");
@@ -112,6 +115,7 @@ const AdminHome = () => {
         selectedMonth,
         singleEmployeeData?.id
       );
+      console.log("res: ", res);
       console.log("res:getFilteredAttendanceAPI ", res);
       setTimeout(() => {
         dispatch(SetLoader("loader", false));
@@ -123,6 +127,10 @@ const AdminHome = () => {
       dispatch(SetLoader("loader", false));
     }
   };
+  console.log(
+    "attendanceDatasssssssssssssssssssssssssssssss: ",
+    attendanceData
+  );
 
   return (
     <ScrollView
@@ -319,9 +327,15 @@ const AdminHome = () => {
                   {attendanceData.map((item, index) => (
                     <Text key={index} style={styles.resultText}>
                       {moment(item.attendance_date).format("DD-MM-YYYY")}:{" "}
-                      {item.present ? "Present" : "Absent"}
+                      {item.present ? "Present" : "Absent"}{" "}
+                      {item?.time_in || item?.time_out
+                        ? calculateTimeDifference(item?.time_in, item?.time_out)
+                        : ""}
                     </Text>
                   ))}
+                  <Text>
+                    Total AT {attendanceData[0]?.total_monthly_attendance}
+                  </Text>
                 </View>
               )}
             </View>

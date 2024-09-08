@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { setHeaderScroll } from "../redux/actions/action";
+import moment from "moment";
 
 export const loginSvc = (data, values) => {
   return data.find((u) => {
@@ -287,3 +288,25 @@ export const onScrollChange = (event, dispatch) =>
   dispatch(
     setHeaderScroll(event?.nativeEvent?.contentOffset?.y > 650 ? true : false)
   );
+
+export function calculateTimeDifference(timeIn, timeOut) {
+  // Parse the input times
+  const startTime = moment(timeIn, "HH:mm:ss");
+  const endTime = moment(timeOut, "HH:mm:ss");
+
+  // Handle case where end time is on the next day
+  if (endTime.isBefore(startTime)) {
+    endTime.add(1, "day");
+  }
+
+  // Calculate the difference
+  const duration = moment.duration(endTime.diff(startTime));
+
+  // Extract hours, minutes, and seconds
+  const hours = Math.floor(duration.asHours());
+  const minutes = Math.floor(duration.asMinutes()) % 60;
+  const seconds = Math.floor(duration.asSeconds()) % 60;
+
+  // Format the output
+  return `${hours} H ${minutes} M ${seconds} S`;
+}

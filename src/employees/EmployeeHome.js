@@ -17,7 +17,7 @@ import {
   getAllAttendanceAPI,
   markAttendanceAPI,
 } from "../services/Auth.service";
-import { clearStorage, getData } from "../services/Storage.service";
+import { clearStorage, getData, removeData } from "../services/Storage.service";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
@@ -40,6 +40,10 @@ const EmployeeHome = () => {
   React.useEffect(() => {
     new Promise(async (resolve, reject) => {
       await getAllAttendance();
+      // dispatch(SetIsLoggedIn(false));
+      // dispatch(SetToken(null));
+      // await removeData("token");
+      // await removeData("employeeId");
 
       resolve(1);
     });
