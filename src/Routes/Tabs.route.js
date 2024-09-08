@@ -36,7 +36,7 @@ export default function TabNavigation() {
       <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen
           name="Home"
-          component={AdminHome}
+          component={EmployeeHome}
           options={{
             tabBarIcon: ({ focused }) => {
               return (

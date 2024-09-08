@@ -13,16 +13,18 @@ import {
 import { COLORS } from "../constants/Colors";
 import * as ImagePicker from "expo-image-picker";
 import {
+  checkOuAttendanceAPI,
   getAllAttendanceAPI,
   markAttendanceAPI,
 } from "../services/Auth.service";
-import { getData } from "../services/Storage.service";
+import { clearStorage, getData } from "../services/Storage.service";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import { toastSuccess } from "../services/Toaster.service";
 import { useDispatch } from "react-redux";
 import { SetLoader } from "../redux/actions/loader.action";
+import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
 const EmployeeHome = () => {
   const dispatch = useDispatch();
   const itemsPerPage = 2;
@@ -38,6 +40,7 @@ const EmployeeHome = () => {
   React.useEffect(() => {
     new Promise(async (resolve, reject) => {
       await getAllAttendance();
+
       resolve(1);
     });
   }, []);
@@ -69,7 +72,6 @@ const EmployeeHome = () => {
       });
 
       setFrontImage(result?.assets[0]?.uri);
-      const frontImg = result?.assets[0]?.base64;
 
       // api
       dispatch(SetLoader("loader", true));
@@ -112,6 +114,28 @@ const EmployeeHome = () => {
   const year = moment()?.year();
   const daysInMonth = getDaysInMonth(month, year);
 
+  const handleCheckout = async (id) => {
+    console.log("id: ", id);
+    try {
+      dispatch(SetLoader("loader", true));
+
+      const res = await checkOuAttendanceAPI({
+        id,
+      });
+
+      if (!res?.success) return dispatch(SetLoader("loader", false));
+
+      if (res?.success) {
+        dispatch(SetLoader("loader", false));
+
+        await getAllAttendance();
+        toastSuccess(res?.message);
+      }
+    } catch (error) {
+      dispatch(SetLoader("loader", true));
+    }
+  };
+
   return (
     <ScrollView
       className="h-screen "
@@ -152,33 +176,59 @@ const EmployeeHome = () => {
                 moment(a?.attendance_date).isSame(date, "day")
               );
 
+              const timeOut = currentAttendance?.time_out ? true : false;
+              const timeIn = currentAttendance?.time_in ? true : false;
+              console.log("timeOut: ", timeOut);
+
               const isPastDate = moment(date).isBefore(moment(), "day");
               const isFutureDate = moment(date).isAfter(moment(), "day");
+
               return (
                 <DataTable.Row style={styles.databeBox} key={i}>
-                  <DataTable.Cell>{date?.format("YYYY-MM-DD")}</DataTable.Cell>
+                  <DataTable.Cell>{date?.format("YY-MM-DD")}</DataTable.Cell>
+
+                  {/* Show attendance status: check or empty */}
                   <DataTable.Cell>
                     {currentAttendance?.present === "true" ? (
                       <FontAwesome name="check" size={24} color="green" />
                     ) : (
                       ""
-                      // <Entypo name="cross" size={24} color="red" />
                     )}
                   </DataTable.Cell>
+
                   <DataTable.Cell>
+                    {/* Show the "Verify" button if not yet present and the date is valid */}
+
                     <Button
                       buttonColor={COLORS?.mainCamelColor}
                       textColor={COLORS?.thirdWhiteColor}
                       icon="camera"
                       mode="elevated"
-                      disabled={
-                        currentAttendance?.present === "true" ||
-                        isPastDate ||
-                        isFutureDate
-                      }
-                      onPress={async () => await uploadImage()}
+                      disabled={timeIn || isPastDate || isFutureDate}
+                      onPress={async () => {
+                        await uploadImage(); // Your verification logic here
+                        // After verifying, mark as present
+                        // Optionally call your API to mark attendance as verified
+                      }}
                     >
                       Verify
+                    </Button>
+
+                    {/* Show the "Checkout" button if already present and within valid date */}
+                  </DataTable.Cell>
+                  <DataTable.Cell>
+                    <Button
+                      buttonColor={COLORS?.mainCamelColor}
+                      textColor={COLORS?.thirdWhiteColor}
+                      mode="elevated"
+                      disabled={timeOut || isPastDate || isFutureDate}
+                      onPress={async () => {
+                        await handleCheckout(
+                          Number(currentAttendance?.attendance_id)
+                        );
+                      }}
+                    >
+                      Checkout
                     </Button>
                   </DataTable.Cell>
                 </DataTable.Row>

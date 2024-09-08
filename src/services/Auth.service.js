@@ -57,6 +57,18 @@ export const markAttendanceAPI = async (payload) => {
   }
 };
 
+export const checkOuAttendanceAPI = async (payload) => {
+  try {
+    const response = await axiosInstance.post(
+      `${environment?.apiUrl}attend/updateAttendanceTimeOut`,
+      payload
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error:markAttendanceAPI ", error);
+  }
+};
+
 export const getAllAttendanceAPI = async () => {
   try {
     const response = await axiosInstance.get(
