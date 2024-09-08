@@ -161,7 +161,8 @@ const EmployeeHome = () => {
                     {currentAttendance?.present === "true" ? (
                       <FontAwesome name="check" size={24} color="green" />
                     ) : (
-                      <Entypo name="cross" size={24} color="red" />
+                      ""
+                      // <Entypo name="cross" size={24} color="red" />
                     )}
                   </DataTable.Cell>
                   <DataTable.Cell>

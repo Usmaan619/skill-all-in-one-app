@@ -19,7 +19,7 @@ import {
   loginValidationSchema,
   loginValidationSchema_old,
 } from "../utils/Helper";
-import { loginAPI } from "../services/Auth.service";
+import { adminLoginAPI, loginAPI } from "../services/Auth.service";
 import { useDispatch } from "react-redux";
 import { setData } from "../services/Storage.service";
 import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
@@ -30,7 +30,7 @@ import { useRoute } from "@react-navigation/native";
 
 const Login = ({ navigation }) => {
   const route = useRoute();
-  console.log('route: ', route);
+  console.log("route: ", route);
 
   console.log("route: ", route);
 
@@ -64,12 +64,28 @@ const Login = ({ navigation }) => {
           }
           break;
         case "AM":
+          dispatch(SetLoader("loader", true));
 
-        
-          break;
+          const response = await adminLoginAPI({
+            email: val?.emailOrUsername,
+            passwd: val?.password,
+          });
 
-        case "SD":
-          break;
+          if (!response) dispatch(SetLoader("loader", false));
+
+          if (response?.user?.token) {
+            dispatch(SetIsLoggedIn(true));
+
+            await setData("token", response?.user?.token);
+            setTimeout(() => {
+              dispatch(SetLoader("loader", false));
+            }, 1500);
+            await setData("userId", response?.user?.id?.toString());
+            dispatch(SetToken(response?.user?.token));
+            if (response?.message) toastSuccess(response?.message);
+
+            break;
+          }
       }
     } catch (error) {
       dispatch(SetLoader("loader", false));

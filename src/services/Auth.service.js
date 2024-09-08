@@ -28,6 +28,23 @@ export const loginAPI = async (payload) => {
   }
 };
 
+export const adminLoginAPI = async (payload) => {
+  try {
+    const response = await axios.post(
+      `${environment?.apiUrl}user/login`,
+      payload
+    );
+    return response?.data;
+  } catch (error) {
+    if (!error?.response?.data?.success) {
+      if (error?.response?.data?.message) {
+        toastError(error?.response?.data?.message);
+      }
+      // dispatch(SetLoader("loader", false));
+    }
+  }
+};
+
 export const markAttendanceAPI = async (payload) => {
   try {
     const response = await axiosInstance.post(
@@ -51,6 +68,38 @@ export const getAllAttendanceAPI = async () => {
   }
 };
 
+export const getAllEmployeeAPI = async () => {
+  try {
+    const response = await axiosInstance.get(
+      `${environment?.apiUrl}emloyee/getAllEmployees`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+
+export const getEmployeeByIdAPI = async (id) => {
+  try {
+    const response = await axiosInstance.get(
+      `${environment?.apiUrl}emloyee/getEmployeeById/${id}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
+
+export const getFilteredAttendanceAPI = async (year, month, id) => {
+  try {
+    const response = await axiosInstance.get(
+      `${environment?.apiUrl}attend/getFilteredAttendance?year=${year}&month=${month}&employeeId=${id}`
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error: ", error);
+  }
+};
 
 // export const getAllAttendanceAPI = () => {
 //   return async dispatch => {
