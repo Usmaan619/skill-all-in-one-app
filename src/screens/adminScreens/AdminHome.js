@@ -8,7 +8,14 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { Appbar, Card, DataTable, Button, TextInput } from "react-native-paper";
+import {
+  Appbar,
+  Card,
+  DataTable,
+  Button,
+  TextInput,
+  Icon,
+} from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import {
@@ -52,7 +59,7 @@ const AdminHome = () => {
 
   React.useEffect(() => {
     new Promise(async (resolve, reject) => {
-      // await getAllEmployee();
+      await getAllEmployee();
 
       resolve(1);
     });
@@ -73,7 +80,11 @@ const AdminHome = () => {
     }
   };
 
-  const toggleModal = () => setModalVisible(!modalVisible);
+  const toggleModal = () => {
+    setAttendanceData(null);
+    setSingleEmployeeData([]);
+    setModalVisible(!modalVisible);
+  };
   const toggleEditModal = () => setModalVisibleEdits(!modalVisibleEdits);
 
   const getEmployeeById = async (e) => {
@@ -427,20 +438,76 @@ const AdminHome = () => {
               </View>
 
               {attendanceData && (
-                <View style={styles.results}>
-                  <Text style={styles.resultText}>Attendance records:</Text>
+                <View style={styles.attendanceContainer}>
+                  <Text style={styles.heading}>Attendance Records</Text>
+
                   {attendanceData.map((item, index) => (
-                    <Text key={index} style={styles.resultText}>
-                      {moment(item.attendance_date).format("DD-MM-YYYY")}:{" "}
-                      {item.present ? "Present" : "Absent"}{" "}
-                      {item?.time_in || item?.time_out
-                        ? calculateTimeDifference(item?.time_in, item?.time_out)
-                        : ""}
-                    </Text>
+                    <Card key={index} style={styles.card}>
+                      <Card.Content>
+                        <View style={styles.recordRow}>
+                          <Text style={styles.dateText}>
+                            {moment(item.attendance_date).format("DD-MM-YYYY")}
+                          </Text>
+                          <View style={styles.statusContainer}>
+                            <Icon
+                              name={
+                                item.present ? "check-circle" : "close-circle"
+                              }
+                              size={20}
+                              color={item.present ? "green" : "red"}
+                            />
+                            <Text
+                              style={[
+                                styles.statusText,
+                                { color: item.present ? "green" : "red" },
+                              ]}
+                            >
+                              {item.present ? "Present" : "Absent"}
+                            </Text>
+                          </View>
+                        </View>
+
+                        {(item?.time_in || item?.time_out) && (
+                          <View style={styles.timeContainer}>
+                            <Text style={styles.timeLabel}>Time In:</Text>
+                            <Text style={styles.timeText}>
+                              {item.time_in || "N/A"}
+                            </Text>
+                          </View>
+                        )}
+
+                        {(item?.time_in || item?.time_out) && (
+                          <View style={styles.timeContainer}>
+                            <Text style={styles.timeLabel}>Time Out:</Text>
+                            <Text style={styles.timeText}>
+                              {item.time_out || "N/A"}
+                            </Text>
+                          </View>
+                        )}
+
+                        {(item?.time_in || item?.time_out) &&
+                          calculateTimeDifference(
+                            item?.time_in,
+                            item?.time_out
+                          ) && (
+                            <Text style={styles.durationText}>
+                              Duration:{" "}
+                              {calculateTimeDifference(
+                                item?.time_in,
+                                item?.time_out
+                              )}
+                            </Text>
+                          )}
+                      </Card.Content>
+                    </Card>
                   ))}
-                  <Text>
-                    Total AT {attendanceData[0]?.total_monthly_attendance}
-                  </Text>
+
+                  <View style={styles.totalContainer}>
+                    <Text style={styles.totalText}>
+                      Total Attendance:{" "}
+                      {attendanceData[0]?.total_monthly_attendance}
+                    </Text>
+                  </View>
                 </View>
               )}
             </View>
@@ -862,6 +929,80 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     marginBottom: 8,
+  },
+
+  // attendance
+  attendanceContainer: {
+    padding: 15,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 15,
+    color: "#333",
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    marginBottom: 10,
+    elevation: 3,
+  },
+  recordRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  dateText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#555",
+  },
+  statusContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  statusText: {
+    fontSize: 14,
+    marginLeft: 5,
+    fontWeight: "bold",
+  },
+  timeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 5,
+  },
+  timeLabel: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#888",
+  },
+  timeText: {
+    fontSize: 14,
+    color: "#333",
+  },
+  durationText: {
+    marginTop: 5,
+    fontSize: 14,
+    color: "#777",
+    fontStyle: "italic",
+  },
+  totalContainer: {
+    marginTop: 20,
+    backgroundColor: "#fafafa",
+    padding: 10,
+    borderRadius: 8,
+    elevation: 1,
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#333",
   },
 });
 
