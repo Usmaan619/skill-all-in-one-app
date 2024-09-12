@@ -16,8 +16,8 @@ export default function App() {
         <NavigationContainer independent={true}>
           <AuthRoute />
         </NavigationContainer>
-        <Toast topOffset={45} style={{ elevation: 99, zIndex: 99 }} />
       </PaperProvider>
+      <Toast topOffset={45} style={{ elevation: 99, zIndex: 99 }} />
     </Provider>
   );
 }

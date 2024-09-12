@@ -69,6 +69,18 @@ export const checkOuAttendanceAPI = async (payload) => {
   }
 };
 
+export const updateEmployeeAPI = async (id, payload) => {
+  try {
+    const response = await axiosInstance.post(
+      `${environment?.apiUrl}emloyee/updateEmployee/${id}`,
+      payload
+    );
+    return response?.data;
+  } catch (error) {
+    console.log("error:updateEmployeeAPI ", error);
+  }
+};
+
 export const getAllAttendanceAPI = async () => {
   try {
     const response = await axiosInstance.get(

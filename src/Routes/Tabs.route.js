@@ -4,6 +4,7 @@ import * as Animatable from "react-native-animatable";
 import { Entypo } from "@expo/vector-icons";
 import EmployeeHome from "../employees/EmployeeHome";
 import AdminHome from "../screens/adminScreens/AdminHome";
+import { connect } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 const COLORS = {
@@ -30,7 +31,7 @@ const screenOptions = {
   },
 };
 
-export default function TabNavigation() {
+const TabNavigation = () => {
   return (
     <>
       <Tab.Navigator screenOptions={screenOptions}>
@@ -187,7 +188,19 @@ export default function TabNavigation() {
       </Tab.Navigator>
     </>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    ...state?.AuthReducer,
+    ...state?.LoaderReducer,
+    ...state?.loader,
+  };
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabNavigation);
 
 const styles = StyleSheet.create({
   tabAlignCenter: { alignItems: "center", justifyContent: "center" },

@@ -6,6 +6,7 @@ const initialState = {
   token: null,
   isNetConnected: false,
   isLoggingIn: false,
+  role: null,
 };
 
 export const AuthReducer = (state = initialState, action) => {

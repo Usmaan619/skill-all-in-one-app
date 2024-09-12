@@ -8,13 +8,14 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { Appbar, Card, DataTable, Button } from "react-native-paper";
+import { Appbar, Card, DataTable, Button, TextInput } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import {
   getAllEmployeeAPI,
   getEmployeeByIdAPI,
   getFilteredAttendanceAPI,
+  updateEmployeeAPI,
 } from "../../services/Auth.service";
 import { COLORS } from "../../constants/Colors";
 import { SetLoader } from "../../redux/actions/loader.action";
@@ -27,9 +28,19 @@ import { Entypo } from "@expo/vector-icons";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 import { calculateTimeDifference } from "../../utils/Helper";
+import { Formik } from "formik";
+import { DatePickerModal } from "react-native-paper-dates";
+
+import { en, registerTranslation } from "react-native-paper-dates";
+import { toastSuccess } from "../../services/Toaster.service";
+
+// Register the translation for the language you're using (English in this case)
+registerTranslation("en", en);
 const AdminHome = () => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [modalVisibleEdits, setModalVisibleEdits] = React.useState(false);
+
   const itemsPerPage = 2;
 
   const [page, setPage] = React.useState(0);
@@ -41,7 +52,7 @@ const AdminHome = () => {
 
   React.useEffect(() => {
     new Promise(async (resolve, reject) => {
-      await getAllEmployee();
+      // await getAllEmployee();
 
       resolve(1);
     });
@@ -51,7 +62,6 @@ const AdminHome = () => {
     try {
       dispatch(SetLoader("loader", true));
       const data = await getAllEmployeeAPI();
-      console.log("data: ", data);
 
       setEmployeeData(data?.employees);
 
@@ -62,21 +72,18 @@ const AdminHome = () => {
       dispatch(SetLoader("loader", false));
     }
   };
-  console.log("employeeData: ", employeeData);
 
   const toggleModal = () => setModalVisible(!modalVisible);
+  const toggleEditModal = () => setModalVisibleEdits(!modalVisibleEdits);
 
   const getEmployeeById = async (e) => {
     toggleModal();
-    console.log("e?.id: ", e?.id);
+
     try {
       const res = await getEmployeeByIdAPI(e?.id);
       if (res) setSingleEmployeeData(res);
-    } catch (error) {
-      console.log("error: ", error);
-    }
+    } catch (error) {}
   };
-  console.log("singleEmployeeData: ", singleEmployeeData);
 
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
@@ -101,8 +108,6 @@ const AdminHome = () => {
     { label: "2025", value: 2025 },
   ];
 
-  console.log("employeeData: ", employeeData);
-
   const fetchAttendanceData = async () => {
     if (!selectedMonth && !selectedYear)
       return Alert.alert("Error", "Please select both month and year");
@@ -115,22 +120,118 @@ const AdminHome = () => {
         selectedMonth,
         singleEmployeeData?.id
       );
-      console.log("res: ", res);
-      console.log("res:getFilteredAttendanceAPI ", res);
+
       setTimeout(() => {
         dispatch(SetLoader("loader", false));
       }, 1000);
       if (!res?.length) return Alert.alert("Attendance record not found!");
       setAttendanceData(res);
     } catch (error) {
-      console.error("Error fetching attendance data:", error);
       dispatch(SetLoader("loader", false));
     }
   };
-  console.log(
-    "attendanceDatasssssssssssssssssssssssssssssss: ",
-    attendanceData
-  );
+
+  React.useEffect(() => {}, [singleEmployeeData]);
+
+  const editEmployee = async (e) => {
+    toggleEditModal();
+    setSingleEmployeeData(e);
+  };
+
+  const handleEditEmployee = async (value) => {
+    try {
+      const payload = checkForm(singleEmployeeData, value);
+
+      dispatch(SetLoader("loader", true));
+      // singleEmployeeData?.id;
+      const res = await updateEmployeeAPI(singleEmployeeData?.id, payload);
+
+      if (!res.success) return dispatch(SetLoader("loader", false));
+
+      if (res.success) {
+        toggleEditModal();
+        setTimeout(() => {
+          dispatch(SetLoader("loader", false));
+          toastSuccess(res?.message);
+        }, 1000);
+      }
+    } catch (error) {
+      dispatch(SetLoader("loader", false));
+    }
+  };
+
+  const checkForm = (singleEmployeeData, value) => {
+    const updatedValue = { ...value }; // Copy the value object
+
+    // Check for each field individually and update if necessary
+
+    if (singleEmployeeData?.user_name !== updatedValue?.user_name) {
+      updatedValue.user_name = updatedValue?.user_name;
+    }
+
+    if (singleEmployeeData?.first_name !== updatedValue?.first_name) {
+      updatedValue.first_name = updatedValue?.first_name;
+    }
+
+    if (singleEmployeeData?.last_name !== updatedValue?.last_name) {
+      updatedValue.last_name = updatedValue?.last_name;
+    }
+
+    if (singleEmployeeData?.email !== updatedValue?.email) {
+      updatedValue.email = updatedValue?.email;
+    }
+
+    if (singleEmployeeData?.mobile_number !== updatedValue?.mobile_number) {
+      updatedValue.mobile_number = Number(updatedValue?.mobile_number);
+    }
+
+    if (singleEmployeeData?.department !== updatedValue?.department) {
+      updatedValue.department = updatedValue?.department;
+    }
+
+    if (singleEmployeeData?.position !== updatedValue?.position) {
+      updatedValue.position = updatedValue?.position;
+    }
+
+    if (
+      singleEmployeeData?.last_hike_amount !== updatedValue?.last_hike_amount
+    ) {
+      updatedValue.last_hike_amount = Number(updatedValue?.last_hike_amount);
+    }
+
+    if (singleEmployeeData?.last_hike_date !== updatedValue?.last_hike_date) {
+      updatedValue.last_hike_date = moment(
+        updatedValue?.last_hike_date,
+        "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+    }
+
+    if (singleEmployeeData?.current_salary !== updatedValue?.current_salary) {
+      updatedValue.current_salary = Number(updatedValue?.current_salary);
+    }
+
+    if (singleEmployeeData?.date_of_join !== updatedValue?.date_of_join) {
+      updatedValue.date_of_join = moment(
+        updatedValue?.date_of_join,
+        "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+    }
+
+    if (singleEmployeeData?.passwd !== updatedValue?.passwd) {
+      updatedValue.passwd = updatedValue?.passwd;
+    }
+
+    if (singleEmployeeData?.address !== updatedValue?.address) {
+      updatedValue.address = updatedValue?.address;
+    }
+
+    return updatedValue;
+  };
+
+  let formikFn;
+
+  const [openLastHikeDate, setOpenLastHikeDate] = useState(false);
+  const [openDateOfJoin, setOpenDateOfJoin] = useState(false);
 
   return (
     <ScrollView
@@ -181,7 +282,9 @@ const AdminHome = () => {
                     buttonColor={COLORS?.mainCamelColor}
                     textColor={COLORS?.thirdWhiteColor}
                     mode="elevated"
-                    // onPress={async () => await uploadImage()}
+                    onPress={async () => {
+                      await editEmployee(e);
+                    }}
                   >
                     Edit
                   </Button>
@@ -192,14 +295,8 @@ const AdminHome = () => {
         </Card>
       </View>
 
-      {/* Modal start*/}
-      <Modal
-        visible={modalVisible}
-        // onRequestClose={netinfo.isConnected}
-        animationType="fade"
-        transparent={true}
-        // onDismiss={() => setModalVisible(!modalVisible)}
-      >
+      {/* Modal start View*/}
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.box_1}>
@@ -209,91 +306,100 @@ const AdminHome = () => {
               >
                 <Entypo name="cross" size={30} color="red" />
               </TouchableOpacity>
-              <Text className="text-center font-medium text-base ">
-                Emloyee Details
+              <Text className="text-center font-medium text-base">
+                Employee Details
               </Text>
+
               <View className="mt-8">
-                <FlatList
-                  data={[singleEmployeeData]}
-                  renderItem={({ item }) => {
-                    console.log("item: ", item);
-                    return (
-                      <View className="flex-1  gap-4">
-                        <View className="flex-row justify-between px-2 ">
-                          <Text className="font-medium">User Name:</Text>
-                          <Text className="font-medium">{item?.user_name}</Text>
-                        </View>
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">First name:</Text>
-                          <Text className="font-medium">
-                            {item?.first_name}
-                          </Text>
-                        </View>
+                <View className="flex-1 gap-4">
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">User Name:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.user_name}
+                    </Text>
+                  </View>
 
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">Last Name:</Text>
-                          <Text className="font-medium">{item?.last_name}</Text>
-                        </View>
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">Email ID:</Text>
-                          <Text className="font-medium">{item?.email}</Text>
-                        </View>
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">Mobile Number:</Text>
-                          <Text className="font-medium">
-                            {item?.mobile_number}
-                          </Text>
-                        </View>
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">First Name:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.first_name}
+                    </Text>
+                  </View>
 
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">department:</Text>
-                          <Text className="font-medium">
-                            {item?.department}
-                          </Text>
-                        </View>
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">Position:</Text>
-                          <Text className="font-medium">{item?.position}</Text>
-                        </View>
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Last Name:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.last_name}
+                    </Text>
+                  </View>
 
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">Last Hike Amount:</Text>
-                          <Text className="font-medium">
-                            {item?.last_hike_amount}
-                          </Text>
-                        </View>
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Email ID:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.email}
+                    </Text>
+                  </View>
 
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">Last Hike Date:</Text>
-                          <Text className="font-medium">
-                            {moment(item?.last_hike_date).format("DD-MM-YYYY")}
-                          </Text>
-                        </View>
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Mobile Number:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.mobile_number}
+                    </Text>
+                  </View>
 
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">Current Salary:</Text>
-                          <Text className="font-medium">
-                            {item?.current_salary}
-                          </Text>
-                        </View>
-                        <View className="flex-row justify-between px-2">
-                          <Text className="font-medium">Date of Join:</Text>
-                          <Text className="font-medium">
-                            {moment(item?.date_of_join).format("DD-MM-YYYY")}
-                          </Text>
-                        </View>
-                      </View>
-                    );
-                  }}
-                />
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Department:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.department}
+                    </Text>
+                  </View>
+
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Position:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.position}
+                    </Text>
+                  </View>
+
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Last Hike Amount:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.last_hike_amount}
+                    </Text>
+                  </View>
+
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Last Hike Date:</Text>
+                    <Text className="font-medium">
+                      {moment(singleEmployeeData?.last_hike_date).format(
+                        "DD-MM-YYYY"
+                      )}
+                    </Text>
+                  </View>
+
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Current Salary:</Text>
+                    <Text className="font-medium">
+                      {singleEmployeeData?.current_salary}
+                    </Text>
+                  </View>
+
+                  <View className="flex-row justify-between px-2">
+                    <Text className="font-medium">Date of Join:</Text>
+                    <Text className="font-medium">
+                      {moment(singleEmployeeData?.date_of_join).format(
+                        "DD-MM-YYYY"
+                      )}
+                    </Text>
+                  </View>
+                </View>
               </View>
-              {/* dropdown */}
+
+              {/* Dropdown */}
               <View>
                 <Text className="text-center font-medium text-base my-5">
-                  Attendence
+                  Attendance
                 </Text>
-
-                {/*  */}
                 <View style={styles.containerDrop}>
                   <Text style={styles.labelDrop}>Select Month</Text>
                   <RNPickerSelect
@@ -309,7 +415,6 @@ const AdminHome = () => {
                     placeholder={{ label: "Select Year", value: null }}
                     style={pickerSelectStyles}
                   />
-
                   <Button
                     buttonColor={COLORS?.mainCamelColor}
                     textColor={COLORS?.thirdWhiteColor}
@@ -343,7 +448,290 @@ const AdminHome = () => {
         </ScrollView>
       </Modal>
 
-      {/* Modal end */}
+      {/* Modal view end */}
+
+      {/* Modal Edit View */}
+      <Modal
+        visible={modalVisibleEdits}
+        animationType="fade"
+        transparent={true}
+      >
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.box_1}>
+              <TouchableOpacity
+                onPress={() => toggleEditModal()}
+                className="flex-row justify-end"
+              >
+                <Entypo name="cross" size={30} color="red" />
+              </TouchableOpacity>
+              <Text className="text-center font-medium text-base ">
+                Edit Emloyee Details
+              </Text>
+              <View className="mt-8 h-auto">
+                <Formik
+                  initialValues={{
+                    user_name: singleEmployeeData?.user_name,
+                    first_name: singleEmployeeData?.first_name,
+                    last_name: singleEmployeeData?.last_name,
+                    email: singleEmployeeData?.email,
+                    mobile_number: String(singleEmployeeData?.mobile_number),
+                    department: singleEmployeeData?.department,
+                    position: singleEmployeeData?.position,
+                    last_hike_amount: String(
+                      singleEmployeeData?.last_hike_amount
+                    ),
+                    last_hike_date: moment(
+                      singleEmployeeData?.last_hike_date
+                    ).format("DD-MM-YYYY"),
+                    current_salary: String(singleEmployeeData?.current_salary),
+                    date_of_join: moment(
+                      singleEmployeeData?.date_of_join
+                    ).format("DD-MM-YYYY"),
+                    passwd: "",
+                    address: singleEmployeeData?.address,
+                  }}
+                  onSubmit={handleEditEmployee}
+                >
+                  {(formikProps) => {
+                    const {
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      setFieldValue,
+                      values,
+                      errors,
+                      isValid,
+                      touched,
+                    } = formikProps;
+                    return (
+                      <>
+                        <View className="flex-1 gap-4">
+                          {/* User Name */}
+                          <View className="px-2">
+                            <Text className="font-medium">User Name:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("user_name")}
+                              onBlur={handleBlur("user_name")}
+                              value={values.user_name}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* First Name */}
+                          <View className="px-2">
+                            <Text className="font-medium">First Name:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("first_name")}
+                              onBlur={handleBlur("first_name")}
+                              value={values.first_name}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Last Name */}
+                          <View className="px-2">
+                            <Text className="font-medium">Last Name:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("last_name")}
+                              onBlur={handleBlur("last_name")}
+                              value={values.last_name}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Email */}
+                          <View className="px-2">
+                            <Text className="font-medium">Email ID:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("email")}
+                              onBlur={handleBlur("email")}
+                              value={values.email}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Mobile Number */}
+                          <View className="px-2">
+                            <Text className="font-medium">Mobile Number:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("mobile_number")}
+                              onBlur={handleBlur("mobile_number")}
+                              value={String(values.mobile_number)}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Department */}
+                          <View className="px-2">
+                            <Text className="font-medium">Department:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("department")}
+                              onBlur={handleBlur("department")}
+                              value={values?.department}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Address */}
+                          <View className="px-2">
+                            <Text className="font-medium">Address:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("address")}
+                              onBlur={handleBlur("address")}
+                              value={values?.address}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Position */}
+                          <View className="px-2">
+                            <Text className="font-medium">Position:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("position")}
+                              onBlur={handleBlur("position")}
+                              value={values?.position}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Last Hike Amount */}
+                          <View className="px-2">
+                            <Text className="font-medium">
+                              Last Hike Amount:
+                            </Text>
+                            <TextInput
+                              keyboardType="numeric"
+                              mode="outlined"
+                              onChangeText={handleChange("last_hike_amount")}
+                              onBlur={handleBlur("last_hike_amount")}
+                              value={String(values?.last_hike_amount)}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Last Hike Date */}
+                          <View className="px-2">
+                            <Text className="font-medium">Last Hike Date:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("last_hike_date")}
+                              onBlur={handleBlur("last_hike_date")}
+                              value={values?.last_hike_date}
+                              onPressIn={() => setOpenLastHikeDate(true)}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                            <DatePickerModal
+                              locale="en"
+                              mode="single"
+                              visible={openLastHikeDate}
+                              date={moment(
+                                values.last_hike_date,
+                                "YYYY-MM-DD"
+                              ).toDate()}
+                              onDismiss={() => setOpenLastHikeDate(false)}
+                              onConfirm={(params) => {
+                                const selectedDate = params.date;
+                                if (selectedDate) {
+                                  setFieldValue(
+                                    "last_hike_date",
+                                    moment(selectedDate).format("YYYY-MM-DD")
+                                  );
+                                }
+                                setOpenLastHikeDate(false);
+                              }}
+                            />
+                          </View>
+
+                          {/* Current Salary */}
+                          <View className="px-2">
+                            <Text className="font-medium">Current Salary:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("current_salary")}
+                              onBlur={handleBlur("current_salary")}
+                              value={String(values?.current_salary)}
+                              keyboardType="numeric"
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+
+                          {/* Date of Join */}
+                          <View className="px-2">
+                            <Text className="font-medium">Date of Join:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("date_of_join")}
+                              onBlur={handleBlur("date_of_join")}
+                              value={values?.date_of_join}
+                              onPressIn={() => setOpenDateOfJoin(true)}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                            <DatePickerModal
+                              locale="en"
+                              mode="single"
+                              visible={openDateOfJoin}
+                              date={moment(
+                                values.date_of_join,
+                                "YYYY-MM-DD"
+                              ).toDate()}
+                              onDismiss={() => setOpenDateOfJoin(false)}
+                              onConfirm={(params) => {
+                                const selectedDate = params.date;
+                                if (selectedDate) {
+                                  setFieldValue(
+                                    "date_of_join",
+                                    moment(selectedDate).format("YYYY-MM-DD")
+                                  );
+                                }
+                                setOpenDateOfJoin(false);
+                              }}
+                            />
+                          </View>
+
+                          {/* Password */}
+                          <View className="px-2 ">
+                            <Text className="font-medium">Password:</Text>
+                            <TextInput
+                              mode="outlined"
+                              onChangeText={handleChange("passwd")}
+                              onBlur={handleBlur("passwd")}
+                              value={values?.passwd}
+                              style={{ width: "100%", height: 40 }}
+                            />
+                          </View>
+                        </View>
+
+                        {/* Submit Button */}
+                        <Button
+                          className="mt-6 mb-5"
+                          buttonColor={COLORS?.mainCamelColor}
+                          textColor={COLORS?.thirdWhiteColor}
+                          mode="elevated"
+                          onPress={handleSubmit}
+                        >
+                          Submit
+                        </Button>
+                      </>
+                    );
+                  }}
+                </Formik>
+              </View>
+
+              {/* dropdown */}
+            </View>
+          </View>
+        </ScrollView>
+      </Modal>
+      {/*Modal edit end */}
     </ScrollView>
     // pgadmin4 for linux
     // deaver for linux
