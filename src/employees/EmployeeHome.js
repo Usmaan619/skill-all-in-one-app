@@ -18,13 +18,15 @@ import {
   markAttendanceAPI,
 } from "../services/Auth.service";
 import { clearStorage, getData, removeData } from "../services/Storage.service";
-import { Entypo, FontAwesome } from "@expo/vector-icons";
+import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import { toastSuccess } from "../services/Toaster.service";
 import { useDispatch } from "react-redux";
 import { SetLoader } from "../redux/actions/loader.action";
 import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
+import CommonButton from "../components/Button.component";
+import { logOut } from "../utils/Helper";
 const EmployeeHome = () => {
   const dispatch = useDispatch();
   const itemsPerPage = 2;
@@ -79,7 +81,7 @@ const EmployeeHome = () => {
 
       // api
       dispatch(SetLoader("loader", true));
-      console.log("result: ", result);
+
       if (!result) return dispatch(SetLoader("loader", false));
 
       const res = await markAttendance({
@@ -119,7 +121,6 @@ const EmployeeHome = () => {
   const daysInMonth = getDaysInMonth(month, year);
 
   const handleCheckout = async (id) => {
-    console.log("id: ", id);
     try {
       dispatch(SetLoader("loader", true));
 
@@ -171,7 +172,7 @@ const EmployeeHome = () => {
               <DataTable.Title
                 textStyle={{ color: COLORS?.secBlackColor, fontSize: 14 }}
               >
-                Mark Attendence
+                Attendence
               </DataTable.Title>
             </DataTable.Header>
 
@@ -182,7 +183,6 @@ const EmployeeHome = () => {
 
               const timeOut = currentAttendance?.time_out ? true : false;
               const timeIn = currentAttendance?.time_in ? true : false;
-              console.log("timeOut: ", timeOut);
 
               const isPastDate = moment(date).isBefore(moment(), "day");
               const isFutureDate = moment(date).isAfter(moment(), "day");
@@ -206,7 +206,6 @@ const EmployeeHome = () => {
                     <Button
                       buttonColor={COLORS?.mainCamelColor}
                       textColor={COLORS?.thirdWhiteColor}
-                      icon="camera"
                       mode="elevated"
                       disabled={timeIn || isPastDate || isFutureDate}
                       onPress={async () => {
@@ -215,16 +214,18 @@ const EmployeeHome = () => {
                         // Optionally call your API to mark attendance as verified
                       }}
                     >
-                      Verify
+                      <Entypo name="camera" size={20} color="#fff" />
                     </Button>
 
                     {/* Show the "Checkout" button if already present and within valid date */}
                   </DataTable.Cell>
-                  <DataTable.Cell>
+                  <DataTable.Cell className="w-full">
                     <Button
+                      className="w-full"
                       buttonColor={COLORS?.mainCamelColor}
                       textColor={COLORS?.thirdWhiteColor}
                       mode="elevated"
+                      // icon={"archive-clock"}
                       disabled={timeOut || isPastDate || isFutureDate}
                       onPress={async () => {
                         await handleCheckout(
@@ -232,7 +233,7 @@ const EmployeeHome = () => {
                         );
                       }}
                     >
-                      Checkout
+                      <AntDesign name="logout" size={20} color="#fff" />
                     </Button>
                   </DataTable.Cell>
                 </DataTable.Row>
@@ -240,6 +241,14 @@ const EmployeeHome = () => {
             })}
           </DataTable>
         </Card>
+        <View className="my-3">
+          <CommonButton
+            onPress={async () => {
+              await logOut(dispatch);
+            }}
+            title={"Log out"}
+          />
+        </View>
       </View>
     </ScrollView>
     // pgadmin4 for linux

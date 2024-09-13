@@ -5,9 +5,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-const CommonButton = ({ onPress, title }) => {
+const CommonButton = ({ onPress, title, disabled }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.button]}>
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={[styles.button]}
+    >
       <LinearGradient
         colors={["#b69d7f", "#b69d7fc7"]} // Gradient colors
         style={[styles.linearGradient]}

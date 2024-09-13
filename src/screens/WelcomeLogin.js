@@ -21,6 +21,7 @@ import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
 import { COLORS } from "../constants/Colors";
 
 const WelcomeLogin = ({ navigation }) => {
+  console.log('navigation: ', navigation);
   const dispatch = useDispatch();
 
   const onSubmit = async (val) => {};

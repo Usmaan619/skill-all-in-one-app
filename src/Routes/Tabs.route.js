@@ -31,7 +31,7 @@ const screenOptions = {
   },
 };
 
-const TabNavigation = () => {
+export const AdminTabNavigation = () => {
   return (
     <>
       <Tab.Navigator screenOptions={screenOptions}>
@@ -189,19 +189,322 @@ const TabNavigation = () => {
     </>
   );
 };
-
-const mapStateToProps = (state) => {
-  return {
-    ...state?.AuthReducer,
-    ...state?.LoaderReducer,
-    ...state?.loader,
-  };
+export const EmloyeeTabNavigation = () => {
+  return (
+    <>
+      <Tab.Navigator screenOptions={screenOptions}>
+        <Tab.Screen
+          name="Home"
+          component={EmployeeHome}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.tabAlignCenter}>
+                  <Entypo
+                    name="home"
+                    size={24}
+                    color={focused ? "white" : "black"}
+                  />
+                  <Text
+                    style={
+                      focused ? styles.homeTabActive : styles.homeTabInActive
+                    }
+                  >
+                    Home
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        />
+        {/* <Tab.Screen
+          name="Mutual Fund"
+          component={DocumentVerifPage}
+          
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+            },
+          }}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.tabAlignCenter}>
+                  <Image
+                    style={styles.tabImg}
+                    source={focused ? ICONS.mutualFundImg : ICONS.mutualFundImg}
+                    fadeDuration={0}
+                  />
+                  <Text
+                    style={
+                      focused ? styles.stockTabActive : styles.stockTabInActive
+                    }
+                  >
+                    Mutual Fund
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        /> */}
+        {/* <Tab.Screen
+          name="More"
+          component={WelcomePage}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View>
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#ffa500",
+                      height: Platform.OS === "ios" ? 70 : 65,
+                      width: Platform.OS === "ios" ? 70 : 65,
+                      top: Platform.OS === "ios" ? -20 : -30,
+                      borderRadius: Platform.OS === "ios" ? 35 : 32,
+                      borderColor: "grey",
+                      borderWidth: 5,
+                      elevation: 10,
+                    }}
+                  >
+                    <Animatable.Text
+                      animation="pulse"
+                      easing="ease-out"
+                      iterationCount="infinite"
+                    >
+                      <Octicons name="search" size={24} color={COLORS?.white} />
+                    </Animatable.Text>
+                  </View>
+                  <Text className="text-white bottom-6 text-center font-semibold text-xs">
+                    More
+                  </Text>
+                </View>
+              );
+            },
+            tabBarButton: (props) => (
+              <TouchableOpacity {...props} onPress={toggleModal} />
+            ),
+          }}
+        /> */}
+        {/* <Tab.Screen
+          name="US stocks"
+          component={SignInPage}
+         
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+            },
+          }}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.tabAlignCenter}>
+                  <Image
+                    style={styles.tabImg}
+                    source={focused ? ICONS.stockImg : ICONS.stockImg}
+                    fadeDuration={0}
+                  />
+                  <Text
+                    style={
+                      focused
+                        ? styles.cryptoTabActive
+                        : styles.cryptoTabInActive
+                    }
+                  >
+                    US stocks
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        /> */}
+        {/* <Tab.Screen
+          name="Portfolio"
+          component={PortFolioPage}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.tabAlignCenter}>
+                  <Image
+                    style={styles.tabImg}
+                    source={focused ? ICONS.portfolioImg : ICONS.portfolioImg}
+                    fadeDuration={0}
+                  />
+                  <Text
+                    style={
+                      focused ? styles.nftTabActive : styles.nftTabInActive
+                    }
+                  >
+                    Portfolio
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        /> */}
+      </Tab.Navigator>
+    </>
+  );
 };
-
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TabNavigation);
-
+export const StudentTabNavigation = () => {
+  return (
+    <>
+      <Tab.Navigator screenOptions={screenOptions}>
+        <Tab.Screen
+          name="Home"
+          component={EmployeeHome}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.tabAlignCenter}>
+                  <Entypo
+                    name="home"
+                    size={24}
+                    color={focused ? "white" : "black"}
+                  />
+                  <Text
+                    style={
+                      focused ? styles.homeTabActive : styles.homeTabInActive
+                    }
+                  >
+                    Home
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        />
+        {/* <Tab.Screen
+          name="Mutual Fund"
+          component={DocumentVerifPage}
+          
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+            },
+          }}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.tabAlignCenter}>
+                  <Image
+                    style={styles.tabImg}
+                    source={focused ? ICONS.mutualFundImg : ICONS.mutualFundImg}
+                    fadeDuration={0}
+                  />
+                  <Text
+                    style={
+                      focused ? styles.stockTabActive : styles.stockTabInActive
+                    }
+                  >
+                    Mutual Fund
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        /> */}
+        {/* <Tab.Screen
+          name="More"
+          component={WelcomePage}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View>
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#ffa500",
+                      height: Platform.OS === "ios" ? 70 : 65,
+                      width: Platform.OS === "ios" ? 70 : 65,
+                      top: Platform.OS === "ios" ? -20 : -30,
+                      borderRadius: Platform.OS === "ios" ? 35 : 32,
+                      borderColor: "grey",
+                      borderWidth: 5,
+                      elevation: 10,
+                    }}
+                  >
+                    <Animatable.Text
+                      animation="pulse"
+                      easing="ease-out"
+                      iterationCount="infinite"
+                    >
+                      <Octicons name="search" size={24} color={COLORS?.white} />
+                    </Animatable.Text>
+                  </View>
+                  <Text className="text-white bottom-6 text-center font-semibold text-xs">
+                    More
+                  </Text>
+                </View>
+              );
+            },
+            tabBarButton: (props) => (
+              <TouchableOpacity {...props} onPress={toggleModal} />
+            ),
+          }}
+        /> */}
+        {/* <Tab.Screen
+          name="US stocks"
+          component={SignInPage}
+         
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+            },
+          }}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.tabAlignCenter}>
+                  <Image
+                    style={styles.tabImg}
+                    source={focused ? ICONS.stockImg : ICONS.stockImg}
+                    fadeDuration={0}
+                  />
+                  <Text
+                    style={
+                      focused
+                        ? styles.cryptoTabActive
+                        : styles.cryptoTabInActive
+                    }
+                  >
+                    US stocks
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        /> */}
+        {/* <Tab.Screen
+          name="Portfolio"
+          component={PortFolioPage}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.tabAlignCenter}>
+                  <Image
+                    style={styles.tabImg}
+                    source={focused ? ICONS.portfolioImg : ICONS.portfolioImg}
+                    fadeDuration={0}
+                  />
+                  <Text
+                    style={
+                      focused ? styles.nftTabActive : styles.nftTabInActive
+                    }
+                  >
+                    Portfolio
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        /> */}
+      </Tab.Navigator>
+    </>
+  );
+};
 const styles = StyleSheet.create({
   tabAlignCenter: { alignItems: "center", justifyContent: "center" },
 

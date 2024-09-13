@@ -14,6 +14,13 @@ export const CART_TOTAL_PRICE = "CART_TOTAL_PRICE";
 
 export const SET_HEADER_SCROLL = "SET_HEADER_SCROLL";
 
+export const SET_USER_TYPE = "SET_USER_TYPE";
+
+export const SetUserType = (userType) => ({
+  type: SET_USER_TYPE,
+  payload: userType,
+});
+
 export const setHeaderScroll = (isScrolled) => ({
   type: SET_HEADER_SCROLL,
   payload: isScrolled,

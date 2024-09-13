@@ -22,7 +22,7 @@ import {
 import { adminLoginAPI, loginAPI } from "../services/Auth.service";
 import { useDispatch } from "react-redux";
 import { setData } from "../services/Storage.service";
-import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
+import { SetIsLoggedIn, SetToken, SetUserType } from "../redux/actions/action";
 import { COLORS } from "../constants/Colors";
 import { toastSuccess } from "../services/Toaster.service";
 import { SetLoader } from "../redux/actions/loader.action";
@@ -40,54 +40,61 @@ const Login = ({ navigation }) => {
 
   const onSubmit = async (val) => {
     try {
+      dispatch(SetLoader("loader", true));
+
+      let tokenKey = "";
+      let idKey = "";
+      let loginAPICall;
+      let userType = "";
+
       switch (route?.params?.type) {
         case "EL":
-          dispatch(SetLoader("loader", true));
-          const payload = {
-            email: val?.emailOrUsername,
-            passwd: val?.password,
-          };
-          const res = await loginAPI(payload);
-
-          if (!res) dispatch(SetLoader("loader", false));
-
-          if (res?.employee?.token) {
-            dispatch(SetIsLoggedIn(true));
-
-            await setData("token", res?.employee?.token);
-            setTimeout(() => {
-              dispatch(SetLoader("loader", false));
-            }, 1500);
-            await setData("employeeId", res?.employee?.id?.toString());
-            dispatch(SetToken(res?.employee?.token));
-            if (res?.message) toastSuccess(res?.message);
-          }
+          loginAPICall = loginAPI;
+          tokenKey = "employee";
+          idKey = "employeeId";
+          userType = "employee";
           break;
+
         case "AM":
-          dispatch(SetLoader("loader", true));
+          loginAPICall = adminLoginAPI;
+          tokenKey = "user";
+          idKey = "userId";
+          userType = "admin";
+          break;
 
-          const response = await adminLoginAPI({
-            email: val?.emailOrUsername,
-            passwd: val?.password,
-          });
+        // case "ST":
+        //   loginAPICall = studentLoginAPI;
+        //   tokenKey = "student";
+        //   idKey = "studentId";
+        //   userType = "student"
 
-          if (!response) dispatch(SetLoader("loader", false));
+        //   break;
 
-          if (response?.user?.token) {
-            dispatch(SetIsLoggedIn(true));
+        default:
+          throw new Error("Unknown login type");
+      }
 
-            await setData("token", response?.user?.token);
-            setTimeout(() => {
-              dispatch(SetLoader("loader", false));
-            }, 1500);
-            await setData("userId", response?.user?.id?.toString());
-            dispatch(SetToken(response?.user?.token));
-            if (response?.message) toastSuccess(response?.message);
+      const response = await loginAPICall({
+        email: val?.emailOrUsername,
+        passwd: val?.password,
+      });
 
-            break;
-          }
+      // if (!response) throw new Error("Login failed");
+
+      if (response?.[tokenKey]?.token) {
+        dispatch(SetIsLoggedIn(true));
+        await setData("userType", userType);
+        dispatch(SetUserType(userType));
+        await setData("token", response?.[tokenKey]?.token);
+        await setData(idKey, response?.[tokenKey]?.id?.toString());
+        dispatch(SetToken(response?.[tokenKey]?.token));
+
+        if (response?.message) toastSuccess(response?.message);
       }
     } catch (error) {
+      dispatch(SetLoader("loader", false));
+      console.error("Login error:", error.message);
+    } finally {
       dispatch(SetLoader("loader", false));
     }
   };

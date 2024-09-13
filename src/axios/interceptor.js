@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getData, removeData } from "../services/Storage.service";
+import { clearStorage, getData } from "../services/Storage.service";
 import { environment } from "../environments/environment";
 import { toastError } from "../services/Toaster.service";
 import { SetIsLoggedIn, SetToken } from "../redux/actions/action";
@@ -43,8 +43,7 @@ const AxiosInterceptors = (dispatch) => {
       if (errorMessage === "Please login." && errorCode === "401") {
         dispatch(SetIsLoggedIn(false));
         dispatch(SetToken(null));
-        await removeData("token");
-        await removeData("employeeId");
+        await clearStorage();
         toastError("Please Login");
         setTimeout(() => {
           dispatch(SetLoader("loader", false));

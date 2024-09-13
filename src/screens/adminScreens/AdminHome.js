@@ -34,12 +34,19 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
-import { calculateTimeDifference } from "../../utils/Helper";
+import {
+  calculateTimeDifference,
+  logOut,
+  updateEmployeeValidationSchema,
+} from "../../utils/Helper";
 import { Formik } from "formik";
 import { DatePickerModal } from "react-native-paper-dates";
 
 import { en, registerTranslation } from "react-native-paper-dates";
 import { toastSuccess } from "../../services/Toaster.service";
+import { SetIsLoggedIn, SetToken } from "../../redux/actions/action";
+import { removeData } from "../../services/Storage.service";
+import CommonButton from "../../components/Button.component";
 
 // Register the translation for the language you're using (English in this case)
 registerTranslation("en", en);
@@ -59,7 +66,10 @@ const AdminHome = () => {
 
   React.useEffect(() => {
     new Promise(async (resolve, reject) => {
-      await getAllEmployee();
+      // await getAllEmployee();
+      // dispatch(SetIsLoggedIn(false));
+      // dispatch(SetToken(null));
+      // await removeData("token");
 
       resolve(1);
     });
@@ -304,6 +314,14 @@ const AdminHome = () => {
             ))}
           </DataTable>
         </Card>
+        <View className="my-3">
+          <CommonButton
+            onPress={async () => {
+              await logOut(dispatch);
+            }}
+            title={"Log out"}
+          />
+        </View>
       </View>
 
       {/* Modal start View*/}
@@ -537,6 +555,7 @@ const AdminHome = () => {
               </Text>
               <View className="mt-8 h-auto">
                 <Formik
+                  validationSchema={updateEmployeeValidationSchema}
                   initialValues={{
                     user_name: singleEmployeeData?.user_name,
                     first_name: singleEmployeeData?.first_name,
@@ -765,7 +784,7 @@ const AdminHome = () => {
                           </View>
 
                           {/* Password */}
-                          <View className="px-2 ">
+                          <View className="px-2 w-full ">
                             <Text className="font-medium">Password:</Text>
                             <TextInput
                               mode="outlined"
@@ -775,6 +794,20 @@ const AdminHome = () => {
                               style={{ width: "100%", height: 40 }}
                             />
                           </View>
+
+                          {errors.passwd && (
+                            <Text
+                              style={{
+                                width: "100%",
+                                fontSize: 13,
+                                color: "red",
+                                marginTop: "1%",
+                                marginLeft: "5%",
+                              }}
+                            >
+                              {errors.passwd}
+                            </Text>
+                          )}
                         </View>
 
                         {/* Submit Button */}
