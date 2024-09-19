@@ -66,7 +66,7 @@ const AdminHome = () => {
 
   React.useEffect(() => {
     new Promise(async (resolve, reject) => {
-      // await getAllEmployee();
+      await getAllEmployee();
       // dispatch(SetIsLoggedIn(false));
       // dispatch(SetToken(null));
       // await removeData("token");
@@ -160,6 +160,7 @@ const AdminHome = () => {
   };
 
   const handleEditEmployee = async (value) => {
+    console.log('value: ', value);
     try {
       const payload = checkForm(singleEmployeeData, value);
 
@@ -795,7 +796,7 @@ const AdminHome = () => {
                             />
                           </View>
 
-                          {errors.passwd && (
+                          {errors?.passwd && (
                             <Text
                               style={{
                                 width: "100%",
@@ -805,7 +806,7 @@ const AdminHome = () => {
                                 marginLeft: "5%",
                               }}
                             >
-                              {errors.passwd}
+                              {errors?.passwd}
                             </Text>
                           )}
                         </View>

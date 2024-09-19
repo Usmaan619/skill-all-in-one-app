@@ -342,60 +342,60 @@ export const updateEmployeeValidationSchema = yup.object().shape({
 });
 
 
-const validationSchema = Yup.object().shape({
-  user_name: Yup.string()
+const validationSchema = yup.object().shape({
+  user_name: yup.string()
     .required('Username is required')
     .min(3, 'Username must be at least 3 characters long')
     .max(20, 'Username cannot exceed 20 characters')
     .matches(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores'),
 
-  first_name: Yup.string()
+  first_name: yup.string()
     .required('First name is required')
     .matches(/^[a-zA-Z\s]+$/, 'First name can only contain letters and spaces')
     .max(50, 'First name cannot exceed 50 characters'),
 
-  last_name: Yup.string()
+  last_name: yup.string()
     .required('Last name is required')
     .matches(/^[a-zA-Z\s]+$/, 'Last name can only contain letters and spaces')
     .max(50, 'Last name cannot exceed 50 characters'),
 
-  email: Yup.string()
+  email: yup.string()
     .email('Please enter a valid email address')
     .required('Email is required'),
 
-  mobile_number: Yup.string()
+  mobile_number: yup.string()
     .required('Mobile number is required')
     .matches(/^[0-9]{10}$/, 'Mobile number must be exactly 10 digits'),
 
-  department: Yup.string()
+  department: yup.string()
     .required('Department is required')
     .matches(/^[a-zA-Z\s]+$/, 'Department can only contain letters and spaces')
     .max(100, 'Department cannot exceed 100 characters'),
 
-  position: Yup.string()
+  position: yup.string()
     .required('Position is required')
     .matches(/^[a-zA-Z\s]+$/, 'Position can only contain letters and spaces')
     .max(100, 'Position cannot exceed 100 characters'),
 
-  last_hike_amount: Yup.number()
+  last_hike_amount: yup.number()
     .required('Last hike amount is required')
     .min(0, 'Last hike amount must be a positive number')
     .typeError('Last hike amount must be a valid number'),
 
-  last_hike_date: Yup.date()
+  last_hike_date: yup.date()
     .required('Last hike date is required')
     .typeError('Please enter a valid date'),
 
-  current_salary: Yup.number()
+  current_salary: yup.number()
     .required('Current salary is required')
     .min(0, 'Current salary must be a positive number')
     .typeError('Current salary must be a valid number'),
 
-  date_of_join: Yup.date()
+  date_of_join: yup.date()
     .required('Date of join is required')
     .typeError('Please enter a valid date'),
 
-  passwd: Yup.string()
+  passwd: yup.string()
     .required('Password is required')
     .min(8, 'Password must be at least 8 characters long')
     .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
@@ -403,7 +403,7 @@ const validationSchema = Yup.object().shape({
     .matches(/[0-9]/, 'Password must contain at least one number')
     .matches(/[@$!%*?&#]/, 'Password must contain at least one special character'),
 
-  address: Yup.string()
+  address: yup.string()
     .required('Address is required')
     .max(255, 'Address cannot exceed 255 characters')
 });

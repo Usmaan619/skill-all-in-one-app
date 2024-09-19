@@ -81,10 +81,10 @@ export const updateEmployeeAPI = async (id, payload) => {
   }
 };
 
-export const getAllAttendanceAPI = async () => {
+export const getAllAttendanceAPI = async (id) => {
   try {
     const response = await axiosInstance.get(
-      `${environment?.apiUrl}attend/getAllAttendance`
+      `${environment?.apiUrl}attend/getATByEmployee/${id}`
     );
     return response?.data;
   } catch (error) {

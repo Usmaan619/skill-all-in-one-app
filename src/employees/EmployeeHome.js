@@ -45,7 +45,6 @@ const EmployeeHome = () => {
       // dispatch(SetIsLoggedIn(false));
       // dispatch(SetToken(null));
       // await removeData("token");
-      // await removeData("employeeId");
 
       resolve(1);
     });
@@ -54,7 +53,10 @@ const EmployeeHome = () => {
   const getAllAttendance = async () => {
     try {
       dispatch(SetLoader("loader", true));
-      const data = await getAllAttendanceAPI();
+
+      const id = await getData("employeeId");
+
+      const data = await getAllAttendanceAPI(Number(id));
 
       setAttendenceData(data);
       setTimeout(() => {
