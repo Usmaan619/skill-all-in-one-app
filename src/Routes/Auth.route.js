@@ -20,6 +20,7 @@ const Stack = createStackNavigator();
 const AuthRoutes = ({ token, isNetConnected, loader, userType }) => {
   const dispatch = useDispatch();
   const netinfo = useNetInfo();
+  console.log('netinfo: ', netinfo);
   const [loading, setLoading] = useState(null);
 
   useEffect(() => {

@@ -36,6 +36,7 @@ const EmployeeHome = () => {
   const to = (page + 1) * itemsPerPage;
 
   const [frontImage, setFrontImage] = React.useState("");
+  const [checkImage, setCheckImage] = React.useState("");
 
   const [attendenceData, setAttendenceData] = React.useState();
 
@@ -126,8 +127,24 @@ const EmployeeHome = () => {
     try {
       dispatch(SetLoader("loader", true));
 
+      // No permissions request is necessary for launching the image library
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        // aspect: [4, 3],
+        // quality: 1,
+        base64: true,
+        cameraType: "front",
+      });
+
+      setCheckImage(result?.assets[0]?.uri);
+
+      // api
+      if (!result) return dispatch(SetLoader("loader", false));
+
       const res = await checkOuAttendanceAPI({
         id,
+        check_out_img: result?.assets[0]?.base64,
       });
 
       if (!res?.success) return dispatch(SetLoader("loader", false));

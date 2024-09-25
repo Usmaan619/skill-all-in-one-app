@@ -47,6 +47,7 @@ import { toastSuccess } from "../../services/Toaster.service";
 import { SetIsLoggedIn, SetToken } from "../../redux/actions/action";
 import { removeData } from "../../services/Storage.service";
 import CommonButton from "../../components/Button.component";
+import * as Network from "expo-network";
 
 // Register the translation for the language you're using (English in this case)
 registerTranslation("en", en);
@@ -70,6 +71,9 @@ const AdminHome = () => {
       // dispatch(SetIsLoggedIn(false));
       // dispatch(SetToken(null));
       // await removeData("token");
+
+      const network = await Network.getIpAddressAsync();
+      console.log("network: ", network);
 
       resolve(1);
     });
@@ -160,7 +164,7 @@ const AdminHome = () => {
   };
 
   const handleEditEmployee = async (value) => {
-    console.log('value: ', value);
+    console.log("value: ", value);
     try {
       const payload = checkForm(singleEmployeeData, value);
 

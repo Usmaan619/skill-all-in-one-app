@@ -18,12 +18,8 @@ const AxiosInterceptors = (dispatch) => {
     async (config) => {
       try {
         const token = await getData("token");
-        if (token) {
-          config.headers.Authorization = token;
-        }
-      } catch (error) {
-        console.error("Error retrieving token:", error);
-      }
+        if (token) config.headers.Authorization = token;
+      } catch (error) {}
       return config;
     },
     (error) => Promise.reject(error)
@@ -37,8 +33,6 @@ const AxiosInterceptors = (dispatch) => {
 
       const errorCode = error?.response?.data?.code;
       const errorCodes = error?.response?.data?.status;
-
-      console.error("Interceptor Error:", errorMessage);
 
       if (errorMessage === "Please login." && errorCode === "401") {
         dispatch(SetIsLoggedIn(false));
