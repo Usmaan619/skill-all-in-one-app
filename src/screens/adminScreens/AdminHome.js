@@ -73,7 +73,6 @@ const AdminHome = () => {
       // await removeData("token");
 
       const network = await Network.getIpAddressAsync();
-      console.log("network: ", network);
 
       resolve(1);
     });
@@ -113,6 +112,7 @@ const AdminHome = () => {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
   const [attendanceData, setAttendanceData] = useState(null);
+
   const months = [
     { label: "January", value: 1 },
     { label: "February", value: 2 },
@@ -164,7 +164,6 @@ const AdminHome = () => {
   };
 
   const handleEditEmployee = async (value) => {
-    console.log("value: ", value);
     try {
       const payload = checkForm(singleEmployeeData, value);
 

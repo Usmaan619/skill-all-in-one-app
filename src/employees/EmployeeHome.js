@@ -80,12 +80,12 @@ const EmployeeHome = () => {
         cameraType: "front",
       });
 
-      setFrontImage(result?.assets[0]?.uri);
-
-      // api
       dispatch(SetLoader("loader", true));
 
-      if (!result) return dispatch(SetLoader("loader", false));
+      // api
+
+      if (result.canceled) return dispatch(SetLoader("loader", false));
+      setFrontImage(result?.assets[0]?.uri);
 
       const res = await markAttendance({
         employee_id: Number(await getData("employeeId")),
@@ -140,7 +140,7 @@ const EmployeeHome = () => {
       setCheckImage(result?.assets[0]?.uri);
 
       // api
-      if (!result) return dispatch(SetLoader("loader", false));
+      if (result?.canceled) return dispatch(SetLoader("loader", false));
 
       const res = await checkOuAttendanceAPI({
         id,
